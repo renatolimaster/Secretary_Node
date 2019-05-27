@@ -8,7 +8,7 @@ const pioneerSchema = new Schema({
         type: String,
         require: true
     },
-    notes: {
+    requirement: {
         type: String
     },
     congregationId: {

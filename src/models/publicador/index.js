@@ -1,3 +1,7 @@
-const { Publicador } = require('./model');
+const {
+    Publicador
+} = require('./model');
 
-module.exports = { Publicador };
+module.exports = {
+    Publicador
+};
