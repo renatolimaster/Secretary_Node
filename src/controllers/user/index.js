@@ -18,7 +18,7 @@ const user = (auth, models, { config }) => {
   api.get('/profile', auth, get(models, { config }));
   api.get('/:_id', auth, getById(models, { config }));
   // api.get('/all/:_id', auth, getAll(models, { config }));
-  api.post('/', auth, create(models, { config }));
+  api.post('/', create(models, { config }));
   api.patch('/:_id', auth, update(models, { config }));
   api.post('/login', login(models, { config }));
   api.post('/logout', auth, logout(models, { config }));

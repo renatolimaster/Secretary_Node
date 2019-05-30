@@ -1,26 +1,38 @@
 const mongoose = require('mongoose');
-const { userSchema } = require('./schema');
+var randomize = require('randomatic');
+
+const {
+  userSchema
+} = require('./schema');
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// var schema = new mongoose.Schema({ name: 'string', size: 'string' });
-
-// schema.pre('save', function() {
-//   console.log('schema pre save congregacao');
-//   return true;
-// });
-
 //Hash the plain text password before saving
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
+  console.log('userSchema pre save');
   const user = this; // this provide access to object being saved
+  // to create a random code (letters and numbers) with size 10.
+  let bindingCode = randomize('Aa0', 10);
+  // verify if bindingCode already exist - must be unique
+  await User.findOne({ bindingCode }).then(userResult => {
+    if (userResult) {
+      // if bindingCode exist, generate another
+      bindingCode = randomize('Aa0', 10);
+    }
+  }).catch(err => res.status(400).send(err));
 
-  // hash only wheather password change
+  user.bindingCode = bindingCode;
+
+  // hash only whether password change
   if (user.isModified('password')) {
     // number 8 means the number of round the hash will works. Its because security and speed are involved
     // 8 is the better option according author
     user.password = await bcrypt.hash(user.password, 8);
   }
+
+  console.log('bindingCode:', this.bindingCode);
+
 
   next(); // to finish the function and pass to next operation chained
 });
@@ -38,7 +50,7 @@ userSchema.pre('save', async function(next) {
 it automatic return the object as JSON and omit
 the attibute we want - that case password and tokens
 */
-userSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function () {
   /* methods access instances of object, because that I am using this bellow */
   const user = this;
   const userObject = user.toObject();
@@ -55,7 +67,9 @@ userSchema.statics.findByCredentials = async (email, password) => {
   console.log('=================> findByCredentials <=================');
   console.log('user 1', email);
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({
+    email
+  });
   console.log('user 2', user);
   if (!user) {
     throw new Error('Unable to login');
@@ -81,18 +95,23 @@ userSchema.method.verifyToken = async token => {
   });
 };
 
-userSchema.methods.generateAuthToken = async function() {
+userSchema.methods.generateAuthToken = async function () {
   /* methods access instances of object, because that I am using this bellow */
   const user = this;
-  const token = jwt.sign(
-    { _id: user._id.toString() },
+  const token = jwt.sign({
+      _id: user._id.toString()
+    },
     'trustinJehovahwithallyourheart'
   );
-  user.tokens = user.tokens.concat({ token });
+  user.tokens = user.tokens.concat({
+    token
+  });
   await user.save();
   return token;
 };
 
 const User = mongoose.model('users', userSchema); // the name will put on plural by mongo
 
-module.exports = { User };
+module.exports = {
+  User
+};

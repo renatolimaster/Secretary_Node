@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 // to use ES6 implementation for promise
 mongoose.Promise = global.Promise;
 
-// to garantee that any code will execute if connection succeed
+// to guarantee that any code will execute if connection succeed
 before(done => {
   mongoose.connect('mongodb://localhost/secretary_test', {
     useNewUrlParser: true,
@@ -43,8 +43,9 @@ before(done => {
 // });
 
 afterEach(done => {
-  const { congregations, publishers } = mongoose.connection.collections;
+  const { congregations, publishers, pioneers } = mongoose.connection.collections;
   congregations.deleteMany();
   publishers.deleteMany();
+  pioneers.deleteMany();
   done();
 });

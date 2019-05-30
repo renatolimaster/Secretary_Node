@@ -3,20 +3,17 @@ const auth = require('../middleware/auth');
 const { errorHandler } = require('../middleware/errorHandler');
 
 // list of models
-const { Congregacao } = require('../models/congregacao');
-// console.log('Congregacao:', Congregacao);
+const { Congregation } = require('../models/congregation');
 const { User } = require('../models/usuario');
-// console.log('User:', User);
 const { Publicador } = require('../models/publicador');
-// console.log('Publicador:', Publicador);
 
 // list of controllers
-const congregacoes = require('../controllers/congregacao');
-const users = require('../controllers/usuario');
-const publicadores = require('../controllers/publicador');
+const congregation = require('../controllers/congregation');
+const users = require('../controllers/user');
+const publisher = require('../controllers/publisher');
 
 // combine all models into one object to path it into controllers
-const models = { Congregacao, User, Publicador };
+const models = { Congregation, User, Publicador };
 
 // routers
 const routersInit = config => {
@@ -27,9 +24,9 @@ const routersInit = config => {
   // USER
   router.use('/user', users(auth, models, { config }));
   // CONGREGATION
-  router.use('/congregacao', congregacoes(auth, models, { config }));
+  router.use('/congregation', congregation(auth, models, { config }));
   // PUBLISHERS
-  router.use('/publicador', publicadores(auth, models, { config }));
+  router.use('/publisher', publisher(auth, models, { config }));
   // catch api all erros
   router.use(errorHandler);
   return router;

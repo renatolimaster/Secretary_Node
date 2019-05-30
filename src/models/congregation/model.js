@@ -25,6 +25,6 @@ congregationSchema.methods.toJSON = function() {
 /* the model name will put on plural by mongo and
    must be used in relationship with others models
 */
-const Congregacao = mongoose.model('congregations', congregationSchema);
+const Congregation = mongoose.model('congregations', congregationSchema);
 
-module.exports = { Congregacao };
+module.exports = { Congregation };

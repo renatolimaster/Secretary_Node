@@ -1,16 +1,28 @@
 const auth = require('../../middleware/auth');
+
 const create = ({ User }, { config }) => async (req, res) => {
+  console.log('=============> Create User <=============');
+  
+  //
   try {
     const user = new User({
       ...req.body
     });
+    
+    // user.bindingCode = bindingCode;
+
     await user.save();
     const token = await user.generateAuthToken();
-    res.status(201).send({ user, token });
+    res.status(201).send({
+      user,
+      token
+    });
   } catch (error) {
     console.log('error: ', error);
     res.status(400).send(error);
   }
 };
 
-module.exports = { create };
+module.exports = {
+  create
+};
