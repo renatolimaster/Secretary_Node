@@ -11,6 +11,9 @@ const jwt = require('jsonwebtoken');
 //Hash the plain text password before saving
 userSchema.pre('save', async function (next) {
   console.log('userSchema pre save');
+  if (!this.isModified('password')) {
+    return next();
+  }
   const user = this; // this provide access to object being saved
   // to create a random code (letters and numbers) with size 10.
   let bindingCode = randomize('Aa0', 10);
@@ -19,6 +22,7 @@ userSchema.pre('save', async function (next) {
     if (userResult) {
       // if bindingCode exist, generate another
       bindingCode = randomize('Aa0', 10);
+      console.log('bindingCode:', this.bindingCode);
     }
   }).catch(err => res.status(400).send(err));
 
@@ -31,7 +35,7 @@ userSchema.pre('save', async function (next) {
     user.password = await bcrypt.hash(user.password, 8);
   }
 
-  console.log('bindingCode:', this.bindingCode);
+  console.log('bindingCode:', user.bindingCode);
 
 
   next(); // to finish the function and pass to next operation chained

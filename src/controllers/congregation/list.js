@@ -1,12 +1,12 @@
 const _ = require('lodash');
 
-const list = ({ Congregacao }, { config }) => async (req, res, next) => {
+const list = ({ Congregation }, { config }) => async (req, res, next) => {
   /*
 req.params contains route parameters (in the path portion of the URL), and
 req.query contains the URL query parameters (after the ? in the URL).
   */
   console.log('================> Congregation list <======================');
-  // const congregacoes = await Congregacao.find({});
+  // const congregacoes = await Congregation.find({});
   // res
   //   .status(200)
   //   .send('===============> LIST <=====================', congregacoes);
@@ -19,12 +19,12 @@ req.query contains the URL query parameters (after the ? in the URL).
     _.extend(query, { name: new RegExp(`${search}`, 'i') });
   }
   // try {
-  //   const congregacoes = await Question.find(query)
+  //   const congregations = await Question.find(query)
   //     .skip(skip)
   //     .limit(limit)
   //     .sort({ _id: -1 });
 
-  //   // res.status(200).send({ congregacoes });
+  //   // res.status(200).send({ congregations });
   //   res.status(200).send('===============> LIST <=====================');
   // } catch (error) {
   //   next(error);
@@ -37,8 +37,8 @@ req.query contains the URL query parameters (after the ? in the URL).
   console.log('_id', _id);
 
   // const query = { id: _id };
-  // const options = {}; // limit clause return only first attibute
-  // return await Congregacao.find(query, options)
+  // const options = {}; // limit clause return only first attribute
+  // return await Congregation.find(query, options)
   //   .sort({ name: 1 })
   //   .then(results => {
   //     if (results) {

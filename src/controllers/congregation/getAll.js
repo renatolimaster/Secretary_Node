@@ -1,11 +1,11 @@
 var ObjectId = require('mongoose').Types.ObjectId;
-const getAll = ({ Congregacao }, { config }) => async (req, res, next) => {
+const getAll = ({ Congregation }, { config }) => async (req, res, next) => {
   console.log('=============> Congregation getAll <===================');
   console.log('user:', req.user);
 
   const query = {};
   const options = {}; // limit clause return only first attibute
-  return await Congregacao.find(query, options)
+  return await Congregation.find(query, options)
     .sort({ name: 1 })
     .then(results => {
       if (results) {

@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const update = ({ Congregacao }, { config }) => async (req, res, next) => {
+const update = ({ Congregation }, { config }) => async (req, res, next) => {
   console.log('=============> Congregation Update <===================');
   const { _id } = req.params;
   // extract only key of body
@@ -24,12 +24,12 @@ const update = ({ Congregacao }, { config }) => async (req, res, next) => {
   }
 
   try {
-    const congregacao = await Congregacao.findOne({ _id });
-    _.extend(congregacao, req.body);
+    const congregation = await Congregation.findOne({ _id });
+    _.extend(congregation, req.body);
     // to audit who is modifying the document
-    congregacao.modifiedBy = req.user.publishersId;
-    await congregacao.save();
-    res.status(200).send({ congregacao });
+    congregation.modifiedBy = req.user.publishersId;
+    await congregation.save();
+    res.status(200).send({ congregation });
   } catch (error) {
     next(error);
   }

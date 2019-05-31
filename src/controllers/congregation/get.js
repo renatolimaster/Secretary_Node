@@ -1,7 +1,7 @@
 let ObjectId = require('mongoose').Types.ObjectId;
-const { User } = require('../../models/usuario');
+const { User } = require('../../models/user');
 
-const get = ({ Congregacao }, { config }) => async (req, res, next) => {
+const get = ({ Congregation }, { config }) => async (req, res, next) => {
   const { _id } = req.params;
   console.log('=============> Congregation get <===================');
 
@@ -10,7 +10,7 @@ const get = ({ Congregacao }, { config }) => async (req, res, next) => {
   const query = { _id: _id };
   const options = {}; // limit clause return only first attibute
   //
-  return await Congregacao.findOne(query, options)
+  return await Congregation.findOne(query, options)
     .populate('publishers')
     .populate('coordenatorId')
     .populate('modifiedBy')

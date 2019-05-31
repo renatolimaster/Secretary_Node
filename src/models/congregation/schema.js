@@ -35,7 +35,7 @@ const congregationSchema = new Schema(
         address: { type: String }
       }
     ],
-    coordenatorId: {
+    coordinatorId: {
       type: ObjectId,
       ref: 'publishers'
     },
@@ -53,8 +53,8 @@ const congregationSchema = new Schema(
 );
 
 /*
-used to maintain a relationship with publicadores model
-its means that congregation has many publicadores
+used to maintain a relationship with publishers model
+its means that congregation has many publishers
 */
 congregationSchema.virtual('publishers', {
   ref: 'publishers',

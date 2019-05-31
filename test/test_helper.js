@@ -43,7 +43,8 @@ before(done => {
 // });
 
 afterEach(done => {
-  const { congregations, publishers, pioneers } = mongoose.connection.collections;
+  const { users, congregations, publishers, pioneers } = mongoose.connection.collections;
+  users.deleteMany();
   congregations.deleteMany();
   publishers.deleteMany();
   pioneers.deleteMany();

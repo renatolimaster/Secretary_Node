@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const assert = require('assert');
 const moment = require('moment');
-const { Publicador } = require('../src/models/publicador');
+const { Publisher } = require('../src/models/publisher');
 
 const date = moment();
 
-describe('Creating publicador.', () => {
-  it('Save publicador', done => {
-    console.log('=========== Publicador ===============');
+describe('Creating Publisher.', () => {
+  it('Save Publisher', done => {
+    console.log('=========== Publisher ===============');
     let day = new Date(2011, 9, 16);
-    const publicador = new Publicador({
+    const publisher = new Publisher({
       name: 'Renato Lima',
       gender: 'Male',
       baptized: true,
@@ -19,7 +19,7 @@ describe('Creating publicador.', () => {
           street: 'Rua Milton',
           complement: 'SM 602',
           neighborhood: 'Jardim',
-          city: 'Vitória',
+          city: 'Vitoria',
           zipCode: '29090-770'
         }
       ],
@@ -65,10 +65,10 @@ describe('Creating publicador.', () => {
       modifiedBy: ObjectId('5cdef2126d75723b5f44f8f3')
     });
 
-    console.log(publicador);
+    console.log(publisher);
 
-    publicador.save().then(() => {
-      assert(!publicador.isNew);
+    publisher.save().then(() => {
+      assert(!publisher.isNew);
       done();
     });
   });

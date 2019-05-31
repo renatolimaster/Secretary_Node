@@ -116,11 +116,11 @@ const publisherSchema = new Schema(
       ],
       required: true
     },
-    grupoId: {
+    groupId: {
       type: ObjectId,
       ref: 'group'
     },
-    pioneiroId: {
+    pioneerId: {
       type: ObjectId,
       ref: 'pioneer'
     },

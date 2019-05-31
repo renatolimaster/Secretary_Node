@@ -1,7 +1,7 @@
 const {
-    Publicador
+    Publisher
 } = require('./model');
 
 module.exports = {
-    Publicador
+    Publisher
 };

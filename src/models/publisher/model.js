@@ -6,6 +6,8 @@ publisherSchema.pre('save', function(next) {
   next();
 });
 
-const Publicador = mongoose.model('publishers', publisherSchema); // the name will put on plural by mongo
+const Publisher = mongoose.model('publishers', publisherSchema); // the name will put on plural by mongo
 
-module.exports = { Publicador };
+module.exports = {
+  Publisher
+};

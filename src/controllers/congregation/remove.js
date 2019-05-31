@@ -1,11 +1,11 @@
 const _ = require('lodash');
 
-const remove = ({ Congregacao }, { config }) => async (req, res, next) => {
+const remove = ({ Congregation }, { config }) => async (req, res, next) => {
   const { _id } = req.params;
   try {
-    const congregacao = await Congregacao.findOne({ _id });
-    await congregacao.remove({ _id });
-    res.status(200).send({ congregacao });
+    const congregation = await Congregation.findOne({ _id });
+    await congregation.remove({ _id });
+    res.status(200).send({ congregation });
   } catch (error) {
     next(error);
   }
