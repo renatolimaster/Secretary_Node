@@ -19,33 +19,43 @@ before(done => {
     });
 });
 
-// beforeEach(done => {
-//   const { congregations, publishers } = mongoose.connection.collections;
+beforeEach(done => {
+  const {
+    meetingsattendances
+  } = mongoose.connection.collections;
 
-//   // mongoose.connection.db.collections((err, collections) => {
-//   //   if (err) {
-//   //     console.log(err);
-//   //   } else {
-//   //     console.log(collections);
-//   //   }
-//   // });
+  // mongoose.connection.db.collections((err, collections) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     console.log(collections);
+  //   }
+  // });
 
-//   // congregations.deleteOne({});
-//   // publishers.deleteOne({});
-//   congregations.deleteMany();
-//   publishers.deleteMany();
-//   done();
-//   // congregations.drop(() => {
-//   //   publishers.drop(() => {
-//   //     done();
-//   //   });
-//   // });
-// });
+  // congregations.deleteOne({});
+  // publishers.deleteOne({});
+  // congregations.deleteMany();
+  // publishers.deleteMany();
+  // meetingsattendances.deleteMany();
+  done();
+  // congregations.drop(() => {
+  //   publishers.drop(() => {
+  //     done();
+  //   });
+  // });
+});
 
 afterEach(done => {
-  const { users, congregations, publishers, pioneers } = mongoose.connection.collections;
+  const {
+    users,
+    congregations,
+    publishers,
+    pioneers,
+    meetingsattendances
+  } = mongoose.connection.collections;
   users.deleteMany();
   congregations.deleteMany();
+  // meetingsattendances.deleteMany();
   publishers.deleteMany();
   pioneers.deleteMany();
   done();

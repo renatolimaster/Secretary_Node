@@ -10,7 +10,7 @@ const {
 const date = moment();
 
 describe('Creating Congregation', () => {
-  it('save a congregation', done => {
+  xit('save a congregation', done => {
     console.log('=========== Congregation ===============');
     const congregation = new Congregation({
       number: '123456',

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../models/user/');
+const { SECRET_KEY } = require('../../config');
 
 const log = console.log;
 
@@ -13,7 +14,7 @@ const auth = async (req, res, next) => {
     // pay attention in spaces after word Bearer
     const token = req.header('Authorization').replace('Bearer ', '');
     // verify if token is correct
-    const decoded = jwt.verify(token, 'trustinJehovahwithallyourheart');
+    const decoded = jwt.verify(token, SECRET_KEY);
     // find user with the id and token grabbed inside tokens
     const user = await User.findOne({
       _id: decoded._id,

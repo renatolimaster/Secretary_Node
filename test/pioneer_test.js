@@ -7,7 +7,7 @@ const {
 
 
 describe('Pioneer tests', () => {
-    it('Save pioneer', done => {
+    xit('Save pioneer', done => {
         console.log('=========== Pioneer ===============');
         const pioneer = new Pioneer({
             description: 'Regular',

@@ -7,7 +7,7 @@ const { Publisher } = require('../src/models/publisher');
 const date = moment();
 
 describe('Creating Publisher.', () => {
-  it('Save Publisher', done => {
+  xit('Save Publisher', done => {
     console.log('=========== Publisher ===============');
     let day = new Date(2011, 9, 16);
     const publisher = new Publisher({
