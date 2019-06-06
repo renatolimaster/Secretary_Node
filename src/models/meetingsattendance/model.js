@@ -25,16 +25,10 @@ attendanceSchema.method('meow', function (meow) {
 });
 
 attendanceSchema.method('getTotalServiceYear', async function (year, meeting) {
-  let total = 0;
-  let monthOfReference = 1;
-  const meetingsAttendance = [];
-
-  let media = 0.0;
-  let attendanceOfForeigner = 0;
-
-  let summed = [];
-  let average = [];
-  let count = [];
+  let weekendMeeting = [];
+  let weekendResult = [];
+  let midweekMeeting = [];
+  let midweekResult = [];
 
   console.log('params:', year + ' ' + meeting);
 
@@ -42,56 +36,70 @@ attendanceSchema.method('getTotalServiceYear', async function (year, meeting) {
       serviceYear: year
     })
     .then(results => {
-      console.log('Results ===========:>', results);
-      monthOfReference = results.meetingsAttendance[0].monthOfReference;
-
-      summed = _(results.meetingsAttendance)
+      // filter weekend meetings
+      weekendMeeting = _.filter(results.meetingsAttendance, {
+        meeting: 'WeekendMeeting'
+      });
+      // get values of weekend meetings
+      weekendResult = _(weekendMeeting)
         .groupBy('monthOfReference')
         .map((objs, key) => {
           return {
-            'monthOfReference': key,
-            'totalAttendance': _.sumBy(objs, 'attendance')
+            'yearOfReference': objs[0].yearOfReference,
+            'meeting': objs[0].meeting,
+            'monthOfReference': objs[0].monthOfReference,
+            'totalAttendance': _.sumBy(objs, function (o) {
+              return o.attendance;
+            }),
+            'averageAttendanceEachWeek': _.meanBy(objs, 'attendance'),
+            'numberOfMeetings': _.countBy(objs, function (o) {
+              return o.monthOfReference;
+            }),
           };
         })
         .value();
 
-      average = _(results.meetingsAttendance)
+      console.log('=========== weekendResult ===========');
+      console.log(weekendResult);
+      // filter midweek meetings
+      midweekMeeting = _.filter(results.meetingsAttendance, {
+        meeting: 'MidweekMeeting'
+      });
+      // get values of midweek meetings
+      midweekResult = _(midweekMeeting)
         .groupBy('monthOfReference')
         .map((objs, key) => {
           return {
-            'AverageAttendanceEachWeek': _.meanBy(objs, 'attendance')
+            'yearOfReference': objs[0].yearOfReference,
+            'Meeting': objs[0].meeting,
+            'monthOfReference': objs[0].monthOfReference,
+            'totalAttendance': _.sumBy(objs, function (o) {
+              return o.attendance;
+            }),
+            'AverageAttendanceEachWeek': _.meanBy(objs, 'attendance'),
+            'numberOfMeetings': _.countBy(objs, function (o) {
+              return o.monthOfReference;
+            }),
           };
         })
         .value();
 
-      count = _(results.meetingsAttendance)
-        .groupBy('monthOfReference')
-        .map((objs, key) => {
-          return {
-            'numberOfMeetings': _.countBy(objs, 'monthOfReference')
-          };
-        })
-        .value();
-
-      console.log('summed:', summed);
-      console.log('average:', average);
-      console.log('count:', count);
-
-      console.log('meetingsAttendance total:', meetingsAttendance);
-      return {summed, average, count};
+      console.log('=========== midweekResult ===========');
+      console.log(midweekResult);
+      return {
+        weekendResult,
+        midweekResult
+      };
     });
 });
 
 attendanceSchema.getMediaServiceYear = async function (year) {
   const attendance = this;
-  let total = attendance.getTotalServiceYear(year);
-  let media = 0.0;
 
   await attendance.find({
     yearService: year
-  }).then(results => {});
+  }).then(() => {});
 
-  media = this.attendanceTotal;
 };
 
 const MeetingsAttendance = mongoose.model(
