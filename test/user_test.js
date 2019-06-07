@@ -25,6 +25,8 @@ describe('Create User', () => {
     user.save().then(() => {
       assert(!user.isNew);
       done();
+    }).catch(error => {
+      console.log('Error:', error);
     });
 
   });

@@ -90,6 +90,8 @@ attendanceSchema.method('getTotalServiceYear', async function (year, meeting) {
         weekendResult,
         midweekResult
       };
+    }).catch(error => {
+      console.log('Error:', error);
     });
 });
 
@@ -98,7 +100,9 @@ attendanceSchema.getMediaServiceYear = async function (year) {
 
   await attendance.find({
     yearService: year
-  }).then(() => {});
+  }).then(() => {}).catch(error => {
+    console.log('Error:', error);
+  });
 
 };
 

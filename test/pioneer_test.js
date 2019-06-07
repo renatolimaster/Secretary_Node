@@ -21,6 +21,8 @@ describe('Pioneer tests', () => {
         pioneer.save().then(() => {
             assert(!pioneer.isNew);
             done();
+        }).catch(error => {
+            console.log('Error:', error);
         });
     });
 });

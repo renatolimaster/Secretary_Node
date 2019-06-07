@@ -70,6 +70,8 @@ describe('Creating Publisher.', () => {
     publisher.save().then(() => {
       assert(!publisher.isNew);
       done();
+    }).catch(error => {
+      console.log('Error:', error);
     });
   });
 });

@@ -66,7 +66,7 @@ describe('Create Meetings Attendance', async () => {
           dateMeeting: new Date('2019-01-05'),
           yearOfReference: 2019,
           monthOfReference: 1,
-          attendance: 25,
+          attendance: 28,
           attendanceOfForeigner: 1
         }, {
           meeting: 'WeekendMeeting',
@@ -158,6 +158,8 @@ describe('Create Meetings Attendance', async () => {
     meetingsattendance.save().then(() => {
       assert(!meetingsattendance.isNew);
       done();
+    }).catch(error => {
+      console.log('Error:', error);
     });
 
     console.log(meetingsattendance.getTotalServiceYear(2019, 'MidweekMeeting'));

@@ -40,6 +40,8 @@ describe('Creating Congregation', () => {
       // has congregation being saved successfullY? 123
       assert(!congregation.isNew);
       done();
+    }).catch(error => {
+      console.log('Error:', error);
     });
   });
 });
