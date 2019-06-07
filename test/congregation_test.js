@@ -19,7 +19,7 @@ describe('Creating Congregation', () => {
         street: 'Rua Milton',
         complement: 'SM 602',
         neighborhood: 'Jardim',
-        city: 'Vitória',
+        city: 'Vit?ria',
         zipCode: '29090-770'
       }],
       phones: [{

@@ -8,11 +8,11 @@ const get = ({ Congregation }, { config }) => async (req, res, next) => {
   // console.log('token:', req.user);
   //
   const query = { _id: _id };
-  const options = {}; // limit clause return only first attibute
+  const options = {}; // limit clause return only first attribute
   //
   return await Congregation.findOne(query, options)
     .populate('publishers')
-    .populate('coordenatorId')
+    .populate('coordinatorId')
     .populate('modifiedBy')
     .then(congregation => {
       if (congregation) {

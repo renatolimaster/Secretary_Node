@@ -51,12 +51,14 @@ afterEach(done => {
     congregations,
     publishers,
     pioneers,
-    meetingsattendances
+    meetingsattendances,
+    groups
   } = mongoose.connection.collections;
   users.deleteMany();
   congregations.deleteMany();
-  // meetingsattendances.deleteMany();
-  publishers.deleteMany();
+  meetingsattendances.deleteMany();
+  // publishers.deleteMany();
   pioneers.deleteMany();
+  // groups.deleteMany();
   done();
 });

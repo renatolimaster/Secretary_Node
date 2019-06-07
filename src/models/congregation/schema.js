@@ -7,7 +7,8 @@ const congregationSchema = new Schema(
   {
     number: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     name: {
       type: String,

@@ -2,7 +2,13 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const assert = require('assert');
 const moment = require('moment');
-const { Publisher } = require('../src/models/publisher');
+const {
+  Publisher
+} = require('../src/models/publisher');
+
+const {
+  Group
+} = require('../src/models/group');
 
 const date = moment();
 
@@ -11,30 +17,26 @@ describe('Creating Publisher.', () => {
     console.log('=========== Publisher ===============');
     let day = new Date(2011, 9, 16);
     const publisher = new Publisher({
-      name: 'Renato Lima',
+      firstName: 'Renato',
+      middleName: 'Teixeira',
+      lastName: 'Lima',
       gender: 'Male',
       baptized: true,
-      address: [
-        {
-          street: 'Rua Milton',
-          complement: 'SM 602',
-          neighborhood: 'Jardim',
-          city: 'Vitoria',
-          zipCode: '29090-770'
-        }
-      ],
-      phones: [
-        {
-          kind: 'Cell',
-          number: '27-981-460-878'
-        }
-      ],
-      email: [
-        {
-          kind: 'Private',
-          address: 'renatolimaster@gmail.com'
-        }
-      ],
+      address: [{
+        street: 'Rua Milton',
+        complement: 'SM 602',
+        neighborhood: 'Jardim',
+        city: 'Vitoria',
+        zipCode: '29090-770'
+      }],
+      phones: [{
+        kind: 'Cell',
+        number: '27-981-460-878'
+      }],
+      email: [{
+        kind: 'Private',
+        address: 'renatolimaster@gmail.com'
+      }],
       birthDate: date,
       baptismDate: day,
       householder: true,
@@ -65,7 +67,12 @@ describe('Creating Publisher.', () => {
       modifiedBy: ObjectId('5cdef2126d75723b5f44f8f3')
     });
 
+    console.log(publisher.fullName);
+    console.log(publisher.firstLastName);
+    console.log(publisher.lastFirstName);
     console.log(publisher);
+
+
 
     publisher.save().then(() => {
       assert(!publisher.isNew);

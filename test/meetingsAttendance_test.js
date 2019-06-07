@@ -6,7 +6,7 @@ const {
 
 describe('Create Meetings Attendance', async () => {
 
-  it('Save Meetings Attendance', done => {
+  xit('Save Meetings Attendance', done => {
     console.log('=========== Meetings Attendance ===============');
 
     const meetingsattendance = new MeetingsAttendance({
