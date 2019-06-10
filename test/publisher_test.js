@@ -63,22 +63,20 @@ describe('Creating Publisher.', () => {
     used to maintain a one to many relationship with congregations
     publishers (child) belongs to congregations (owner)
     */
-      congregationId: ObjectId('5cdef2126d75723b5f44f8f3'),
+      congregationId: ObjectId('5cfe8dfdeb770e113944ca9d'),
       modifiedBy: ObjectId('5cdef2126d75723b5f44f8f3')
     });
 
     console.log(publisher.fullName);
     console.log(publisher.firstLastName);
     console.log(publisher.lastFirstName);
-    console.log(publisher);
-
 
 
     publisher.save().then(() => {
       assert(!publisher.isNew);
-      done();
     }).catch(error => {
       console.log('Error:', error);
     });
+    done();
   });
 });

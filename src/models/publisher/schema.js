@@ -133,7 +133,8 @@ const publisherSchema = new Schema({
       'Elder',
       'Ministerial Servant',
       'Superintendent of Service',
-      'Publisher'
+      'Publisher',
+      'Student'
     ],
     required: true
   },

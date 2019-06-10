@@ -1,7 +1,7 @@
 const {
-  Congregation
+  CongregationalPrivilege
 } = require('./model');
 
 module.exports = {
-  Congregation
+  CongregationalPrivilege
 };

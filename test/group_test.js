@@ -15,7 +15,7 @@ describe('Group tests', () => {
         street: 'Rua Milton',
         complement: 'SM 602',
         neighborhood: 'Jardim',
-        city: 'Vitória',
+        city: 'Vitoria',
         zipCode: '29090-770'
       },
       helperId: ObjectId('5cfa9c21aca4d722adc94c0a'),

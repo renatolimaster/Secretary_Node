@@ -3,7 +3,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const assert = require('assert');
 const {
     Pioneer
-} = require('../src/models/pioneiro');
+} = require('../src/models/pioneer');
 
 
 describe('Pioneer tests', () => {
