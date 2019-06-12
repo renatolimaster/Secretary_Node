@@ -6,21 +6,15 @@ const { list } = require('./list');
 const { create } = require('./create');
 const { update } = require('./update');
 const { remove } = require('./remove');
-/**
- * Provide api for congregation
- *
- *
- * GET /api/v1/congregation/ - List
-     @header
-            Authorization: Bearer {token}
-     @optionalQueryParameters
-           search {String} - value to search
-           limit {Number} - count of item to send
-           skip {Number} - value to search
- *
- *
- * **/
 
+/**
+ *
+ *
+ * @param {*} auth
+ * @param {*} models
+ * @param {*} { config }
+ * @returns
+ */
 const congregation = (auth, models, { config }) => {
   const api = router();
 

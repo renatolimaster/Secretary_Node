@@ -1,3 +1,9 @@
+/**
+ *
+ *
+ * @param {*} { Congregation }
+ * @param {*} { config }
+ */
 const create = ({ Congregation }, { config }) => async (req, res, next) => {
   console.log('================> Congregation create <======================');
   console.log('================> body: ', req.body);

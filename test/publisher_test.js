@@ -50,6 +50,7 @@ describe('Creating Publisher.', () => {
       statusService: 'Regular',
       statusAssociation: 'Associated',
       servicePrivilege: 'Elder',
+      congregationalPrivilege: ['5cfead38c5c2ff2150749aa3', '5cffb3e70f4ef00873855dd4'],
       groupId: ObjectId('5cdef2126d75723b5f44f8f3'),
       pioneerId: ObjectId('5cdef2126d75723b5f44f8f3'),
       pioneerNumber: '123456',
@@ -70,7 +71,6 @@ describe('Creating Publisher.', () => {
     console.log(publisher.fullName);
     console.log(publisher.firstLastName);
     console.log(publisher.lastFirstName);
-
 
     publisher.save().then(() => {
       assert(!publisher.isNew);

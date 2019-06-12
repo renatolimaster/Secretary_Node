@@ -1,5 +1,11 @@
 const _ = require('lodash');
 
+/**
+ *
+ *
+ * @param {*} { Congregation }
+ * @param {*} { config }
+ */
 const list = ({ Congregation }, { config }) => async (req, res, next) => {
   /*
 req.params contains route parameters (in the path portion of the URL), and

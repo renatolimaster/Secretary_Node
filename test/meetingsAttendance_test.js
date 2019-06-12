@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const assert = require('assert');
 const {
   MeetingsAttendance
-} = require('../src/models/meetingsattendance');
+} = require('../src/models/meetings-attendance');
 
 describe('Create Meetings Attendance', async () => {
 

@@ -13,9 +13,9 @@ const {
 } = require('../src/models/congregation/');
 
 describe('Congregational Privilege tests', () => {
-  it('congregational privilege save', done => {
+  xit('congregational privilege save', done => {
     const congregationalPrivilege = new CongregationalPrivilege({
-      name: 'Sistema Sonoro',
+      name: 'Publications Desk',
       notes: 'Organization of publications',
       modifiedBy: '5cfe971a8d7c121b060c0614',
       congregationId: '5cfe971a8d7c121b060c060f'

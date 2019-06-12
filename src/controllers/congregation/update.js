@@ -1,5 +1,11 @@
 const _ = require('lodash');
 
+/**
+ *
+ *
+ * @param {*} { Congregation }
+ * @param {*} { config }
+ */
 const update = ({ Congregation }, { config }) => async (req, res, next) => {
   console.log('=============> Congregation Update <===================');
   const { _id } = req.params;

@@ -1,5 +1,11 @@
 const _ = require('lodash');
 
+/**
+ *
+ *
+ * @param {*} { Congregation }
+ * @param {*} { config }
+ */
 const remove = ({ Congregation }, { config }) => async (req, res, next) => {
   const { _id } = req.params;
   try {

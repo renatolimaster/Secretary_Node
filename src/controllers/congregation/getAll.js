@@ -1,4 +1,10 @@
 var ObjectId = require('mongoose').Types.ObjectId;
+/**
+ *
+ *
+ * @param {*} { Congregation }
+ * @param {*} { config }
+ */
 const getAll = ({ Congregation }, { config }) => async (req, res, next) => {
   console.log('=============> Congregation getAll <===================');
   console.log('user:', req.user);

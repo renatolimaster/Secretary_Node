@@ -1,6 +1,12 @@
 let ObjectId = require('mongoose').Types.ObjectId;
 const { User } = require('../../models/user');
 
+/**
+ *
+ *
+ * @param {*} { Congregation }
+ * @param {*} { config }
+ */
 const get = ({ Congregation }, { config }) => async (req, res, next) => {
   const { _id } = req.params;
   console.log('=============> Congregation get <===================');

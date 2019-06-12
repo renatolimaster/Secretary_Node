@@ -138,6 +138,10 @@ const publisherSchema = new Schema({
     ],
     required: true
   },
+  congregationalPrivilege: [{
+    type: ObjectId,
+    ref: 'congregationalprivileges'
+  }],
   groupId: {
     type: ObjectId,
     ref: 'groups'
@@ -187,7 +191,7 @@ publisherSchema.virtual('firstLastName').get(function () {
 });
 
 publisherSchema.virtual('lastFirstName').get(function () {
-  return this.lastName  + ', ' + this.firstName;
+  return this.lastName + ', ' + this.firstName;
 });
 
 module.exports = {
