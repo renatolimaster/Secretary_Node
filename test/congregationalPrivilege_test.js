@@ -15,8 +15,8 @@ const {
 describe('Congregational Privilege tests', () => {
   xit('congregational privilege save', done => {
     const congregationalPrivilege = new CongregationalPrivilege({
-      name: 'Publications Desk',
-      notes: 'Organization of publications',
+      name: 'Sound System',
+      notes: 'Organization of Sound System',
       modifiedBy: '5cfe971a8d7c121b060c0614',
       congregationId: '5cfe971a8d7c121b060c060f'
     });

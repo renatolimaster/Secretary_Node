@@ -5,8 +5,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const congregationalPrivilegeSchema = new Schema({
   name: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   notes: {
     type: String,
@@ -23,6 +22,19 @@ const congregationalPrivilegeSchema = new Schema({
   }
 }, {
   timestamps: true
+});
+
+// Specifying a virtual with a `ref` property is how you enable virtual
+// population
+congregationalPrivilegeSchema.virtual('publishers', {
+  ref: 'publishers',
+  localField: '_id',
+  foreignField: 'congregationalPrivilege',
+  options: {
+    sort: {
+      firstName: 'asc'
+    }
+  } // Query options, see http://bit.ly/mongoose-query-options
 });
 
 module.exports = {

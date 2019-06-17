@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const validator = require('validator');
 //
+const {
+  congregationalPrivilegeSchema
+} = require('../congregational-privilege/schema');
+//
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 const decimal = Schema.Types.Decimal128;
@@ -138,6 +142,7 @@ const publisherSchema = new Schema({
     ],
     required: true
   },
+  // congregationalPrivilege: [congregationalPrivilegeSchema],
   congregationalPrivilege: [{
     type: ObjectId,
     ref: 'congregationalprivileges'
