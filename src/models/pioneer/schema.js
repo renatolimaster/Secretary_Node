@@ -6,6 +6,15 @@ const ObjectId = mongoose.Types.ObjectId;
 const pioneerSchema = new Schema({
     description: {
         type: String,
+        enum: [
+            'None',
+            'Auxiliary 30 hours',
+            'Auxiliary Pioneer',
+            'Regular Auxiliary Pioneer',
+            'Regular Pioneer',
+            'Especial Pioneer',
+            'Missionary'
+        ],
         require: true
     },
     requirement: {

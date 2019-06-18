@@ -126,7 +126,8 @@ const publisherSchema = new Schema({
       'Student',
       'Student Publisher',
       'Associated',
-      'Decoupled',
+      'Dissociated',
+      'Disfellowshipped',
       'Deceased'
     ],
     required: true
@@ -186,6 +187,23 @@ const publisherSchema = new Schema({
 }, {
   timestamps: true
 });
+
+
+publisherSchema.virtual('fieldServices', {
+  ref: 'fieldservices', // The model to use - the name of the table on database
+  localField: '_id', // `localField` here
+  foreignField: 'publisherId', // is equal to `foreignField` in the focused table
+  // If `justOne` is true, 'members' will be a single doc as opposed to
+  // an array. `justOne` is false by default.
+  justOne: false,
+  options: {
+    sort: {
+      referenceDate: 'desc'
+    },
+    limit: 12
+  } // Query options, see http://bit.ly/mongoose-query-options
+});
+
 
 publisherSchema.virtual('fullName').get(function () {
   return this.firstName + ' ' + this.middleName + ' ' + this.lastName;

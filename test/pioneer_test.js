@@ -10,8 +10,8 @@ describe('Pioneer tests', () => {
     xit('Save pioneer', done => {
         console.log('=========== Pioneer ===============');
         const pioneer = new Pioneer({
-            description: 'Regular',
-            requirement: '70 hour',
+            description: 'Missionary',
+            requirement: 'Required 70 hours',
             congregationId: ObjectId('5cdef2126d75723b5f44f8f3'),
             modifiedBy: ObjectId('5cdef2126d75723b5f44f8f3')
         });
