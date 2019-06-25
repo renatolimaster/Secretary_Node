@@ -20,7 +20,7 @@ describe('Create User', () => {
       password: '11223311'
     });
 
-    console.log(user)
+    console.log(user);
 
     user.save().then(() => {
       assert(!user.isNew);

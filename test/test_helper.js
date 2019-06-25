@@ -55,12 +55,12 @@ afterEach(done => {
     groups,
     congregationalprivileges
   } = mongoose.connection.collections;
-  // users.deleteMany();
-  // congregations.deleteMany();
-  // meetingsattendances.deleteMany();
-  // publishers.deleteMany();
-  // pioneers.deleteMany();
-  // groups.deleteMany();
-  // congregationalprivileges.deleteMany();
+  users.deleteMany();
+  congregations.deleteMany();
+  meetingsattendances.deleteMany();
+  publishers.deleteMany();
+  pioneers.deleteMany();
+  groups.deleteMany();
+  congregationalprivileges.deleteMany();
   done();
 });

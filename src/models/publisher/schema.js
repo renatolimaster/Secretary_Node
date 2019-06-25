@@ -1,10 +1,8 @@
-const mongoose = require('mongoose');
-const moment = require('moment');
-const validator = require('validator');
+const mongoose = require("mongoose");
+const moment = require("moment");
+const validator = require("validator");
 //
-const {
-  congregationalPrivilegeSchema
-} = require('../congregational-privilege/schema');
+const { congregationalPrivilegeSchema } = require("../congregational-privilege/schema");
 //
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
@@ -15,208 +13,205 @@ const date = moment();
 // const month = moment('MM');
 
 /* Publisher publisherSchema */
-const publisherSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true
-  },
-  middleName: {
-    type: String,
-    required: false
-  },
-  lastName: {
-    type: String,
-    required: false
-  },
-  gender: {
-    type: String,
-    enum: ['Male', 'Female']
-  },
-  baptized: {
-    type: Boolean,
-    default: false
-  },
-  address: [{
-    street: {
-      type: String
-    },
-    complement: {
+const publisherSchema = new Schema(
+  {
+    firstName: {
       type: String,
-      required: false
+      required: true,
     },
-    neighborhood: {
+    middleName: {
       type: String,
-      required: false
+      required: false,
     },
-    city: {
+    lastName: {
       type: String,
-      required: false
+      required: false,
     },
-    zipCode: {
+    gender: {
       type: String,
-      required: false
-    }
-  }],
-  phones: [{
-    kind: {
-      type: String
+      enum: ["Male", "Female"],
     },
-    number: {
-      type: String
-    }
-  }],
-  email: [{
-    kind: {
-      type: String
+    baptized: {
+      type: Boolean,
+      default: false,
     },
-    address: {
-      type: String,
-      unique: true, // must to restart mongodb to works
-      required: [true, 'E-mail is required.'],
-      trim: true,
-      lowercase: true,
-      validate(value) {
-        if (!validator.isEmail(value)) {
-          throw new Error('Email is invalid');
-        }
-      }
-    }
-  }],
-  birthDate: {
-    type: Date,
-    default: date
-  },
-  baptismDate: {
-    type: Date,
-    default: date
-  },
-  householder: {
-    type: Boolean,
-    default: false
-  },
-  elderDate: {
-    type: Date
-  },
-  servantDate: {
-    type: Date
-  },
-  inactivityDate: {
-    type: Date
-  },
-  reactivationDate: {
-    type: Date
-  },
-  firstFieldService: {
-    type: Date
-  },
-  notes: {
-    type: String
-  },
-  startPioneer: {
-    type: Date
-  },
-  statusService: {
-    type: String,
-    enum: ['Regular', 'Irregular'],
-    required: true
-  },
-  statusAssociation: {
-    type: String,
-    enum: [
-      'Student',
-      'Student Publisher',
-      'Associated',
-      'Dissociated',
-      'Disfellowshipped',
-      'Deceased'
+    address: [
+      {
+        street: {
+          type: String,
+        },
+        complement: {
+          type: String,
+          required: false,
+        },
+        neighborhood: {
+          type: String,
+          required: false,
+        },
+        city: {
+          type: String,
+          required: false,
+        },
+        zipCode: {
+          type: String,
+          required: false,
+        },
+      },
     ],
-    required: true
-  },
-  servicePrivilege: {
-    type: String,
-    enum: [
-      'Elder',
-      'Ministerial Servant',
-      'Superintendent of Service',
-      'Publisher',
-      'Student'
+    phones: [
+      {
+        kind: {
+          type: String,
+        },
+        number: {
+          type: String,
+        },
+      },
     ],
-    required: true
-  },
-  // congregationalPrivilege: [congregationalPrivilegeSchema],
-  congregationalPrivilege: [{
-    type: ObjectId,
-    ref: 'congregationalprivileges'
-  }],
-  groupId: {
-    type: ObjectId,
-    ref: 'groups'
-  },
-  pioneerId: {
-    type: ObjectId,
-    ref: 'pioneer'
-  },
-  pioneerNumber: {
-    type: String
-  },
-  profile: {
-    type: ObjectId,
-    ref: 'profiles'
-  },
-  /*
+    email: [
+      {
+        kind: {
+          type: String,
+        },
+        address: {
+          type: String,
+          unique: true, // must to restart mongodb to works
+          required: [true, "E-mail is required."],
+          trim: true,
+          lowercase: true,
+          validate(value) {
+            if (!validator.isEmail(value)) {
+              throw new Error("Email is invalid");
+            }
+          },
+        },
+      },
+    ],
+    birthDate: {
+      type: Date,
+      default: date,
+    },
+    baptismDate: {
+      type: Date,
+      default: date,
+    },
+    householder: {
+      type: Boolean,
+      default: false,
+    },
+    elderDate: {
+      type: Date,
+    },
+    servantDate: {
+      type: Date,
+    },
+    inactivityDate: {
+      type: Date,
+    },
+    reactivationDate: {
+      type: Date,
+    },
+    firstFieldService: {
+      type: Date,
+    },
+    notes: {
+      type: String,
+    },
+    startPioneer: {
+      type: Date,
+    },
+    statusService: {
+      type: String,
+      enum: ["Regular", "Irregular", "Inactive"],
+      required: true,
+    },
+    statusAssociation: {
+      type: String,
+      enum: ["Student", "Student Publisher", "Associated", "Dissociated", "Disfellowshipped", "Deceased"],
+      required: true,
+    },
+    servicePrivilege: {
+      type: String,
+      enum: ["Elder", "Ministerial Servant", "Superintendent of Service", "Publisher", "Student"],
+      required: true,
+    },
+    // congregationalPrivilege: [congregationalPrivilegeSchema],
+    congregationalPrivilege: [
+      {
+        type: ObjectId,
+        ref: "congregationalprivileges",
+        unique: true,
+      },
+    ],
+    groupId: {
+      type: ObjectId,
+      ref: "groups",
+    },
+    pioneerId: {
+      type: ObjectId,
+      ref: "pioneers",
+    },
+    pioneerNumber: {
+      type: String,
+    },
+    profile: {
+      type: ObjectId,
+      ref: "profiles",
+    },
+    /*
   used to maintain a one to one relationship with Users
   one publisher has one user
   */
-  userId: {
-    type: ObjectId,
-    ref: 'users',
-    justOne: true
-  },
-  /*
+    userId: {
+      type: ObjectId,
+      ref: "users",
+      justOne: true,
+    },
+    /*
   used to maintain a one to many relationship with congregations
   publishers (child) belongs to congregations (owner)
   */
-  congregationId: {
-    type: ObjectId,
-    ref: 'congregations' // must to be the same name in model object
+    congregationId: {
+      type: ObjectId,
+      ref: "congregations", // must to be the same name in model object
+    },
+    modifiedBy: {
+      type: ObjectId,
+      ref: "publishers",
+    },
   },
-  modifiedBy: {
-    type: ObjectId,
-    ref: 'publishers'
-  }
-}, {
-  timestamps: true
-});
+  {
+    timestamps: true,
+  },
+);
 
-
-publisherSchema.virtual('fieldServices', {
-  ref: 'fieldservices', // The model to use - the name of the table on database
-  localField: '_id', // `localField` here
-  foreignField: 'publisherId', // is equal to `foreignField` in the focused table
+publisherSchema.virtual("fieldServices", {
+  ref: "fieldservices", // The model to use - the name of the table on database
+  localField: "_id", // `localField` here
+  foreignField: "publisherId", // is equal to `foreignField` in the focused table
   // If `justOne` is true, 'members' will be a single doc as opposed to
   // an array. `justOne` is false by default.
   justOne: false,
   options: {
     sort: {
-      referenceDate: 'desc'
+      referenceDate: "desc",
     },
-    limit: 12
-  } // Query options, see http://bit.ly/mongoose-query-options
+    limit: 12,
+  }, // Query options, see http://bit.ly/mongoose-query-options
 });
 
-
-publisherSchema.virtual('fullName').get(function () {
-  return this.firstName + ' ' + this.middleName + ' ' + this.lastName;
+publisherSchema.virtual("fullName").get(function() {
+  return this.firstName + " " + this.middleName + " " + this.lastName;
 });
 
-publisherSchema.virtual('firstLastName').get(function () {
-  return this.firstName + ' ' + this.lastName;
+publisherSchema.virtual("firstLastName").get(function() {
+  return this.firstName + " " + this.lastName;
 });
 
-publisherSchema.virtual('lastFirstName').get(function () {
-  return this.lastName + ', ' + this.firstName;
+publisherSchema.virtual("lastFirstName").get(function() {
+  return this.lastName + ", " + this.firstName;
 });
 
 module.exports = {
-  publisherSchema
+  publisherSchema,
 };
