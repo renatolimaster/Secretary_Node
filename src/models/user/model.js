@@ -82,7 +82,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    throw new Erro('Unable to login');
+    throw new Error('Unable to login');
   }
   console.log('user 3', user);
   return user;
@@ -92,7 +92,7 @@ userSchema.method.verifyToken = async token => {
   console.log('=================> verifyToken <=================');
   jwt.verify(token, 'trustinJehovahwithallyourheart', (err, decoded) => {
     if (err) {
-      throw new Erro('Erro token');
+      throw new Error('Error token');
     } else {
       console.log('token ===========> ', decoded);
     }

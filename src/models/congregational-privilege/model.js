@@ -19,7 +19,7 @@ congregationalPrivilegeSchema.toJSON = function () {
   return congregationalPrivilegeObject;
 };
 
-const CongregationalPrivilege = mongoose.model('congregationalprivileges', congregationalPrivilegeSchema)
+const CongregationalPrivilege = mongoose.model('congregationalprivileges', congregationalPrivilegeSchema);
 
 module.exports = {
   CongregationalPrivilege

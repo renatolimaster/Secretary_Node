@@ -3,8 +3,6 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 //
 const validator = require('validator');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 /* User userSchema */
 const userSchema = new Schema({

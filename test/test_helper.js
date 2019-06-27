@@ -7,7 +7,7 @@ before(done => {
   mongoose.connect('mongodb://localhost/secretary_test', {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   });
   mongoose.connection
     .once('open', () => {
@@ -20,9 +20,7 @@ before(done => {
 });
 
 beforeEach(done => {
-  const {
-    meetingsattendances
-  } = mongoose.connection.collections;
+  const { meetingsattendances } = mongoose.connection.collections;
 
   // mongoose.connection.db.collections((err, collections) => {
   //   if (err) {
@@ -53,14 +51,18 @@ afterEach(done => {
     pioneers,
     meetingsattendances,
     groups,
-    congregationalprivileges
+    congregationalprivileges,
+    designatedfunctions,
+    publisherdesignatedfunctions,
   } = mongoose.connection.collections;
-  users.deleteMany();
-  congregations.deleteMany();
-  meetingsattendances.deleteMany();
-  publishers.deleteMany();
-  pioneers.deleteMany();
-  groups.deleteMany();
-  congregationalprivileges.deleteMany();
+  // users.deleteMany();
+  // congregations.deleteMany();
+  // meetingsattendances.deleteMany();
+  // publishers.deleteMany();
+  // pioneers.deleteMany();
+  // groups.deleteMany();
+  // congregationalprivileges.deleteMany();
+  // designatedfunctions.deleteMany();
+  // publisherdesignatedfunctions.deleteMany();
   done();
 });

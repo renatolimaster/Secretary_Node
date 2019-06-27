@@ -9,7 +9,6 @@ const { Congregation } = require("../src/models/congregation");
 const { Pioneer } = require("../src/models/pioneer");
 const { Publisher } = require("../src/models/publisher");
 const { CongregationalPrivilege } = require("../src/models/congregational-privilege");
-
 const { Group } = require("../src/models/group");
 
 const date = moment();
@@ -148,7 +147,7 @@ describe("Creating Publisher.", () => {
     Promise.all([user.save(), congregation.save(), publisher.save(), congregationalPrivilege.save(), group.save(), pioneer.save()]).then(() => done());
   });
 
-  it("Save Publisher", done => {
+  xit("Save Publisher", done => {
     Publisher.findOne({ firstName: "Renato" })
       .populate("congregationId")
       .populate("congregationalPrivilege")
