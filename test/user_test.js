@@ -16,8 +16,11 @@ describe('Create User', () => {
       firstName: 'Renato',
       middleName: 'Teixeira',
       lastName: 'Lima',
-      // bindingCode: bindingCode,
-      password: '11223311'
+      bindingCode: bindingCode,
+      privilege: 'admin',
+      publishersId: '5cfe971a8d7c121b060c0614',
+      token: [''],
+      password: '11223311',
     });
 
     console.log(user);

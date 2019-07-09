@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const assert = require('assert');
+
 const ObjectId = mongoose.Types.ObjectId;
 
 const { DesignatedFunction } = require('../src/models/designated-functions');
@@ -9,13 +11,15 @@ const { Pioneer } = require('../src/models/pioneer');
 const { Publisher } = require('../src/models/publisher');
 const { CongregationalPrivilege } = require('../src/models/congregational-privilege');
 const { Group } = require('../src/models/group');
+
 const moment = require('moment');
 const randomize = require('randomatic');
 const log = console.log;
 
+
 const date = moment();
 
-describe('DesignatedFunction test', () => {
+describe('remove child', () => {
   let day = new Date(2011, 9, 16);
   let bindingCode = randomize('Aa0', 10);
   let user, congregation, pioneer, publisher, publisherId, congregationalPrivilege, group;
@@ -185,29 +189,13 @@ describe('DesignatedFunction test', () => {
     ]).then(() => done());
   });
 
-  xit('Find Designated Function', done => {
-    Publisher.findOne({ firstName: 'Renato' })
-      .populate('congregationId')
-      .populate('congregationalPrivilege')
-      .populate('groupId')
-      .populate('pioneerId')
-      .then(user => {
-        console.log('User:', user);
+  it('remove publisherDesignatedFunction', done => {
+    publisher
+      .remove()
+      .then(() => PublisherDesignatedFunction.countDocuments())
+      .then(count => {
+        assert(count === 0);
+        done();
       });
-
-    DesignatedFunction.findOne().then(des => {
-      console.log('DesignatedFunction');
-      console.log(des);
-    });
-
-    PublisherDesignatedFunction.findOne()
-      .populate('publisherId')
-      .populate('designatedFunctionId')
-      .then(pud => {
-        console.log('PublisherDesignatedFunction');
-        log(pud);
-      });
-
-    done();
   });
 });

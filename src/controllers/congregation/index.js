@@ -29,16 +29,3 @@ const congregation = (auth, models, { config }) => {
 };
 
 module.exports = congregation;
-
-/* module.exports = (models, { config }) => {
-  const api = router();
-
-  api.get('/', auth, list(models, { config }));
-  api.get('/:_id', get(models, { config }));
-  api.get('/all/:_id', auth, getAll(models, { config }));
-  api.post('/', auth, create(models, { config }));
-  api.patch('/:_id', auth, update(models, { config }));
-  api.delete('/:_id', auth, remove(models, { config }));
-
-  return api;
-}; */

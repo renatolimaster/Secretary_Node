@@ -55,14 +55,14 @@ afterEach(done => {
     designatedfunctions,
     publisherdesignatedfunctions,
   } = mongoose.connection.collections;
-  // users.deleteMany();
-  // congregations.deleteMany();
-  // meetingsattendances.deleteMany();
-  // publishers.deleteMany();
-  // pioneers.deleteMany();
-  // groups.deleteMany();
-  // congregationalprivileges.deleteMany();
-  // designatedfunctions.deleteMany();
-  // publisherdesignatedfunctions.deleteMany();
+  users.deleteMany();
+  congregations.deleteMany();
+  meetingsattendances.deleteMany();
+  publishers.deleteMany();
+  pioneers.deleteMany();
+  groups.deleteMany();
+  congregationalprivileges.deleteMany();
+  designatedfunctions.deleteMany();
+  publisherdesignatedfunctions.deleteMany();
   done();
 });

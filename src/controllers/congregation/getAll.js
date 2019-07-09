@@ -10,7 +10,7 @@ const getAll = ({ Congregation }, { config }) => async (req, res, next) => {
   console.log('user:', req.user);
 
   const query = {};
-  const options = {}; // limit clause return only first attibute
+  const options = {}; // limit clause return only first attribute
   return await Congregation.find(query, options)
     .sort({ name: 1 })
     .then(results => {
