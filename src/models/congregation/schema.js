@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
@@ -26,13 +27,13 @@ const congregationSchema = new Schema(
     ],
     phones: [
       {
-        kind: { type: String },
+        type: { type: String },
         number: { type: String }
       }
     ],
     email: [
       {
-        kind: { type: String },
+        type: { type: String },
         address: { type: String }
       }
     ],
@@ -47,11 +48,13 @@ const congregationSchema = new Schema(
     },
     modifiedBy: {
       type: ObjectId,
-      ref: 'publishers'
+      ref: 'users'
     }
   },
   { timestamps: true }
 );
+
+congregationSchema.plugin(mongoosePaginate);
 
 /*
 used to maintain a relationship with publishers model

@@ -1,4 +1,6 @@
 const _ = require('lodash');
+const { projectionFull } = require('./projections');
+const log = console.log;
 
 /**
  *
@@ -12,39 +14,20 @@ req.params contains route parameters (in the path portion of the URL), and
 req.query contains the URL query parameters (after the ? in the URL).
   */
   console.log('================> Congregation list <======================');
-  // const congregacoes = await Congregation.find({});
-  // res
-  //   .status(200)
-  //   .send('===============> LIST <=====================', congregacoes);
+  
   let { limit, skip, search } = req.query;
-  skip = skip ? parseInt(skip, 10) : 0;
-  limit = limit ? parseInt(limit, 10) : 100;
+  // skip = skip ? parseInt(skip, 10) : 0;
+  // limit = limit ? parseInt(limit, 10) : 100;
 
-  const query = {};
+  let query = {};
   if (search) {
-    _.extend(query, { name: new RegExp(`${search}`, 'i') });
+    query = { name: new RegExp(`${search}`, 'i') };
+    log('query:', query);
   }
-  // try {
-  //   const congregations = await Question.find(query)
-  //     .skip(skip)
-  //     .limit(limit)
-  //     .sort({ _id: -1 });
 
-  //   // res.status(200).send({ congregations });
-  //   res.status(200).send('===============> LIST <=====================');
-  // } catch (error) {
-  //   next(error);
-  // }
-
-  const { _id } = req.params;
-  console.log('skip', skip);
-  console.log('limit', limit);
-  console.log('search', search);
-  console.log('_id', _id);
-
-  // const query = { id: _id };
-  // const options = {}; // limit clause return only first attribute
+  // ***** this works
   // return await Congregation.find(query, options)
+  //   .select(projectionFull)
   //   .sort({ name: 1 })
   //   .then(results => {
   //     if (results) {
@@ -57,8 +40,44 @@ req.query contains the URL query parameters (after the ? in the URL).
   //     return results;
   //   })
   //   .catch(err => console.error(`Failed to find document: ${err}`));
+  // *******
+  
+  let options = {
+    select: projectionFull,
+    sort: { name: -1 },
+    populate: 'publishers',
+    lean: true,
+    page: 1,
+    limit: 10,
+  };
 
-  res.status(200).send(query);
+  Congregation.paginate(query, options)
+    .then(results => {
+      log(query);
+      log('response:', results);
+      if (results) {
+        //  console.log(`Successfully found document: ${results}.`);
+        res.status(200).send(results);
+      } else {
+        // console.log('No document matches the provided query.');
+        res.status(403).send('No document matches the provided query.');
+      }
+      /**
+     * Response looks like:
+     * {
+     *   docs: [...] // array of Posts
+     *   total: 42   // the total number of Posts
+     *   limit: 10   // the number of Posts returned per page
+     *   page: 2     // the current page of Posts returned
+     *   pages: 5    // the total number of pages
+     * }
+
+    */
+    })
+    .catch(error => {
+      console.error(`Failed to find document: ${error}`);
+      res.status(403).send(`Failed to find document: ${error}`);
+    });
 };
 
 module.exports = { list };

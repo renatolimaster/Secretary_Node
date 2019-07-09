@@ -1,15 +1,16 @@
-const create = ({ Publicador }, { config }) => async (req, res, next) => {
-  console.log('================> Publicador create <======================');
+const create = ({ Publisher }, { config }) => async (req, res, next) => {
+  console.log('================> Publisher create <======================');
   console.log(req.body);
   try {
-    const publicador = new Publicador({
-      ...req.body
+    const publisher = new Publisher({
+      ...req.body,
     });
-    await publicador.save();
-    res.status(201).send(publicador);
+    await publisher.save();
+    res.status(201).send(publisher);
   } catch (error) {
-    // res.status(400).send(error);
-    next(new Error(error)); // to use middleware errorHandler.js
+    console.log(error);
+    res.status(400).send(error);
+    // next(new Error(error)); // to use middleware errorHandler.js
   }
 };
 
