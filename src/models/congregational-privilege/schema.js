@@ -2,27 +2,30 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 
-const congregationalPrivilegeSchema = new Schema({
-  name: {
-    type: String,
-    required: true
+const congregationalPrivilegeSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    notes: {
+      type: String,
+      required: false,
+    },
+    modifiedBy: {
+      type: ObjectId,
+      ref: 'users',
+    },
+    congregationId: {
+      type: ObjectId,
+      ref: 'congregations',
+      required: true,
+    },
   },
-  notes: {
-    type: String,
-    required: false
+  {
+    timestamps: true,
   },
-  modifiedBy: {
-    type: ObjectId,
-    ref: 'publishers'
-  },
-  congregationId: {
-    type: ObjectId,
-    ref: 'congregations',
-    required: true
-  }
-}, {
-  timestamps: true
-});
+);
 
 // Specifying a virtual with a `ref` property is how you enable virtual
 // population
@@ -32,11 +35,11 @@ congregationalPrivilegeSchema.virtual('publishers', {
   foreignField: 'congregationalPrivilege',
   options: {
     sort: {
-      firstName: 'asc'
-    }
-  } // Query options, see http://bit.ly/mongoose-query-options
+      firstName: 'asc',
+    },
+  }, // Query options, see http://bit.ly/mongoose-query-options
 });
 
 module.exports = {
-  congregationalPrivilegeSchema
+  congregationalPrivilegeSchema,
 };

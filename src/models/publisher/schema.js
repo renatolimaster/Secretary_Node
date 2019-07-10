@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const moment = require("moment");
-const validator = require("validator");
+const mongoose = require('mongoose');
+const moment = require('moment');
+const validator = require('validator');
 //
-const { congregationalPrivilegeSchema } = require("../congregational-privilege/schema");
+const { congregationalPrivilegeSchema } = require('../congregational-privilege/schema');
 //
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
@@ -29,7 +29,7 @@ const publisherSchema = new Schema(
     },
     gender: {
       type: String,
-      enum: ["Male", "Female"],
+      enum: ['Male', 'Female'],
     },
     baptized: {
       type: Boolean,
@@ -76,12 +76,12 @@ const publisherSchema = new Schema(
         address: {
           type: String,
           unique: true, // must to restart mongodb to works
-          required: [true, "E-mail is required."],
+          required: [true, 'E-mail is required.'],
           trim: true,
           lowercase: true,
           validate(value) {
             if (!validator.isEmail(value)) {
-              throw new Error("Email is invalid");
+              throw new Error('Email is invalid');
             }
           },
         },
@@ -122,41 +122,41 @@ const publisherSchema = new Schema(
     },
     statusService: {
       type: String,
-      enum: ["Regular", "Irregular", "Inactive"],
+      enum: ['Regular', 'Irregular', 'Inactive'],
       required: true,
     },
     statusAssociation: {
       type: String,
-      enum: ["Student", "Student Publisher", "Associated", "Dissociated", "Disfellowshipped", "Deceased"],
+      enum: ['Student', 'Student Publisher', 'Associated', 'Dissociated', 'Disfellowshipped', 'Deceased'],
       required: true,
     },
     servicePrivilege: {
       type: String,
-      enum: ["Elder", "Ministerial Servant", "Superintendent of Service", "Publisher", "Student"],
+      enum: ['Elder', 'Ministerial Servant', 'Superintendent of Service', 'Publisher', 'Student'],
       required: true,
     },
     // congregationalPrivilege: [congregationalPrivilegeSchema],
     congregationalPrivilege: [
       {
         type: ObjectId,
-        ref: "congregationalprivileges",
+        ref: 'congregationalprivileges',
         unique: true,
       },
     ],
     groupId: {
       type: ObjectId,
-      ref: "groups",
+      ref: 'groups',
     },
     pioneerId: {
       type: ObjectId,
-      ref: "pioneers",
+      ref: 'pioneers',
     },
     pioneerNumber: {
       type: String,
     },
     profile: {
       type: ObjectId,
-      ref: "profiles",
+      ref: 'profiles',
     },
     /*
   used to maintain a one to one relationship with Users
@@ -164,7 +164,7 @@ const publisherSchema = new Schema(
   */
     userId: {
       type: ObjectId,
-      ref: "users",
+      ref: 'users',
       justOne: true,
     },
     /*
@@ -173,11 +173,11 @@ const publisherSchema = new Schema(
   */
     congregationId: {
       type: ObjectId,
-      ref: "congregations", // must to be the same name in model object
+      ref: 'congregations', // must to be the same name in model object
     },
     modifiedBy: {
       type: ObjectId,
-      ref: "publishers",
+      ref: 'users',
     },
   },
   {
@@ -185,31 +185,31 @@ const publisherSchema = new Schema(
   },
 );
 
-publisherSchema.virtual("fieldServices", {
-  ref: "fieldservices", // The model to use - the name of the table on database
-  localField: "_id", // `localField` here
-  foreignField: "publisherId", // is equal to `foreignField` in the focused table
+publisherSchema.virtual('fieldServices', {
+  ref: 'fieldservices', // The model to use - the name of the table on database
+  localField: '_id', // `localField` here
+  foreignField: 'publisherId', // is equal to `foreignField` in the focused table
   // If `justOne` is true, 'members' will be a single doc as opposed to
   // an array. `justOne` is false by default.
   justOne: false,
   options: {
     sort: {
-      referenceDate: "desc",
+      referenceDate: 'desc',
     },
     limit: 12,
   }, // Query options, see http://bit.ly/mongoose-query-options
 });
 
-publisherSchema.virtual("fullName").get(function() {
-  return this.firstName + " " + this.middleName + " " + this.lastName;
+publisherSchema.virtual('fullName').get(function() {
+  return this.firstName + ' ' + this.middleName + ' ' + this.lastName;
 });
 
-publisherSchema.virtual("firstLastName").get(function() {
-  return this.firstName + " " + this.lastName;
+publisherSchema.virtual('firstLastName').get(function() {
+  return this.firstName + ' ' + this.lastName;
 });
 
-publisherSchema.virtual("lastFirstName").get(function() {
-  return this.lastName + ", " + this.firstName;
+publisherSchema.virtual('lastFirstName').get(function() {
+  return this.lastName + ', ' + this.firstName;
 });
 
 module.exports = {
