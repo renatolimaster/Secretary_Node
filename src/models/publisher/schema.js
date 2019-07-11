@@ -60,7 +60,7 @@ const publisherSchema = new Schema(
     ],
     phones: [
       {
-        kind: {
+        type: {
           type: String,
         },
         number: {
@@ -70,7 +70,7 @@ const publisherSchema = new Schema(
     ],
     email: [
       {
-        kind: {
+        type: {
           type: String,
         },
         address: {

@@ -14,7 +14,12 @@ req.params contains route parameters (in the path portion of the URL), and
 req.query contains the URL query parameters (after the ? in the URL).
   */
   console.log('================> Congregation list <======================');
-  
+  console.log('privilege:', req.user.privilege);
+  if (req.user.privilege != 'admin') {
+    console.log('unauthorized');
+    res.status(403).send('Unauthorized');
+  }
+
   let { limit, skip, search } = req.query;
   // skip = skip ? parseInt(skip, 10) : 0;
   // limit = limit ? parseInt(limit, 10) : 100;
@@ -41,7 +46,7 @@ req.query contains the URL query parameters (after the ? in the URL).
   //   })
   //   .catch(err => console.error(`Failed to find document: ${err}`));
   // *******
-  
+
   let options = {
     select: projectionFull,
     sort: { name: -1 },

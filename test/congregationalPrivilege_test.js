@@ -15,10 +15,10 @@ const {
 describe('Congregational Privilege tests', () => {
   xit('congregational privilege save', done => {
     const congregationalPrivilege = new CongregationalPrivilege({
-      name: 'Sound System',
-      notes: 'Organization of Sound System',
+      name: 'Watchtower Conductor',
+      notes: 'Watchtower Conductor',
       modifiedBy: '5cfe971a8d7c121b060c0614',
-      congregationId: '5cfe971a8d7c121b060c060f'
+      congregationId: '5cfe971a8d7c121b060c060f',
     });
 
     console.log('===========  Congregational Privilege ==============');

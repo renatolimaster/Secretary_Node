@@ -1,4 +1,5 @@
 const express = require('express');
+const roles = require('../utils/rolesChain');
 const auth = require('../middleware/auth');
 const {
   errorHandler
@@ -34,15 +35,15 @@ const routersInit = config => {
   // USER
   config = auth;
   // USER
-  router.use('/user', users(auth, models, {
+  router.use('/user', users(auth, roles, models, {
     config
   }));
   // CONGREGATION
-  router.use('/congregation', congregation(auth, models, {
+  router.use('/congregation', congregation(auth, roles, models, {
     config
   }));
   // PUBLISHERS
-  router.use('/publisher', publisher(auth, models, {
+  router.use('/publisher', publisher(auth, roles, models, {
     config
   }));
   // catch api all errors

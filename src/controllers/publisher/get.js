@@ -1,11 +1,13 @@
-const get = ({ Publicador }, { config }) => async (req, res, next) => {
+const get = ({ Publisher }, { config }) => async (req, res, next) => {
   const { _id } = req.params;
-  console.log('=============> Publicador get <===================', _id);
+  console.log('=============> Publisher get <===================', _id);
   //
   const query = { _id: _id };
   const options = {}; // limit number clause return attribute order
   //
-  return await Publicador.findOne(query, options)
+  console.log(req.user);
+  return await Publisher.findOne(query, options)
+    .populate('congregationId', 'number name')
     .then(results => {
       if (results) {
         console.log(`Successfully found document: ${results}.`);
