@@ -1,9 +1,9 @@
 const getById = ({ User }, { config }) => async (req, res, next) => {
   const { _id } = req.params;
-  console.log('=============> Congregation get <===================', _id);
+  console.log('=============> Congregation get <===================');
   //
   const query = { _id: _id };
-  const options = {}; // limit clause return only first attibute
+  const options = {}; // limit clause return only first attribute
   //
   return await User.findById(query, options)
     .then(results => {
@@ -16,7 +16,7 @@ const getById = ({ User }, { config }) => async (req, res, next) => {
       }
       return results;
     })
-    .catch(err => console.error(`Failed to find document: ${err}`));
+    .catch(e => console.error(`Failed to find document: ${e}`));
 };
 
 module.exports = { getById };

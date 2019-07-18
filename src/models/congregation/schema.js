@@ -22,6 +22,7 @@ const congregationSchema = new Schema(
         complement: { type: String, required: false },
         neighborhood: { type: String, required: false },
         city: { type: String, required: false },
+        state: { type: String,  required: false},
         zipCode: { type: String, required: false }
       }
     ],
