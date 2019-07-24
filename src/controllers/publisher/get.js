@@ -1,12 +1,14 @@
+const { projectionBasic } = require('./projections');
+
 const get = ({ Publisher }, { config }) => async (req, res, next) => {
   const { _id } = req.params;
   console.log('=============> Publisher get <===================', _id);
   //
   const query = { _id: _id };
-  const options = {}; // limit number clause return attribute order
+  let options = projectionBasic; // differ of pagination (see list.js - congregation)
   //
   console.log(req.user);
-  return await Publisher.findOne(query, options)
+  return await Publisher.find(query, options)
     .populate('congregationId', 'number name')
     .then(results => {
       if (results) {

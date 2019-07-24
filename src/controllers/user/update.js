@@ -2,7 +2,7 @@ const update = ({ User }, { config }) => async (req, res) => {
   console.log('=============> update USER <===================');
   // extract only key of body
   const updates = Object.keys(req.body);
-  const allowedUpdates = ['username', 'email', 'privilege', 'password', 'confirmPassword', 'publishersId'];
+  const allowedUpdates = ['username', 'email', 'role', 'password', 'confirmPassword', 'publishersId'];
   const isValidOperation = updates.every(update => {
     return allowedUpdates.includes(update);
   });

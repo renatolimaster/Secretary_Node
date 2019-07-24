@@ -1,7 +1,7 @@
 const login = ({ User }, { config }) => async (req, res) => {
   console.log('=================> login <=================');
   const { email, password } = req.body;
-  console.log(email, password);
+  
   try {
     const user = await User.findByCredentials(email, password);
     const token = await user.generateAuthToken();

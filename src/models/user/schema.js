@@ -55,9 +55,9 @@ const userSchema = new Schema({
   used to maintain a one to one relationship
   one user has one publisher
   */
-  privilege: {
+  role: {
     type: String,
-    enum: ['admin', 'elder', 'servant', 'publisher'],
+    enum: ['admin', 'overseer', 'elder', 'servant', 'publisher'],
     default: 'publisher'
   },
   publishersId: {

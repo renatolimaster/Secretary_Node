@@ -69,22 +69,21 @@ userSchema.statics.findByCredentials = async (email, password) => {
   /* statics methods allow for defining functions that exist directly on your Model,
   because that I am using 'Use' object bellow */
   console.log('=================> findByCredentials <=================');
-  console.log('user 1', email);
-
+  
   const user = await User.findOne({
-    email
-  });
-  console.log('user 2', user);
+    email,
+  }).populate('publishersId');
+  
   if (!user) {
-    throw new Error('Unable to login');
+    throw new Error('Unable to login 1');
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    throw new Error('Unable to login');
+    throw new Error('Unable to login 2');
   }
-  console.log('user 3', user);
+  
   return user;
 };
 

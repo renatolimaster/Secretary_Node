@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const validator = require('validator');
 //
 const { congregationalPrivilegeSchema } = require('../congregational-privilege/schema');
@@ -132,7 +133,7 @@ const publisherSchema = new Schema(
     },
     servicePrivilege: {
       type: String,
-      enum: ['Elder', 'Ministerial Servant', 'Superintendent of Service', 'Publisher', 'Student'],
+      enum: ['Circuit Overseer', 'Elder', 'Ministerial Servant', 'Superintendent of Service', 'Publisher', 'Student'],
       required: true,
     },
     // congregationalPrivilege: [congregationalPrivilegeSchema],
@@ -184,6 +185,8 @@ const publisherSchema = new Schema(
     timestamps: true,
   },
 );
+
+publisherSchema.plugin(mongoosePaginate);
 
 publisherSchema.virtual('fieldServices', {
   ref: 'fieldservices', // The model to use - the name of the table on database

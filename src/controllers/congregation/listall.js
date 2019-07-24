@@ -5,12 +5,19 @@ var ObjectId = require('mongoose').Types.ObjectId;
  * @param {*} { Congregation }
  * @param {*} { config }
  */
-const getAll = ({ Congregation }, { config }) => async (req, res, next) => {
+const listall = ({ Congregation }, { config }) => async (req, res, next) => {
   console.log('=============> Congregation getAll <===================');
   console.log('user:', req.user);
 
-  const query = {};
-  const options = {}; // limit clause return only first attribute
+  //
+  let query = {};
+  let options = {}; // limit clause return only first attribute
+  /*  admin can access any congregation otherwise only its own */
+  if (req.user.role.toString() !== 'admin') {
+    query = { _id: req.user.publishersId.congregationId };
+  }
+  console.log('query:', query);
+  //
   return await Congregation.find(query, options)
     .sort({ name: 1 })
     .then(results => {
@@ -26,4 +33,4 @@ const getAll = ({ Congregation }, { config }) => async (req, res, next) => {
     .catch(err => console.error(`Failed to find document: ${err}`));
 };
 
-module.exports = { getAll };
+module.exports = { listall };

@@ -8,17 +8,13 @@ const log = console.log;
  * @param {*} { Congregation }
  * @param {*} { config }
  */
-const list = ({ Congregation }, { config }) => async (req, res, next) => {
+const search = ({ Congregation }, { config }) => async (req, res, next) => {
   /*
 req.params contains route parameters (in the path portion of the URL), and
 req.query contains the URL query parameters (after the ? in the URL).
   */
   console.log('================> Congregation list <======================');
-  console.log('privilege:', req.user.privilege);
-  if (req.user.privilege != 'admin') {
-    console.log('unauthorized');
-    res.status(403).send('Unauthorized');
-  }
+  console.log('role:', req.user.role);
 
   let { limit, skip, search } = req.query;
   // skip = skip ? parseInt(skip, 10) : 0;
@@ -85,4 +81,4 @@ req.query contains the URL query parameters (after the ? in the URL).
     });
 };
 
-module.exports = { list };
+module.exports = { search };

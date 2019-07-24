@@ -34,7 +34,7 @@ app.use((err, req, res, next) => {
   res.locals.error = err;
   const status = err.status || 500;
   console.log('app: ', err);
-  res.status(status).send('error: ');
+  res.status(status).send(err);
 });
 
 module.exports = app;

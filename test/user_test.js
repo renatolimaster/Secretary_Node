@@ -17,7 +17,7 @@ describe('Create User', () => {
       middleName: 'Teixeira',
       lastName: 'Lima',
       bindingCode: bindingCode,
-      privilege: 'admin',
+      role: 'admin',
       publishersId: '5cfe971a8d7c121b060c0614',
       token: [''],
       password: '11223311',
