@@ -7,6 +7,7 @@ const { validation } = require('../middleware/validation');
 const { validationCongregationSchema } = require('../models/congregation/validationSchema');
 const { validationUserSchema } = require('../models/user/validationSchema');
 const { validationPublisherSchema } = require('../models/publisher/validationSchema');
+const { roleValidationSchema } = require('../models/role/validationSchema');
 
 // list of models
 const { Congregation } = require('../models/congregation');
@@ -57,7 +58,7 @@ const routersInit = config => {
   );
 
   // ROLES
-  router.use('/role', role(auth, roles, models, { config }));
+  router.use('/role', role(auth, roles, validation(roleValidationSchema.roleValidation), models, { config }));
 
   // catch api all errors
   router.use(errorHandler);

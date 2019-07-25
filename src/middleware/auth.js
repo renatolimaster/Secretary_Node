@@ -18,9 +18,11 @@ const auth = async (req, res, next) => {
     // find user with the id and token grabbed inside tokens
     const user = await User.findOne({
       _id: decoded._id,
-      'tokens.token': token
-    }).populate('publishersId');
-
+      'tokens.token': token,
+    })
+      .populate('publishersId')
+      .populate('roleId');
+    // console.log('user auth:', user);
     if (!user) {
       throw new Error();
     }

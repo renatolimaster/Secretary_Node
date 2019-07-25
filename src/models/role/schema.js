@@ -3,12 +3,9 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 
 const roleSchema = new Schema({
-  user: {
-    type: ObjectId,
-    ref: 'uses',
-  },
   role: {
     type: String,
+    enum: ['Admin', 'Overseer', 'Elder', 'Servant', 'Pioneer', 'Accounts', 'Publisher', 'Student'],
     required: true,
   },
   model: [
@@ -17,6 +14,21 @@ const roleSchema = new Schema({
       action: [{ type: String, required: true }],
     },
   ],
+});
+
+/*
+used to maintain a relationship with publishers model
+its means that congregation has many publishers
+*/
+roleSchema.virtual('users', {
+  ref: 'users',
+  localField: '_id',
+  foreignField: 'roleId',
+  // If `justOne` is true, 'members' will be a single doc as opposed to
+  // an array. `justOne` is false by default.
+  // One to Many: justOne = false
+  // One to One: justOne = true
+  justOne: false,
 });
 
 module.exports = { roleSchema };

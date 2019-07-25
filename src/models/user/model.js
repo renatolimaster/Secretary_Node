@@ -1,15 +1,13 @@
 const mongoose = require('mongoose');
 var randomize = require('randomatic');
 
-const {
-  userSchema
-} = require('./schema');
+const { userSchema } = require('./schema');
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 //Hash the plain text password before saving
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function(next) {
   console.log('userSchema pre save');
   if (!this.isModified('password')) {
     return next();
@@ -18,13 +16,15 @@ userSchema.pre('save', async function (next) {
   // to create a random code (letters and numbers) with size 10.
   let bindingCode = randomize('Aa0', 10);
   // verify if bindingCode already exist - must be unique
-  await User.findOne({ bindingCode }).then(userResult => {
-    if (userResult) {
-      // if bindingCode exist, generate another
-      bindingCode = randomize('Aa0', 10);
-      console.log('bindingCode:', this.bindingCode);
-    }
-  }).catch(err => res.status(400).send(err));
+  await User.findOne({ bindingCode })
+    .then(userResult => {
+      if (userResult) {
+        // if bindingCode exist, generate another
+        bindingCode = randomize('Aa0', 10);
+        console.log('bindingCode:', this.bindingCode);
+      }
+    })
+    .catch(err => res.status(400).send(err));
 
   user.bindingCode = bindingCode;
 
@@ -36,7 +36,6 @@ userSchema.pre('save', async function (next) {
   }
 
   console.log('bindingCode:', user.bindingCode);
-
 
   next(); // to finish the function and pass to next operation chained
 });
@@ -54,7 +53,7 @@ userSchema.pre('save', async function (next) {
 it automatic return the object as JSON and omit
 the attibute we want - that case password and tokens
 */
-userSchema.methods.toJSON = function () {
+userSchema.methods.toJSON = function() {
   /* methods access instances of object, because that I am using this bellow */
   const user = this;
   const userObject = user.toObject();
@@ -69,11 +68,13 @@ userSchema.statics.findByCredentials = async (email, password) => {
   /* statics methods allow for defining functions that exist directly on your Model,
   because that I am using 'Use' object bellow */
   console.log('=================> findByCredentials <=================');
-  
+
   const user = await User.findOne({
     email,
-  }).populate('publishersId');
-  
+  })
+    .populate('publishersId')
+    .populate('roleId');
+  // console.log('user findByCredentials:', user);
   if (!user) {
     throw new Error('Unable to login 1');
   }
@@ -83,7 +84,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
   if (!isMatch) {
     throw new Error('Unable to login 2');
   }
-  
+
   return user;
 };
 
@@ -98,16 +99,17 @@ userSchema.method.verifyToken = async token => {
   });
 };
 
-userSchema.methods.generateAuthToken = async function () {
+userSchema.methods.generateAuthToken = async function() {
   /* methods access instances of object, because that I am using this bellow */
   const user = this;
-  const token = jwt.sign({
-      _id: user._id.toString()
+  const token = jwt.sign(
+    {
+      _id: user._id.toString(),
     },
-    'trustinJehovahwithallyourheart'
+    'trustinJehovahwithallyourheart',
   );
   user.tokens = user.tokens.concat({
-    token
+    token,
   });
   await user.save();
   return token;
@@ -116,5 +118,5 @@ userSchema.methods.generateAuthToken = async function () {
 const User = mongoose.model('users', userSchema); // the name will put on plural by mongo
 
 module.exports = {
-  User
+  User,
 };

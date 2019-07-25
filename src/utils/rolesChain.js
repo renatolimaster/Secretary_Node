@@ -4,7 +4,7 @@ const { Role } = require('../models/role');
 const roles = async function(req, res, next) {
   console.log(mongoose.connection.readyState);
 
-  let role = req.user.role;
+  let role = req.user.roleId.role;
   let model = req.originalUrl.split('/')[3].toString();
   let action = req.url
     .match('^[^?]*')[0]

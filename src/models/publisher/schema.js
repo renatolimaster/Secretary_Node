@@ -133,7 +133,7 @@ const publisherSchema = new Schema(
     },
     servicePrivilege: {
       type: String,
-      enum: ['Circuit Overseer', 'Elder', 'Ministerial Servant', 'Superintendent of Service', 'Publisher', 'Student'],
+      enum: ['Overseer', 'Elder', 'Servant', 'Publisher', 'Student'],
       required: true,
     },
     // congregationalPrivilege: [congregationalPrivilegeSchema],
