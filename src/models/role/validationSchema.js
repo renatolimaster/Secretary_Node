@@ -7,7 +7,7 @@ const roleValidationSchema = {
       .valid('Admin', 'Overseer', 'Elder', 'Servant', 'Pioneer', 'Accounts', 'Publisher', 'Student'),
     model: Joi.array().items({
       name: Joi.string().required(),
-      action: Joi.string().required(),
+      action: Joi.array().items(Joi.string()),
     }),
   }),
 };

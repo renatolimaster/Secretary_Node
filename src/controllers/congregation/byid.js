@@ -5,20 +5,23 @@
  * @param {*} { config }
  */
 const byid = ({ Congregation }) => async (req, res) => {
-  console.log('=============> Congregation get <===================');
+  console.log('=============> Congregation byid get <===================');
   const { _id } = req.params;
   //
   let query = {};
   let options = {}; // limit clause return only first attribute
   /*  admin can access any congregation otherwise only its own */
-  if (req.user.role.toString() === 'admin') {
+  console.log('user:', req.user.roleId.role);
+  if (req.user.roleId.role === 'Admin') {
+    console.log('1:', req.user.roleId.role);
     query = { _id: _id };
   } else {
+    console.log('2:', req.user.roleId.role);
     query = { _id: req.user.publishersId.congregationId };
   }
   console.log('query:', query);
   //
-  return await Congregation.find(query, options)
+  return await Congregation.findById(query, options)
     .populate('publishers', 'firstName lastName phones email') // virtual attribute
     .populate('coordinatorId', 'firstName lastName phones email')
     .populate('modifiedBy', 'firstName lastName phones email')

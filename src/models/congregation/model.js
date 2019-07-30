@@ -9,7 +9,7 @@ congregationSchema.pre('save', function(next) {
 
 /* when methods are created using toJSON
 it automatic return the object as JSON.
-If you want to ommit any attibute use delete
+If you want to omit any attribute use delete
 followed of object attribute name
 */
 congregationSchema.methods.toJSON = function() {
@@ -21,6 +21,10 @@ congregationSchema.methods.toJSON = function() {
 
   return congregationObject;
 };
+
+// must be set to populate to be filled
+congregationSchema.set('toObject', { virtuals: true });
+congregationSchema.set('toJSON', { virtuals: true });
 
 /* the model name will put on plural by mongo and
    must be used in relationship with others models

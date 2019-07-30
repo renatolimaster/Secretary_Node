@@ -19,7 +19,7 @@ const roles = async function(req, res, next) {
   // console.log('congregationId:', req.user.publishersId.congregationId);
 
   const query = {
-    user: req.user._id,
+    // user: req.user._id,
     role: role,
     model: { $elemMatch: { name: model, action: action } },
   };
