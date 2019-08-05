@@ -6,9 +6,9 @@ const logout = ({ User }, { config }) => async (req, res) => {
     });
     await req.user.save();
 
-    res.send();
+    res.send('The user was log out!');
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 };
 

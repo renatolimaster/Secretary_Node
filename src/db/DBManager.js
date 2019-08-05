@@ -6,6 +6,7 @@ class DBManager {
   }
   getMongoUrl() {
     return this._config.MONGODB_URI;
+    //return this._config.MONGODB_URI_PROD;
   }
   connect() {
     return mongoose.connect(this.getMongoUrl(), {

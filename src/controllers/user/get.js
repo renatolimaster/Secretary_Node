@@ -3,7 +3,7 @@ const get = ({ User }, { config }) => async (req, res, next) => {
   console.log('=============> Congregation get <===================', _id);
   //
   const query = { _id: _id };
-  const options = {}; // limit clause return only first attibute
+  const options = {}; // limit clause return only first attribute
   //
   return await User.findById(query, options)
     .then(results => {

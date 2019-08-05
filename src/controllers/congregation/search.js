@@ -63,17 +63,6 @@ req.query contains the URL query parameters (after the ? in the URL).
         // console.log('No document matches the provided query.');
         res.status(403).send('No document matches the provided query.');
       }
-      /**
-     * Response looks like:
-     * {
-     *   docs: [...] // array of Posts
-     *   total: 42   // the total number of Posts
-     *   limit: 10   // the number of Posts returned per page
-     *   page: 2     // the current page of Posts returned
-     *   pages: 5    // the total number of pages
-     * }
-
-    */
     })
     .catch(error => {
       console.error(`Failed to find document: ${error}`);

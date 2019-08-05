@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 //
@@ -83,6 +84,8 @@ const userSchema = new Schema(
     timestamps: true,
   },
 );
+
+userSchema.plugin(mongoosePaginate);
 
 module.exports = {
   userSchema,

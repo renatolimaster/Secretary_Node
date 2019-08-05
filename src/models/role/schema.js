@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -15,6 +16,9 @@ const roleSchema = new Schema({
     },
   ],
 });
+
+
+roleSchema.plugin(mongoosePaginate);
 
 /*
 used to maintain a relationship with publishers model

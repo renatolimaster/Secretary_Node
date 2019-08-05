@@ -8,7 +8,6 @@ var ObjectId = require('mongoose').Types.ObjectId;
 const listall = ({ Congregation }, { config }) => async (req, res, next) => {
   console.log('=============> Congregation getAll <===================');
   console.log('user:', req.user);
-
   //
   let query = {};
   let options = {}; // limit clause return only first attribute

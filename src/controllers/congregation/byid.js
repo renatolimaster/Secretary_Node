@@ -35,7 +35,7 @@ const byid = ({ Congregation }) => async (req, res) => {
       }
       // return congregation;
     })
-    .catch(err => res.status(400).send(err));
+    .catch(error => res.status(400).send(error));
 };
 
 module.exports = { byid };

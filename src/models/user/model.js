@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 var randomize = require('randomatic');
+const { Publisher } = require('../../models/publisher');
 
 const { userSchema } = require('./schema');
 
@@ -41,17 +42,27 @@ userSchema.pre('save', async function(next) {
 });
 
 // Delete user relationship when user is removed
-// userSchema.pre('remove', async function(next) {
-//   const user = this;
+userSchema.pre('remove', async function(next) {
+  const user = this;
 
-//   await Task.deleteMany({ owner: user._id });
+  try {
+    const publisher = await Publisher.findById(user.publishersId);
+    publisher.userId = null;
+    publisher.save();
+  } catch (error) {
+    console.log(error);
+  }
 
-//   next();
-// });
+  console.log('pre remove:', user._id);
+
+  // await Task.deleteMany({ owner: user._id });
+
+  next();
+});
 
 /* when methods are created using toJSON
 it automatic return the object as JSON and omit
-the attibute we want - that case password and tokens
+the attribute we want - that case password and tokens
 */
 userSchema.methods.toJSON = function() {
   /* methods access instances of object, because that I am using this bellow */
@@ -63,6 +74,10 @@ userSchema.methods.toJSON = function() {
 
   return userObject;
 };
+
+// must be set to populate to be filled
+userSchema.set('toObject', { virtuals: true });
+userSchema.set('toJSON', { virtuals: true });
 
 userSchema.statics.findByCredentials = async (email, password) => {
   /* statics methods allow for defining functions that exist directly on your Model,
