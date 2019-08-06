@@ -13,4 +13,9 @@ const congregationProjectionFull = {
   __v: 1,
 };
 
+const congregationProjectionBasic = {
+  number: 1,
+  name: 1,
+};
+
 module.exports = { congregationProjectionFull };

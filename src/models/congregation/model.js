@@ -17,7 +17,7 @@ congregationSchema.methods.toJSON = function() {
   const congregation = this;
   const congregationObject = congregation.toObject();
 
-  // delete userObject.id;
+  delete congregationObject.number;
 
   return congregationObject;
 };
@@ -25,6 +25,17 @@ congregationSchema.methods.toJSON = function() {
 // must be set to populate to be filled
 congregationSchema.set('toObject', { virtuals: true });
 congregationSchema.set('toJSON', { virtuals: true });
+
+congregationSchema.statics.findDuplicate = async (number, name) => {
+  console.log('============== Congregation findDuplicate ===================');
+  const congregation = await Congregation.findOne({ number, name });
+  
+  if (congregation) {
+    return true;
+  }
+
+  return false;
+};
 
 /* the model name will put on plural by mongo and
    must be used in relationship with others models

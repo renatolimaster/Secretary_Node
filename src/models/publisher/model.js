@@ -12,18 +12,29 @@ publisherSchema.pre('remove', function(next) {
   PublisherDesignatedFunction.deleteMany({ publisherId: { $in: this._id } }).then(() => next());
 });
 
+publisherSchema.statics.findDuplicate = async ({ firstName, middleName, lastName, congregationId }) => {
+  console.log('=============== Publisher findDuplicate =================');
+  const publisher = await Publisher.findOne({ firstName, middleName, lastName, congregationId });
+  console.log('publisher:', publisher);
+  if (publisher) {
+    return true;
+  }
+
+  return false;
+};
 
 /* when methods are created using toJSON
 it automatic return the object as JSON.
-If you want to ommit any attibute use delete
+If you want to omit any attribute use delete
 followed of object attribute name
 */
 publisherSchema.methods.toJSON = function() {
   /* methods access instances of object, because that I am using this bellow */
   const role = this;
   const roleObject = role.toObject();
+  console.log('======= JSON ==========');
 
-  // delete userObject.id;
+  // delete roleObject.id;
 
   return roleObject;
 };
