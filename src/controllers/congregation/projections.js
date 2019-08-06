@@ -1,4 +1,4 @@
-const projectionFull = {
+const congregationProjectionFull = {
   number: 1,
   name: 1,
   id: 1,
@@ -13,4 +13,4 @@ const projectionFull = {
   __v: 1,
 };
 
-module.exports = { projectionFull };
+module.exports = { congregationProjectionFull };

@@ -1,4 +1,7 @@
+const { congregationProjectionFull } = require('./projections');
+const { publisherProjectionBasic } = require('../publisher/projections');
 var ObjectId = require('mongoose').Types.ObjectId;
+const log = console.log;
 /**
  *
  *
@@ -6,8 +9,8 @@ var ObjectId = require('mongoose').Types.ObjectId;
  * @param {*} { config }
  */
 const listall = ({ Congregation }, { config }) => async (req, res, next) => {
-  console.log('=============> Congregation getAll <===================');
-  console.log('user:', req.user);
+  log('=============> Congregation getAll <===================');
+  log('user:', req.user);
   //
   let query = {};
   let options = {}; // limit clause return only first attribute
@@ -15,9 +18,9 @@ const listall = ({ Congregation }, { config }) => async (req, res, next) => {
   if (req.user.roleId.role.toString() !== 'Admin') {
     query = { _id: req.user.publishersId.congregationId };
   }
-  console.log('query:', query);
+  log('query:', query);
   //
-  return await Congregation.find(query, options)
+  /* return await Congregation.find(query, options)
     .sort({ name: 1 })
     .then(results => {
       if (results) {
@@ -29,7 +32,32 @@ const listall = ({ Congregation }, { config }) => async (req, res, next) => {
       }
       return results;
     })
-    .catch(err => console.error(`Failed to find document: ${err}`));
+    .catch(err => console.error(`Failed to find document: ${err}`)); */
+  options = {
+    select: congregationProjectionFull,
+    sort: { name: -1 },
+    populate: { path: 'publishers', select: publisherProjectionBasic },
+    lean: true,
+    page: 1,
+    limit: 10,
+  };
+
+  Congregation.paginate(query, options)
+    .then(results => {
+      log(query);
+      log('response:', results);
+      if (results) {
+        //  console.log(`Successfully found document: ${results}.`);
+        res.status(200).send(results);
+      } else {
+        // console.log('No document matches the provided query.');
+        res.status(403).send('No document matches the provided query.');
+      }
+    })
+    .catch(error => {
+      console.error(`Failed to find document: ${error}`);
+      res.status(403).send(`Failed to find document: ${error}`);
+    });
 };
 
 module.exports = { listall };

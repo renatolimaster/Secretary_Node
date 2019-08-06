@@ -1,4 +1,6 @@
-const { projectionFull } = require('./projections');
+const { userProjectionFull } = require('./projections');
+const { publisherProjectionBasic } = require('../publisher/projections');
+const { roleProjectionFull } = require('../role/projections');
 const log = console.log;
 const listall = ({ User }, { config }) => async (req, res, next) => {
   log('====================== User listall =====================');
@@ -6,9 +8,9 @@ const listall = ({ User }, { config }) => async (req, res, next) => {
   //
   let query = {};
   let options = {
-    select: projectionFull,
+    select: userProjectionFull,
     sort: { name: -1 },
-    populate: 'rolerId publishersId',
+    populate: [{ path: 'publishersId', select: publisherProjectionBasic }, { path: 'roleId', select: roleProjectionFull }],
     lean: true,
     page: 1,
     limit: 10,

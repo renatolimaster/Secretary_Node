@@ -2,7 +2,6 @@ const { Router: router } = require('express');
 const auth = require('../../middleware/auth');
 
 const { byid } = require('./byid');
-const { getAll } = require('./getAll');
 const { listall } = require('./listall');
 const { login } = require('./login');
 const { logout } = require('./logout');
@@ -13,8 +12,6 @@ const { remove } = require('./remove');
 
 const users = (auth, roles, validation, models, { config }) => {
   const api = router();
-  // api.get('/', auth, list(models, { config }));
-  api.get('/profile', [auth, roles], get(models, { config }));
   api.get('/byid/:_id', [auth, roles], byid(models, { config }));
   api.get('/listall', auth, listall(models, { config }));
   api.post('/create', create(models, { config }));

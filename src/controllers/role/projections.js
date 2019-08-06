@@ -1,6 +1,10 @@
-const projectionFull = {
+const roleProjectionFull = {
   role: 1,
   model: 1,
 };
 
-module.exports = { projectionFull };
+const roleProjectionBasic = {
+  role: 1
+}
+
+module.exports = { roleProjectionFull, roleProjectionBasic };

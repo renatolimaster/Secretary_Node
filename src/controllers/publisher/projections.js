@@ -1,4 +1,4 @@
-const projectionFull = {
+const publisherProjectionFull = {
   baptized: 1,
   birthDate: 1,
   baptismDate: 1,
@@ -31,7 +31,7 @@ const projectionFull = {
   __v: 1,
 };
 
-const projectionBasic = {
+const publisherProjectionBasic = {
   id: 1,
   firstName: 1,
   middleName: 1,
@@ -41,4 +41,4 @@ const projectionBasic = {
   email: 1,
 };
 
-module.exports = { projectionFull, projectionBasic };
+module.exports = { publisherProjectionFull, publisherProjectionBasic };

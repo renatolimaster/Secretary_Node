@@ -1,4 +1,4 @@
-const projectionFull = {
+const userProjectionFull = {
   username: 1,
   email: 1,
   firstName: 1,
@@ -8,3 +8,5 @@ const projectionFull = {
   roleId: 1,
   publishersId: 1,
 };
+
+module.exports = { userProjectionFull };
