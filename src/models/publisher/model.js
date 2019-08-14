@@ -14,10 +14,21 @@ publisherSchema.pre('remove', function(next) {
 
 publisherSchema.statics.findByCongregation = async congregationId => {
   console.log('=============== Publisher findByCongregation =================');
-  const publishers = await Publisher.find({ congregationId });
-  
-  if (publishers.length !== 0) {
+  const publishers = await Publisher.findOne({ congregationId });
+
+  if (publishers) {
     return true;
+  }
+
+  return false;
+};
+
+publisherSchema.statics.findByIdAndCongregation = async (_id, congregationId) => {
+  console.log('=============== Publisher findByIdAndCongregation =================');
+  const publishers = await Publisher.findOne({ _id, congregationId });
+  console.log(publishers);
+  if (publishers) {
+    return publishers;
   }
 
   return false;
