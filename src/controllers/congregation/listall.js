@@ -14,7 +14,7 @@ const listall = ({ Congregation }, { config }) => async (req, res, next) => {
   //
   let query = {};
   let options = {}; // limit clause return only first attribute
-  /*  admin can access any congregation otherwise only its own if authorized*/
+  /*  admin can access any congregation otherwise only its own if authorized */
   if (req.user.roleId.role.toString() !== 'Admin') {
     query = { _id: req.user.publishersId.congregationId };
   }

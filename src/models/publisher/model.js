@@ -12,6 +12,17 @@ publisherSchema.pre('remove', function(next) {
   PublisherDesignatedFunction.deleteMany({ publisherId: { $in: this._id } }).then(() => next());
 });
 
+publisherSchema.statics.findByCongregation = async congregationId => {
+  console.log('=============== Publisher findByCongregation =================');
+  const publishers = await Publisher.find({ congregationId });
+  
+  if (publishers.length !== 0) {
+    return true;
+  }
+
+  return false;
+};
+
 publisherSchema.statics.findDuplicate = async ({ firstName, middleName, lastName, congregationId }) => {
   console.log('=============== Publisher findDuplicate =================');
   const publisher = await Publisher.findOne({ firstName, middleName, lastName, congregationId });

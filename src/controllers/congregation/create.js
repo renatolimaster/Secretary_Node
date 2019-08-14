@@ -4,9 +4,8 @@
  * @param {*} { Congregation }
  * @param {*} { config }
  */
-const create = ({ Congregation }, { config }) => async (req, res, next) => {
+const create = ({ Congregation }) => async (req, res) => {
   console.log('================> Congregation create <======================');
-  const { _id } = req.params;
   const { number, name } = req.body;
   let hasCongregation;
   await Congregation.findDuplicate(number, name)

@@ -64,8 +64,6 @@ userSchema.pre('remove', async function(next) {
 
   console.log('pre remove:', user._id);
 
-  // await Task.deleteMany({ owner: user._id });
-
   next();
 });
 
