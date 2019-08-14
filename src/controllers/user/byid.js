@@ -8,6 +8,8 @@ const byid = ({ User }, { config }) => async (req, res, next) => {
   //
   return await User.findById(query, options)
     .select(userProjectionFull)
+    .populate('publishersId')
+    .populate('roleId')
     .then(results => {
       if (results) {
         res.status(200).send(results);

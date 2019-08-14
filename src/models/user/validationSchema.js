@@ -13,8 +13,8 @@ const validationUserSchema = {
     firstName: Joi.string(),
     middleName: Joi.string(),
     lastName: Joi.string(),
-    role: Joi.string().valid('admin', 'elder', 'servant', 'publisher').required(),
-    publishersId: Joi.string(),
+    roleId: Joi.string().required(),
+    publishersId: Joi.string().allow('', null).default(null),
     tokens: Joi.string().token(),
     password: Joi.string()
       .alphanum()

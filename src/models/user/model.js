@@ -9,34 +9,43 @@ const jwt = require('jsonwebtoken');
 
 //Hash the plain text password before saving
 userSchema.pre('save', async function(next) {
-  console.log('userSchema pre save');
+  console.log('================== userSchema pre save ===================');
+  let bindingCode;
+  var modified_paths = this.modifiedPaths();
+  console.log('modified_paths:', modified_paths);
+  if (this.isModified('password')) {
+    // do something
+    console.log('isModified');
+  }
   if (!this.isModified('password')) {
     return next();
   }
   const user = this; // this provide access to object being saved
-  // to create a random code (letters and numbers) with size 10.
-  let bindingCode = randomize('Aa0', 10);
-  // verify if bindingCode already exist - must be unique
-  await User.findOne({ bindingCode })
-    .then(userResult => {
-      if (userResult) {
-        // if bindingCode exist, generate another
-        bindingCode = randomize('Aa0', 10);
-        console.log('bindingCode:', this.bindingCode);
-      }
-    })
-    .catch(err => res.status(400).send(err));
-
-  user.bindingCode = bindingCode;
 
   // hash only whether password change
-  if (user.isModified('password')) {
+  if (this.isModified('password')) {
+    // if (user.isModified('password')) {
+    // if some data is modified so isModified is true: for example if there is a timestamp isModified always is true
     // number 8 means the number of round the hash will works. Its because security and speed are involved
     // 8 is the better option according author
     user.password = await bcrypt.hash(user.password, 8);
   }
 
-  console.log('bindingCode:', user.bindingCode);
+  // to create a random code (letters and numbers) with size 10.
+  if (!user.bindingCode) {
+    bindingCode = randomize('Aa0', 10);
+    // verify if bindingCode already exist - must be unique
+    await User.findOne({ bindingCode })
+      .then(userResult => {
+        if (userResult) {
+          // if bindingCode exist, generate another
+          bindingCode = randomize('Aa0', 10);
+        }
+      })
+      .catch(err => res.status(400).send(err));
+
+    user.bindingCode = bindingCode;
+  }
 
   next(); // to finish the function and pass to next operation chained
 });
@@ -79,10 +88,68 @@ userSchema.methods.toJSON = function() {
 userSchema.set('toObject', { virtuals: true });
 userSchema.set('toJSON', { virtuals: true });
 
+userSchema.statics.findByUsername = async username => {
+  console.log('=================> User findByUsername <=================');
+  const user = await User.findOne({
+    username,
+  });
+  // console.log('user findByCredentials:', user);
+  if (user) {
+    return true;
+  }
+
+  return false;
+};
+
+userSchema.statics.findByEmail = async email => {
+  console.log('=================> User findByUsername <=================');
+  const user = await User.findOne({
+    email,
+  });
+  // console.log('user findByCredentials:', user);
+  if (user) {
+    return true;
+  }
+
+  return false;
+};
+
+userSchema.statics.findByIdAndUsername = async (_id, username) => {
+  console.log('=================> User findByIdAndUsername <=================');
+  console.log('_id:', _id);
+  console.log('username:', username);
+  const user = await User.findOne({
+    _id: { $ne: _id },
+    username,
+  });
+  console.log('user findByIdAndUsername:', user);
+  if (user) {
+    return true;
+  }
+
+  return false;
+};
+
+userSchema.statics.findByIdAndEmail = async (_id, email) => {
+  console.log('=================> User findByIdAndEmail <=================');
+  console.log('_id:', _id);
+  console.log('email:', email);
+  const user = await User.findOne({
+    _id: { $ne: _id },
+    email,
+  });
+  console.log('user findByIdAndEmail:', user);
+  if (user) {
+    return true;
+  }
+
+  return false;
+};
+
 userSchema.statics.findByCredentials = async (email, password) => {
   /* statics methods allow for defining functions that exist directly on your Model,
   because that I am using 'Use' object bellow */
-  console.log('=================> findByCredentials <=================');
+  console.log('=================> User findByCredentials <=================');
 
   const user = await User.findOne({
     email,
@@ -101,6 +168,17 @@ userSchema.statics.findByCredentials = async (email, password) => {
   }
 
   return user;
+};
+
+userSchema.statics.findByBindingCode = async bindingCode => {
+  console.log('=================> User findByBindingCode <=================');
+  const query = { bindingCode };
+  const user = await User.findOne(query);
+  /* Checks if there is publisher linked with that user */
+  if (user.publishersId) {
+    return true;
+  }
+  return false;
 };
 
 userSchema.method.verifyToken = async token => {
