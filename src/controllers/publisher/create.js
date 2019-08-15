@@ -15,7 +15,7 @@ const create = ({ Publisher, User, Congregation }, { config }) => async (req, re
   const user = await User.findById({ _id: userId });
 
   if (!user) {
-    return res.status(403).send('This informed user was not found!');
+    return res.status(403).send('This provided user was not found!');
   } else {
     /* Checks if the user is linked to another publisher */
     bindingCode = user.bindingCode;
@@ -28,7 +28,9 @@ const create = ({ Publisher, User, Congregation }, { config }) => async (req, re
         return res.status(400).send(error);
       });
     if (hasPublisher) {
-      return res.status(400).send('That user informed is already linked with another publisher!');
+      if (hasPublisher.publishersId) {
+        return res.status(400).send('That user provided is already linked with another publisher!');
+      }
     }
   }
 

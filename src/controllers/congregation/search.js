@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const { projectionFull } = require('./projections');
 const log = console.log;
 
@@ -8,7 +7,7 @@ const log = console.log;
  * @param {*} { Congregation }
  * @param {*} { config }
  */
-const search = ({ Congregation }, { config }) => async (req, res, next) => {
+const search = ({ Congregation }) => async (req, res) => {
   /*
 req.params contains route parameters (in the path portion of the URL), and
 req.query contains the URL query parameters (after the ? in the URL).
@@ -16,7 +15,7 @@ req.query contains the URL query parameters (after the ? in the URL).
   console.log('================> Congregation search <======================');
   console.log('role:', req.user.role);
 
-  let { limit, skip, search } = req.query;
+  let { search } = req.query;
   // skip = skip ? parseInt(skip, 10) : 0;
   // limit = limit ? parseInt(limit, 10) : 100;
 

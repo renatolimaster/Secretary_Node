@@ -76,7 +76,7 @@ userSchema.methods.toJSON = function() {
   const user = this;
   const userObject = user.toObject();
 
-  //delete userObject.password;
+  delete userObject.password;
   delete userObject.tokens;
 
   return userObject;
@@ -156,13 +156,13 @@ userSchema.statics.findByCredentials = async (email, password) => {
     .populate('roleId');
   // console.log('user findByCredentials:', user);
   if (!user) {
-    throw new Error('Unable to login');
+    throw new Error('Unable to login 1');
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    throw new Error('Unable to login');
+    throw new Error('Unable to login 2');
   }
 
   return user;
@@ -172,11 +172,15 @@ userSchema.statics.findByBindingCode = async bindingCode => {
   console.log('=================> User findByBindingCode <=================');
   const query = { bindingCode };
   const user = await User.findOne(query);
+  console.log('User:', user);
+  if (!user) {
+    return false;
+  }
   /* Checks if there is publisher linked with that user */
   if (user.publishersId) {
-    return true;
+    return user;
   }
-  return false;
+  return user;
 };
 
 userSchema.method.verifyToken = async token => {

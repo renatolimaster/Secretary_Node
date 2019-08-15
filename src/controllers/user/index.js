@@ -9,10 +9,12 @@ const { logoutall } = require('./logoutall');
 const { create } = require('./create');
 const { update } = require('./update');
 const { remove } = require('./remove');
+const { bybindingcode } = require('./bybindingcode');
 
 const users = (auth, roles, validation, models, { config }) => {
   const api = router();
   api.get('/byid/:_id', [auth, roles], byid(models, { config }));
+  api.get('/bybidingcode/:bindingcode', [auth, roles], bybindingcode(models, { config }));
   api.get('/listall', auth, listall(models, { config }));
   api.post('/create', create(models, { config }));
   api.patch('/update/:_id', [auth, roles, validation], update(models, { config }));
