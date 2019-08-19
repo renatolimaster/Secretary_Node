@@ -28,4 +28,4 @@ const congregation = (auth, roles, validation, models, { config }) => {
   return api;
 };
 
-module.exports = congregation;
+module.exports = { congregation };

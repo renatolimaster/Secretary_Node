@@ -6,7 +6,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const roleSchema = new Schema({
   role: {
     type: String,
-    enum: ['Admin', 'Overseer', 'Elder', 'Servant', 'Pioneer', 'Accounts', 'Publisher', 'Student'],
+    enum: ['Admin', 'Overseer', 'Secretary', 'Elder', 'Servant', 'Pioneer', 'Accounts', 'Publisher', 'Student'],
     required: true,
   },
   model: [

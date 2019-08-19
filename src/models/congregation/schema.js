@@ -9,12 +9,12 @@ const congregationSchema = new Schema(
     number: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     name: {
       type: String,
       unique: true, // must to restart mongodb to works
-      required: [true, 'Name is required']
+      required: [true, 'Name is required'],
     },
     address: [
       {
@@ -22,37 +22,50 @@ const congregationSchema = new Schema(
         complement: { type: String, required: false },
         neighborhood: { type: String, required: false },
         city: { type: String, required: false },
-        state: { type: String,  required: false},
-        zipCode: { type: String, required: false }
-      }
+        state: { type: String, required: false },
+        country: { type: String, required: false },
+        zipCode: { type: String, required: false },
+      },
     ],
     phones: [
       {
         type: { type: String },
-        number: { type: String }
-      }
+        number: { type: String },
+      },
     ],
     email: [
       {
         type: { type: String },
-        address: { type: String }
-      }
+        address: { type: String },
+      },
     ],
     coordinatorId: {
       type: ObjectId,
-      ref: 'publishers'
+      ref: 'publishers',
+    },
+    officeId: {
+      type: ObjectId,
+      ref: 'offices',
+    },
+    circuit: {
+      type: String,
+      required: true,
+    },
+    circuitOverseer: {
+      type: ObjectId,
+      ref: 'publishers',
     },
     default: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
     },
     modifiedBy: {
       type: ObjectId,
-      ref: 'users'
-    }
+      ref: 'users',
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 congregationSchema.plugin(mongoosePaginate);
@@ -69,7 +82,7 @@ congregationSchema.virtual('publishers', {
   // an array. `justOne` is false by default.
   // One to Many: justOne = false
   // One to One: justOne = true
-  justOne: false
+  justOne: false,
 });
 
 module.exports = { congregationSchema };

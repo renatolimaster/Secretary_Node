@@ -8,21 +8,25 @@ const { validationCongregationSchema } = require('../models/congregation/validat
 const { validationUserSchema } = require('../models/user/validationSchema');
 const { validationPublisherSchema } = require('../models/publisher/validationSchema');
 const { roleValidationSchema } = require('../models/role/validationSchema');
+const { officeValidationSchema } = require('../models/office/validationSchema');
 
 // list of models
 const { Congregation } = require('../models/congregation');
 const { User } = require('../models/user');
 const { Publisher } = require('../models/publisher');
 const { Role } = require('../models/role');
+const { Office } = require('../models/office');
 
 // list of controllers
-const congregation = require('../controllers/congregation');
+const { office } = require('../controllers/office');
+const { congregation } = require('../controllers/congregation');
 const { users } = require('../controllers/user');
-const publisher = require('../controllers/publisher');
+const { publisher } = require('../controllers/publisher');
 const { role } = require('../controllers/role');
 
 // combine all models into one object to path it into controllers
 const models = {
+  Office,
   Congregation,
   User,
   Publisher,
@@ -35,6 +39,8 @@ const routersInit = config => {
   // register api Endpoints
   // USER
   config = auth;
+  // OFFICE
+  router.use('/office', office(auth, roles, validation(officeValidationSchema.officeValidation), models, { config }));
   // USER
   router.use(
     '/user',
@@ -56,7 +62,6 @@ const routersInit = config => {
       config,
     }),
   );
-
   // ROLES
   router.use('/role', role(auth, roles, validation(roleValidationSchema.roleValidation), models, { config }));
 

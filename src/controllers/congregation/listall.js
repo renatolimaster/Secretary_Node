@@ -36,7 +36,7 @@ const listall = ({ Congregation }, { config }) => async (req, res, next) => {
   options = {
     select: congregationProjectionFull,
     sort: { name: -1 },
-    populate: { path: 'publishers', select: publisherProjectionBasic },
+    populate: [{ path: 'publishers', select: publisherProjectionBasic }, { path: 'officeId' }],
     lean: true,
     page: 1,
     limit: 10,

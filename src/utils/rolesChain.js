@@ -22,7 +22,6 @@ const roles = async function(req, res, next) {
   console.log('congregationId:', req.user.publishersId.congregationId);
 
   const query = {
-    // user: req.user._id,
     role: role,
     model: { $elemMatch: { name: model, action: action } },
   };
@@ -32,8 +31,8 @@ const roles = async function(req, res, next) {
     .then(result => {
       console.log('roles:', result);
       if (result === null) {
-        console.log(`Unauthorized to ${action} for ${model}`);
-        return res.status(403).send(`Unauthorized to ${role} to ${action} for ${model}`);
+        console.log(`Role unauthorized to ${action} for ${model}`);
+        return res.status(403).send(`The role unauthorized to ${action} the ${model}`);
       } else {
         next(); // must appear in only one place
       }
