@@ -90,4 +90,15 @@ officeSchema.virtual('congregations', {
   justOne: false,
 });
 
+officeSchema.virtual('circuits', {
+  ref: 'circuits',
+  localField: '_id',
+  foreignField: 'officeId',
+  // If `justOne` is true, 'members' will be a single doc as opposed to
+  // an array. `justOne` is false by default.
+  // One to Many: justOne = false
+  // One to One: justOne = true
+  justOne: false,
+});
+
 module.exports = { officeSchema };

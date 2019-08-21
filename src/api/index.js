@@ -4,11 +4,12 @@ const auth = require('../middleware/auth');
 const { errorHandler } = require('../middleware/errorHandler');
 
 const { validation } = require('../middleware/validation');
-const { validationCongregationSchema } = require('../models/congregation/validationSchema');
-const { validationUserSchema } = require('../models/user/validationSchema');
-const { validationPublisherSchema } = require('../models/publisher/validationSchema');
+const { congregationValidationCongregationSchema } = require('../models/congregation/validationSchema');
+const { userValidationSchema } = require('../models/user/validationSchema');
+const { publisherValidationSchema } = require('../models/publisher/validationSchema');
 const { roleValidationSchema } = require('../models/role/validationSchema');
 const { officeValidationSchema } = require('../models/office/validationSchema');
+const { circuitValidationSchema } = require('../models/circuit/validationSchema');
 
 // list of models
 const { Congregation } = require('../models/congregation');
@@ -16,6 +17,7 @@ const { User } = require('../models/user');
 const { Publisher } = require('../models/publisher');
 const { Role } = require('../models/role');
 const { Office } = require('../models/office');
+const { Circuit } = require('../models/circuit');
 
 // list of controllers
 const { office } = require('../controllers/office');
@@ -23,10 +25,12 @@ const { congregation } = require('../controllers/congregation');
 const { users } = require('../controllers/user');
 const { publisher } = require('../controllers/publisher');
 const { role } = require('../controllers/role');
+const { circuit } = require('../controllers/circuit');
 
 // combine all models into one object to path it into controllers
 const models = {
   Office,
+  Circuit,
   Congregation,
   User,
   Publisher,
@@ -41,24 +45,26 @@ const routersInit = config => {
   config = auth;
   // OFFICE
   router.use('/office', office(auth, roles, validation(officeValidationSchema.officeValidation), models, { config }));
+  // CIRCUIT
+  router.use('/circuit', circuit(auth, roles, validation(circuitValidationSchema.circuitValidation), models, { config }));
   // USER
   router.use(
     '/user',
-    users(auth, roles, validation(validationUserSchema.userValidation), models, {
+    users(auth, roles, validation(userValidationSchema.userValidation), models, {
       config,
     }),
   );
   // CONGREGATION
   router.use(
     '/congregation',
-    congregation(auth, roles, validation(validationCongregationSchema.congregationValidation), models, {
+    congregation(auth, roles, validation(congregationValidationCongregationSchema.congregationValidation), models, {
       config,
     }),
   );
   // PUBLISHERS
   router.use(
     '/publisher',
-    publisher(auth, roles, validation(validationPublisherSchema.publisherValidation), models, {
+    publisher(auth, roles, validation(publisherValidationSchema.publisherValidation), models, {
       config,
     }),
   );

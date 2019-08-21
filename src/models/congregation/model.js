@@ -1,11 +1,22 @@
 const mongoose = require('mongoose');
 const { congregationSchema } = require('./schema');
-
+const log = console.log;
 congregationSchema.pre('save', function(next) {
-  console.log('congregationSchema pre save');
+  log('congregationSchema pre save');
   // console.log('this:', this);
   next();
 });
+
+congregationSchema.statics.findByCircuit = async circuitId => {
+  log('=============== Circuit findByCongregation =================');
+  const congregation = await Congregation.findOne({ circuitId });
+  log(congregation);
+  if (congregation) {
+    return congregation;
+  }
+
+  return false;
+};
 
 /* when methods are created using toJSON
 it automatic return the object as JSON.
@@ -29,7 +40,7 @@ congregationSchema.set('toJSON', { virtuals: true });
 congregationSchema.statics.findDuplicate = async (number, name) => {
   console.log('============== Congregation findDuplicate ===================');
   const congregation = await Congregation.findOne({ number, name });
-  
+
   if (congregation) {
     return true;
   }

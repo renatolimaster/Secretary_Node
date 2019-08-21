@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const validationCongregationSchema = {
+const congregationValidationCongregationSchema = {
   congregationValidation: Joi.object().keys({
     number: Joi.string().required(),
     name: Joi.string().required(),
@@ -31,12 +31,11 @@ const validationCongregationSchema = {
           .required(),
       }),
     ),
-    circuit: Joi.string(),
-    officeId: Joi.string(),
+    circuitId: Joi.string(),
     coordinatorId: Joi.string(),
     modifiedBy: Joi.string(),
     default: Joi.boolean().required(),
   }),
 };
 
-module.exports = { validationCongregationSchema };
+module.exports = { congregationValidationCongregationSchema };

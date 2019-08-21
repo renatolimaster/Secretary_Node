@@ -13,7 +13,7 @@ const update = ({ Congregation }) => async (req, res) => {
   // extract only key of body
   const updates = Object.keys(req.body);
   // only attributes declared in allowedUpdates below are permitted to be updated
-  const allowedUpdates = ['number', 'name', 'modifiedBy', 'address', 'phones', 'email', 'coordinatorId', 'default'];
+  const allowedUpdates = ['number', 'name', 'modifiedBy', 'address', 'phones', 'email', 'coordinatorId', 'default', 'circuitId'];
   // to check if attributes are permitted
   const isValidOperation = updates.every(update => {
     return allowedUpdates.includes(update);
@@ -22,7 +22,7 @@ const update = ({ Congregation }) => async (req, res) => {
   if (!isValidOperation) {
     return res.status(400).send({ error: 'Invalid attributes to update!' });
   }
-  
+
   // verify if exist the same name and number of congregation with different id
   const hasCongregation = await Congregation.findOne({ _id: { $ne: _id }, number, name });
 
@@ -31,7 +31,7 @@ const update = ({ Congregation }) => async (req, res) => {
   }
 
   try {
-    const congregation = await Congregation.findById({ _id });
+    const congregation = await Congregation.findById({ _id }).populate('circuitId');
     // to audit who is modifying the document
     if (!congregation) {
       return res.status(400).send({ error: 'Congregation not found!' });
@@ -43,6 +43,7 @@ const update = ({ Congregation }) => async (req, res) => {
     //   user[update] = req.body[update];
     // });
     await congregation.save();
+    log('congregation', congregation);
     return res.status(200).send({ congregation });
   } catch (e) {
     console.error(`Failed to find document: ${e}`);

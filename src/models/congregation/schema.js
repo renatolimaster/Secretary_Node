@@ -43,17 +43,9 @@ const congregationSchema = new Schema(
       type: ObjectId,
       ref: 'publishers',
     },
-    officeId: {
+    circuitId: {
       type: ObjectId,
-      ref: 'offices',
-    },
-    circuit: {
-      type: String,
-      required: true,
-    },
-    circuitOverseer: {
-      type: ObjectId,
-      ref: 'publishers',
+      ref: 'circuits',
     },
     default: {
       type: Boolean,

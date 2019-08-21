@@ -6,7 +6,7 @@ const congregationProjectionFull = {
   address: 1,
   phones: 1,
   coordinatorId: 1,
-  officeId: 1,
+  circuitId: 1,
   default: 1,
   modifiedBy: 1,
   createdAt: 1,

@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const validationPublisherSchema = {
+const publisherValidationSchema = {
   publisherValidation: Joi.object().keys({
     firstName: Joi.string().required(),
     middleName: Joi.string(),
@@ -71,4 +71,4 @@ const validationPublisherSchema = {
   }),
 };
 
-module.exports = { validationPublisherSchema };
+module.exports = { publisherValidationSchema };

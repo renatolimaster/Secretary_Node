@@ -25,6 +25,7 @@ const byid = ({ Congregation }) => async (req, res) => {
     .populate('publishers', 'firstName lastName phones email') // virtual attribute
     .populate('coordinatorId', 'firstName lastName phones email')
     .populate('modifiedBy', 'firstName lastName phones email')
+    .populate('circuitId', 'number officeId')
     .then(congregation => {
       if (congregation) {
         // console.log(`Successfully found document: \n${congregation}.`);

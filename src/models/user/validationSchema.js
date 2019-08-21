@@ -2,7 +2,7 @@
 // to always ensure that password and confirmPassword are exactly the same
 const Joi = require('joi');
 
-const validationUserSchema = {
+const userValidationSchema = {
   userValidation: Joi.object().keys({
     username: Joi.string()
       .alphanum()
@@ -14,7 +14,9 @@ const validationUserSchema = {
     middleName: Joi.string(),
     lastName: Joi.string(),
     roleId: Joi.string().required(),
-    publishersId: Joi.string().allow('', null).default(null),
+    publishersId: Joi.string()
+      .allow('', null)
+      .default(null),
     tokens: Joi.string().token(),
     password: Joi.string()
       .alphanum()
@@ -28,4 +30,4 @@ const validationUserSchema = {
   }),
 };
 
-module.exports = { validationUserSchema };
+module.exports = { userValidationSchema };
