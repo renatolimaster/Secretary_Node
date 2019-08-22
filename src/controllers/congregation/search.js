@@ -1,6 +1,6 @@
 const { projectionFull } = require('./projections');
 const log = console.log;
-
+const { paginates } = require('../../utils/paginate');
 /**
  *
  *
@@ -18,6 +18,10 @@ req.query contains the URL query parameters (after the ? in the URL).
   let { search } = req.query;
   // skip = skip ? parseInt(skip, 10) : 0;
   // limit = limit ? parseInt(limit, 10) : 100;
+
+  if (search.length < 3) {
+    return res.status(403).send('Provide at least three letters, please!');
+  }
 
   let query = {};
   if (search) {
@@ -51,6 +55,14 @@ req.query contains the URL query parameters (after the ? in the URL).
     limit: 10,
   };
 
+  const results = await paginates(Congregation, query, options);
+
+  if (results) {
+    return res.status(200).send(results);
+  } else {
+    return res.status(400).send('Docs not found!');
+  }
+  /* 
   Congregation.paginate(query, options)
     .then(results => {
       log(query);
@@ -66,7 +78,7 @@ req.query contains the URL query parameters (after the ? in the URL).
     .catch(error => {
       console.error(`Failed to find document: ${error}`);
       res.status(403).send(`Failed to find document: ${error}`);
-    });
+    }); */
 };
 
 module.exports = { search };

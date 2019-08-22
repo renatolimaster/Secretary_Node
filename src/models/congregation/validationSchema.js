@@ -31,6 +31,13 @@ const congregationValidationCongregationSchema = {
           .required(),
       }),
     ),
+    meetings: Joi.array().items(
+      Joi.object().keys({
+        type: Joi.string().required(),
+        weekday: Joi.string().required(),
+        time: Joi.string().required(),
+      }),
+    ),
     circuitId: Joi.string(),
     coordinatorId: Joi.string(),
     modifiedBy: Joi.string(),

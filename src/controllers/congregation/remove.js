@@ -7,6 +7,7 @@ const _ = require('lodash');
  * @param {*} { config }
  */
 const remove = ({ Congregation, Publisher }, { config }) => async (req, res, next) => {
+  console.log('================= Congregation remove =======================');
   let message = { msg: '' };
   const { _id } = req.params;
   const hasPublishers = await Publisher.findByCongregation(_id);

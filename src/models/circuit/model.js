@@ -32,6 +32,19 @@ circuitSchema.statics.findByNumberAndOffice = async (number, officeId) => {
   return false;
 };
 
+circuitSchema.statics.findByOfficeId = async officeId => {
+  console.log('=============== Circuit findByOfficeId =================');
+  const circuit = await Circuit.findOne({ officeId })
+    .populate('officeId')
+    .populate('overseerId');
+
+  if (circuit) {
+    return circuit;
+  }
+
+  return false;
+};
+
 /* when methods are created using toJSON
 it automatic return the object as JSON.
 If you want to omit any attribute use delete

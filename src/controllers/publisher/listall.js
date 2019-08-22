@@ -1,5 +1,6 @@
 const log = console.log;
 const { publisherProjectionFull } = require('./projections');
+const { paginates } = require('../../utils/paginate');
 const listall = ({ Publisher }) => async (req, res) => {
   log('================> Publisher listall <======================');
   const congregationId = req.user.publishersId.congregationId;
@@ -20,6 +21,15 @@ const listall = ({ Publisher }) => async (req, res) => {
     limit: 10,
   };
 
+  const results = await paginates(Publisher, query, options);
+
+  if (results) {
+    return res.status(200).send(results);
+  } else {
+    return res.status(400).send('Docs not found!');
+  }
+
+  /* 
   await Publisher.paginate(query, options)
     .then(results => {
       log(query);
@@ -35,7 +45,7 @@ const listall = ({ Publisher }) => async (req, res) => {
     .catch(error => {
       console.error(`Failed to find document: ${error}`);
       res.status(403).send(`Failed to find document: ${error}`);
-    });
+    }); */
 };
 
 module.exports = { listall };

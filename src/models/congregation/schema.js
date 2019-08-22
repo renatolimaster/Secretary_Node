@@ -39,6 +39,13 @@ const congregationSchema = new Schema(
         address: { type: String },
       },
     ],
+    meetings: [
+      {
+        type: { type: String, required: true },
+        weekday: { type: String, required: true },
+        time: { type: String, required: true },
+      },
+    ],
     coordinatorId: {
       type: ObjectId,
       ref: 'publishers',
@@ -54,7 +61,7 @@ const congregationSchema = new Schema(
     },
     modifiedBy: {
       type: ObjectId,
-      ref: 'users',
+      ref: 'publishers',
     },
   },
   { timestamps: true },

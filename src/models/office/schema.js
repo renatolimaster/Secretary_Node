@@ -12,6 +12,15 @@ const officeSchema = new Schema(
       enum: ['Headquarter', 'Branch'],
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
+    /* if branch belongs to office */
+    officeId: {
+      type: ObjectId,
+      ref: 'offices',
+    },
     address: [
       {
         street: {
@@ -68,27 +77,13 @@ const officeSchema = new Schema(
     ],
     modifiedBy: {
       type: ObjectId,
-      ref: 'users',
+      ref: 'publishers',
     },
   },
   { timestamps: true },
 );
 
 officeSchema.plugin(mongoosePaginate);
-/*
-used to maintain a relationship with publishers model
-its means that congregation has many publishers
-*/
-officeSchema.virtual('congregations', {
-  ref: 'congregations',
-  localField: '_id',
-  foreignField: 'officeId',
-  // If `justOne` is true, 'members' will be a single doc as opposed to
-  // an array. `justOne` is false by default.
-  // One to Many: justOne = false
-  // One to One: justOne = true
-  justOne: false,
-});
 
 officeSchema.virtual('circuits', {
   ref: 'circuits',

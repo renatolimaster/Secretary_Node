@@ -13,7 +13,7 @@ const update = ({ Congregation }) => async (req, res) => {
   // extract only key of body
   const updates = Object.keys(req.body);
   // only attributes declared in allowedUpdates below are permitted to be updated
-  const allowedUpdates = ['number', 'name', 'modifiedBy', 'address', 'phones', 'email', 'coordinatorId', 'default', 'circuitId'];
+  const allowedUpdates = ['number', 'name', 'modifiedBy', 'address', 'phones', 'email', 'meetings', 'coordinatorId', 'default', 'circuitId'];
   // to check if attributes are permitted
   const isValidOperation = updates.every(update => {
     return allowedUpdates.includes(update);

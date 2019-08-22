@@ -1,5 +1,6 @@
 const { congregationProjectionFull } = require('./projections');
 const { publisherProjectionBasic } = require('../publisher/projections');
+const { paginates } = require('../../utils/paginate');
 var ObjectId = require('mongoose').Types.ObjectId;
 const log = console.log;
 /**
@@ -42,6 +43,14 @@ const listall = ({ Congregation }, { config }) => async (req, res, next) => {
     limit: 10,
   };
 
+  const results = await paginates(Congregation, query, options);
+
+  if (results) {
+    return res.status(200).send(results);
+  } else {
+    return res.status(400).send('Docs not found!');
+  }
+  /* 
   Congregation.paginate(query, options)
     .then(results => {
       log(query);
@@ -57,7 +66,7 @@ const listall = ({ Congregation }, { config }) => async (req, res, next) => {
     .catch(error => {
       console.error(`Failed to find document: ${error}`);
       res.status(403).send(`Failed to find document: ${error}`);
-    });
+    }); */
 };
 
 module.exports = { listall };

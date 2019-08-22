@@ -5,12 +5,16 @@ const officeValidationSchema = {
   officeValidation: Joi.object().keys({
     type: Joi.string().required(),
 
+    name: Joi.string().required(),
+
     address: Joi.array().items(
       Joi.object().keys({
         street: Joi.string(),
         complement: Joi.string(),
         neighborhood: Joi.string(),
         city: Joi.string(),
+        state: Joi.string(),
+        country: Joi.string(),
         zipCode: Joi.string(),
       }),
     ),

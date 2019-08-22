@@ -1,10 +1,28 @@
 const mongoose = require('mongoose');
 const { officeSchema } = require('./schema');
-
+const log = console.log;
 officeSchema.pre('save', function(next) {
   console.log('officeSchema pre save');
   next();
 });
+
+officeSchema.statics.findById = async _id => {
+  console.log('=============== Office findById =================');
+  /* to populate the second level */
+  const office = await Office.findOne({ _id }).populate({
+    path: 'circuits',
+    populate: {
+      path: 'congregations',
+      model: 'congregations',
+    },
+  });
+  log('office:', office);
+  if (office) {
+    return office;
+  }
+
+  return false;
+};
 
 /* when methods are created using toJSON
 it automatic return the object as JSON.
