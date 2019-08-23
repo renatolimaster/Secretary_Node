@@ -7,6 +7,8 @@ const officeValidationSchema = {
 
     name: Joi.string().required(),
 
+    officeId: Joi.string().allow(null),
+
     address: Joi.array().items(
       Joi.object().keys({
         street: Joi.string(),

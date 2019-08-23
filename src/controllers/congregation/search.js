@@ -12,8 +12,7 @@ const search = ({ Congregation }) => async (req, res) => {
 req.params contains route parameters (in the path portion of the URL), and
 req.query contains the URL query parameters (after the ? in the URL).
   */
-  console.log('================> Congregation search <======================');
-  console.log('role:', req.user.role);
+  log('================> Congregation search <======================');
 
   let { search } = req.query;
   // skip = skip ? parseInt(skip, 10) : 0;

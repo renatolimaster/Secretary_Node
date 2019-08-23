@@ -26,8 +26,7 @@ const search = ({ Office }, { options }) => async (req, res, next) => {
   };
 
   const results = await paginates(Office, query, options);
-
-  log('===============> ', results);
+  
   if (results) {
     return res.status(200).send(results);
   } else {
