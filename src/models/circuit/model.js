@@ -10,7 +10,8 @@ circuitSchema.statics.findById = async _id => {
   console.log('=============== Circuit findById =================');
   const circuit = await Circuit.findOne({ _id })
     .populate('officeId')
-    .populate('overseerId');
+    .populate('overseerId')
+    .populate('congregations');
 
   if (circuit) {
     return circuit;
@@ -23,7 +24,8 @@ circuitSchema.statics.findByCongregationId = async _id => {
   console.log('=============== Circuit findByCongregationId =================');
   const circuit = await Circuit.findOne({ 'congregations._id': _id })
     .populate('officeId')
-    .populate('overseerId');
+    .populate('overseerId')
+    .populate('congregations');
 
   if (circuit) {
     return circuit;
@@ -36,7 +38,8 @@ circuitSchema.statics.findByNumberAndOffice = async (number, officeId) => {
   console.log('=============== Circuit findByNumberAndOffice =================');
   const circuit = await Circuit.findOne({ number, officeId })
     .populate('officeId')
-    .populate('overseerId');
+    .populate('overseerId')
+    .populate('congregations');
 
   if (circuit) {
     return circuit;
@@ -49,7 +52,8 @@ circuitSchema.statics.findByOfficeId = async officeId => {
   console.log('=============== Circuit findByOfficeId =================');
   const circuit = await Circuit.findOne({ officeId })
     .populate('officeId')
-    .populate('overseerId');
+    .populate('overseerId')
+    .populate('congregations');
 
   if (circuit) {
     return circuit;

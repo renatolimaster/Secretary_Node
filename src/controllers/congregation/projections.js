@@ -19,4 +19,4 @@ const congregationProjectionBasic = {
   name: 1,
 };
 
-module.exports = { congregationProjectionFull };
+module.exports = { congregationProjectionFull, congregationProjectionBasic };

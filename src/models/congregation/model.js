@@ -21,7 +21,7 @@ congregationSchema.statics.findById = async _id => {
 congregationSchema.statics.findByCircuit = async circuitId => {
   log('=============== Congregation findByCircuit =================');
   const congregation = await Congregation.findOne({ circuitId });
-
+  log('congregation:', congregation);
   if (congregation) {
     return congregation;
   }

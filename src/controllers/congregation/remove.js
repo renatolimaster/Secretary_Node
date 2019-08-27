@@ -17,6 +17,10 @@ const remove = ({ Congregation, Publisher }, { config }) => async (req, res, nex
   }
   try {
     const congregation = await Congregation.findOne({ _id });
+    if (!congregation) {
+      message.msg = 'Congregation not found!';
+      return res.status(403).send(message);
+    }
     await congregation.remove({ _id });
     res.status(200).send({ congregation });
   } catch (error) {
