@@ -7,8 +7,6 @@ const paginates = async (model, query, options) => {
   await model
     .paginate(query, options)
     .then(results => {
-      log(query);
-      log('response:', results);
       if (results.totalDocs > 0) {
         // console.log(`Successfully found document: ${results}.`);
         result = results;

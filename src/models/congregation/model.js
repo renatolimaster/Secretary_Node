@@ -7,10 +7,21 @@ congregationSchema.pre('save', function(next) {
   next();
 });
 
+congregationSchema.statics.findById = async _id => {
+  log('=============== Congregation findById =================');
+  const congregation = await Congregation.findOne({ _id });
+
+  if (congregation) {
+    return congregation;
+  }
+
+  return false;
+};
+
 congregationSchema.statics.findByCircuit = async circuitId => {
-  log('=============== Circuit findByCongregation =================');
+  log('=============== Congregation findByCircuit =================');
   const congregation = await Congregation.findOne({ circuitId });
-  log(congregation);
+
   if (congregation) {
     return congregation;
   }

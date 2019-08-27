@@ -1,8 +1,12 @@
 const { publisherProjectionFull } = require('./projections');
+const idValidate = require('../../utils/idValidate');
 
 const byid = ({ Publisher }, { config }) => async (req, res, next) => {
   const { _id } = req.params;
-  console.log('=============> Publisher get <===================', _id);
+  const idIsValid = await idValidate(_id);
+  if (!idIsValid) {
+    return res.status(403).send('Invalid id!');
+  }
   //
   const query = { _id: _id };
   let options = publisherProjectionFull; // differ of pagination (see list.js - congregation)

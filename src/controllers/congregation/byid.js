@@ -1,12 +1,15 @@
+const idValidate = require('../../utils/idValidate');
 /**
- *
- *
  * @param {*} { Congregation }
  * @param {*} { config }
  */
 const byid = ({ Congregation }) => async (req, res) => {
   console.log('=============> Congregation byid get <===================');
   const { _id } = req.params;
+  const idIsValid = await idValidate(_id);
+  if (!idIsValid) {
+    return res.status(403).send('Invalid id!');
+  }
   //
   let query = {};
   let options = {}; // limit clause return only first attribute
