@@ -1,5 +1,5 @@
 const circuitProjectionsFull = {
-  number: 1,
+  identification: 1,
   notes: 1,
   officeId: 1,
   overseerId: 1,
@@ -7,7 +7,7 @@ const circuitProjectionsFull = {
 };
 
 const circuitProjectionsBasic = {
-  number: 1,
+  identification: 1,
   notes: 1,
 };
 

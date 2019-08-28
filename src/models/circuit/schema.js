@@ -6,7 +6,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const circuitSchema = new Schema(
   {
-    number: { type: String, required: true, unique: true },
+    identification: { type: String, required: true, unique: true },
     notes: { type: String, required: false },
     officeId: { type: ObjectId, ref: 'offices' },
     overseerId: { type: ObjectId, ref: 'publishers' },

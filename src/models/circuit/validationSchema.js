@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const circuitValidationSchema = {
   circuitValidation: Joi.object().keys({
-    number: Joi.string().required(),
+    identification: Joi.string().required(),
     notes: Joi.string(),
     officeId: Joi.string().required(),
     overseerId: Joi.string(),

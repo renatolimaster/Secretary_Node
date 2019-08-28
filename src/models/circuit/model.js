@@ -12,6 +12,20 @@ circuitSchema.statics.findById = async _id => {
     .populate('officeId')
     .populate('overseerId')
     .populate('congregations');
+  log('findById:', circuit);
+  if (circuit) {
+    return circuit;
+  }
+
+  return false;
+};
+
+circuitSchema.statics.findOverseerIdInOtherCircuit = async (_id, overseerId) => {
+  console.log('=============== Circuit findOverseerIdInOtherCircuit =================');
+  const circuit = await Circuit.findOne({ _id: { $ne: _id }, overseerId })
+    .populate('officeId')
+    .populate('overseerId')
+    .populate('congregations');
 
   if (circuit) {
     return circuit;
@@ -34,9 +48,9 @@ circuitSchema.statics.findByCongregationId = async _id => {
   return false;
 };
 
-circuitSchema.statics.findByNumberAndOffice = async (number, officeId) => {
-  console.log('=============== Circuit findByNumberAndOffice =================');
-  const circuit = await Circuit.findOne({ number, officeId })
+circuitSchema.statics.findByIdentificationAndOffice = async (identification, officeId) => {
+  console.log('=============== Circuit findByIdentificationAndOffice =================');
+  const circuit = await Circuit.findOne({ identification, officeId })
     .populate('officeId')
     .populate('overseerId')
     .populate('congregations');
