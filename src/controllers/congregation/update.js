@@ -31,20 +31,28 @@ const update = ({ Congregation }) => async (req, res) => {
   }
 
   try {
-    const congregation = await Congregation.findById({ _id }).populate('circuitId');
+    let congregation = await Congregation.findById(_id);
     // to audit who is modifying the document
     if (!congregation) {
       return res.status(400).send({ error: 'Congregation not found!' });
     }
     // map automatically attributes
     _.extend(congregation, req.body);
+    congregation.modifiedBy = req.user.publishersId;
     // OR
     // updates.forEach(update => {
     //   user[update] = req.body[update];
     // });
-    await congregation.save();
-    log('congregation', congregation);
-    return res.status(200).send({ congregation });
+    await congregation.save().then(congregation =>
+      congregation
+        .populate('publishers') // virtual attribute
+        .populate('coordinatorId')
+        .populate('modifiedBy')
+        .populate('circuitId')
+        .execPopulate(),
+    );
+
+    return res.status(200).send(congregation);
   } catch (e) {
     console.error(`Failed to find document: ${e}`);
     return res.status(403).send(`Failed to find document: ${e}`);

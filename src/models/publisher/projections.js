@@ -8,6 +8,7 @@ const publisherProjectionFull = {
   firstName: 1,
   middleName: 1,
   lastName: 1,
+  fullName: 1,
   gender: 1,
   address: 1,
   phones: 1,
@@ -28,6 +29,7 @@ const publisherProjectionFull = {
   congregationId: 1,
   createdAt: 1,
   updatedAt: 1,
+  modifiedBy: 1,
   __v: 1,
 };
 
@@ -39,6 +41,7 @@ const publisherProjectionBasic = {
   gender: 1,
   phones: 1,
   email: 1,
+  modifiedBy: 1,
 };
 
 module.exports = { publisherProjectionFull, publisherProjectionBasic };

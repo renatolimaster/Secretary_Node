@@ -1,4 +1,4 @@
-const { projectionFull } = require('./projections');
+const { congregationProjectionFull } = require('../../models/congregation/projections');
 const log = console.log;
 const { paginates } = require('../../utils/paginate');
 /**
@@ -46,7 +46,7 @@ req.query contains the URL query parameters (after the ? in the URL).
   // *******
 
   let options = {
-    select: projectionFull,
+    select: congregationProjectionFull,
     sort: { name: -1 },
     populate: 'publishers',
     lean: true,

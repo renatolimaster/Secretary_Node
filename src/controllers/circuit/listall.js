@@ -1,5 +1,5 @@
-const { circuitProjectionsFull } = require('./projections');
-const { congregationProjectionBasic } = require('../congregation/projections');
+const { circuitProjectionsFull } = require('../../models/circuit/projections');
+const { congregationProjectionBasic } = require('../../models/congregation/projections');
 const { paginates } = require('../../utils/paginate');
 const listall = ({ Circuit, Congregation }, { config }) => async (req, res, next) => {
   log('=============> Circuit listall <===================');

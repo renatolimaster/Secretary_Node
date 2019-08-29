@@ -1,5 +1,5 @@
-const { officeProjectionsFull } = require('./projections');
-const { circuitProjectionsBasic } = require('../circuit/projections');
+const { officeProjectionsFull } = require('../../models/office/projections');
+const { circuitProjectionsBasic } = require('../../models/circuit/projections');
 const { paginates } = require('../../utils/paginate');
 const log = console.log;
 const listall = ({ Office, Congregation, Circuit }, { config }) => async (req, res, next) => {

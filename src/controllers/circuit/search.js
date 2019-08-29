@@ -1,4 +1,4 @@
-const { projectionFull } = require('./projections');
+const { circuitProjectionsFull } = require('../../models/circuit/projections');
 const { paginates } = require('../../utils/paginate');
 const search = ({ Circuit }, { config }) => async (req, res, next) => {
   console.log('================= Circuit search =======================');
@@ -18,7 +18,7 @@ const search = ({ Circuit }, { config }) => async (req, res, next) => {
   }
 
   let options = {
-    select: projectionFull,
+    select: circuitProjectionsFull,
     sort: { identification: -1 },
     populate: 'publishers',
     lean: true,

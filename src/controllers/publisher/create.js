@@ -12,24 +12,26 @@ const create = ({ Publisher, User, Congregation }, { config }) => async (req, re
   }
 
   /* Checks if the informed user exists. */
-  const user = await User.findById({ _id: userId });
+  if (userId) {
+    const user = await User.findById({ _id: userId });
 
-  if (!user) {
-    return res.status(403).send('This provided user was not found!');
-  } else {
-    /* Checks if the user is linked to another publisher */
-    bindingCode = user.bindingCode;
-    await User.findByBindingCode(bindingCode)
-      .then(result => {
-        hasPublisher = result;
-      })
-      .catch(error => {
-        console.log('error:', error);
-        return res.status(400).send(error);
-      });
-    if (hasPublisher) {
-      if (hasPublisher.publishersId) {
-        return res.status(400).send('That user provided is already linked with another publisher!');
+    if (!user) {
+      return res.status(403).send('This provided user was not found!');
+    } else {
+      /* Checks if the user is linked to another publisher */
+      bindingCode = user.bindingCode;
+      await User.findByBindingCode(bindingCode)
+        .then(result => {
+          hasPublisher = result;
+        })
+        .catch(error => {
+          console.log('error:', error);
+          return res.status(400).send(error);
+        });
+      if (hasPublisher) {
+        if (hasPublisher.publishersId) {
+          return res.status(400).send('That user provided is already linked with another publisher!');
+        }
       }
     }
   }
@@ -52,6 +54,7 @@ const create = ({ Publisher, User, Congregation }, { config }) => async (req, re
     const publisher = new Publisher({
       ...req.body,
     });
+    publisher.fullName = firstName + ' ' + middleName + ' ' + lastName;
     await publisher.save();
     res.status(201).send(publisher);
   } catch (error) {

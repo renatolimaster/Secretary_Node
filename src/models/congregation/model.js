@@ -9,7 +9,11 @@ congregationSchema.pre('save', function(next) {
 
 congregationSchema.statics.findById = async _id => {
   log('=============== Congregation findById =================');
-  const congregation = await Congregation.findOne({ _id });
+  const congregation = await Congregation.findOne({ _id })
+    .populate('publishers') // virtual attribute
+    .populate('coordinatorId')
+    .populate('modifiedBy')
+    .populate('circuitId');
 
   if (congregation) {
     return congregation;
@@ -20,8 +24,12 @@ congregationSchema.statics.findById = async _id => {
 
 congregationSchema.statics.findByCircuit = async circuitId => {
   log('=============== Congregation findByCircuit =================');
-  const congregation = await Congregation.findOne({ circuitId });
-  log('congregation:', congregation);
+  const congregation = await Congregation.findOne({ circuitId })
+    .populate('publishers') // virtual attribute
+    .populate('coordinatorId')
+    .populate('modifiedBy')
+    .populate('circuitId');
+  
   if (congregation) {
     return congregation;
   }
@@ -39,7 +47,7 @@ congregationSchema.methods.toJSON = function() {
   const congregation = this;
   const congregationObject = congregation.toObject();
 
-  delete congregationObject.number;
+  // delete congregationObject.number;
 
   return congregationObject;
 };

@@ -6,6 +6,7 @@ const idValidate = require('../../utils/idValidate');
 const byid = ({ Congregation }) => async (req, res) => {
   console.log('=============> Congregation byid get <===================');
   const { _id } = req.params;
+  let message = { msg: '' };
   const idIsValid = await idValidate(_id);
   if (!idIsValid) {
     return res.status(403).send('Invalid id!');
@@ -24,22 +25,16 @@ const byid = ({ Congregation }) => async (req, res) => {
   }
   console.log('query:', query);
   //
-  return await Congregation.findById(query, options)
-    .populate('publishers', 'firstName lastName phones email') // virtual attribute
-    .populate('coordinatorId', 'firstName lastName phones email')
-    .populate('modifiedBy', 'firstName lastName phones email')
-    .populate('circuitId', 'number officeId')
-    .then(congregation => {
-      if (congregation) {
-        // console.log(`Successfully found document: \n${congregation}.`);
-        res.status(200).send({ congregation, publishers: congregation.publishers });
-      } else {
-        // console.log('No document matches the provided query.');
-        res.status(403).send('No document matches the provided query.');
-      }
-      // return congregation;
-    })
-    .catch(error => res.status(400).send(error));
+  const congregation = await Congregation.findById(query, options);
+
+  if (congregation) {
+    // console.log(`Successfully found document: \n${congregation}.`);
+    return res.status(200).send(congregation);
+  } else {
+    // console.log('No document matches the provided query.');
+    message.msg = 'No document matches the provided query.';
+    return res.status(403).send(message);
+  }
 };
 
 module.exports = { byid };

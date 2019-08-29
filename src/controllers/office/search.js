@@ -1,4 +1,4 @@
-const { officeProjectionsFull } = require('./projections');
+const { officeProjectionsFull } = require('../../models/office/projections');
 const { paginates } = require('../../utils/paginate');
 const search = ({ Office }, { options }) => async (req, res, next) => {
   console.log('================= Office remove =======================');

@@ -12,9 +12,26 @@ publisherSchema.pre('remove', function(next) {
   PublisherDesignatedFunction.deleteMany({ publisherId: { $in: this._id } }).then(() => next());
 });
 
+publisherSchema.statics.findById = async _id => {
+  console.log('=============== Publisher findById =================');
+  const publisher = await Publisher.findOne({ _id }).populate({
+    path: 'congregationId',
+    populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
+  });
+  console.log(publisher);
+  if (publisher) {
+    return publisher;
+  }
+
+  return false;
+};
+
 publisherSchema.statics.findByCongregation = async congregationId => {
   console.log('=============== Publisher findByCongregation =================');
-  const publishers = await Publisher.findOne({ congregationId });
+  const publishers = await Publisher.findOne({ congregationId }).populate({
+    path: 'congregationId',
+    populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
+  });
 
   if (publishers) {
     return true;
@@ -25,7 +42,10 @@ publisherSchema.statics.findByCongregation = async congregationId => {
 
 publisherSchema.statics.findByIdAndCongregation = async (_id, congregationId) => {
   console.log('=============== Publisher findByIdAndCongregation =================');
-  const publishers = await Publisher.findOne({ _id, congregationId });
+  const publishers = await Publisher.findOne({ _id, congregationId }).populate({
+    path: 'congregationId',
+    populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
+  });
   console.log(publishers);
   if (publishers) {
     return publishers;
@@ -36,7 +56,10 @@ publisherSchema.statics.findByIdAndCongregation = async (_id, congregationId) =>
 
 publisherSchema.statics.findDuplicate = async ({ firstName, middleName, lastName, congregationId }) => {
   console.log('=============== Publisher findDuplicate =================');
-  const publisher = await Publisher.findOne({ firstName, middleName, lastName, congregationId });
+  const publisher = await Publisher.findOne({ firstName, middleName, lastName, congregationId }).populate({
+    path: 'congregationId',
+    populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
+  });
   console.log('publisher:', publisher);
   if (publisher) {
     return true;

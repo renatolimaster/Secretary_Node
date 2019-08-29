@@ -1,5 +1,5 @@
 const { userProjectionFull } = require('./projections');
-const { publisherProjectionBasic } = require('../publisher/projections');
+const { publisherProjectionBasic } = require('../../models/publisher/projections');
 const { roleProjectionFull } = require('../role/projections');
 const log = console.log;
 const listall = ({ User }, { config }) => async (req, res, next) => {

@@ -28,6 +28,10 @@ const publisherSchema = new Schema(
       type: String,
       required: false,
     },
+    fullName: {
+      type: String,
+      required: false,
+    },
     gender: {
       type: String,
       enum: ['Male', 'Female'],
@@ -180,7 +184,7 @@ const publisherSchema = new Schema(
     },
     modifiedBy: {
       type: ObjectId,
-      ref: 'users',
+      ref: 'publishers',
     },
   },
   {
@@ -203,10 +207,6 @@ publisherSchema.virtual('fieldServices', {
     },
     limit: 12,
   }, // Query options, see http://bit.ly/mongoose-query-options
-});
-
-publisherSchema.virtual('fullName').get(function() {
-  return this.firstName + ' ' + this.middleName + ' ' + this.lastName;
 });
 
 publisherSchema.virtual('firstLastName').get(function() {

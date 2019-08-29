@@ -56,7 +56,7 @@ const publisherValidationSchema = {
       .greater(Joi.ref('baptismDate'))
       .allow('')
       .optional(),
-    userId: Joi.string(),
+    userId: Joi.string().allow(null),
     notes: Joi.string(),
     statusService: Joi.string().valid('Regular', 'Irregular', 'Inactive'),
     statusAssociation: Joi.string().valid('Student', 'Student Publisher', 'Associated', 'Dissociated', 'Disfellowshipped', 'Deceased'),

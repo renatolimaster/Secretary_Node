@@ -1,5 +1,5 @@
-const { congregationProjectionFull } = require('./projections');
-const { publisherProjectionBasic } = require('../publisher/projections');
+const { congregationProjectionFull } = require('../../models/congregation/projections');
+const { publisherProjectionBasic } = require('../../models/publisher/projections');
 const { paginates } = require('../../utils/paginate');
 var ObjectId = require('mongoose').Types.ObjectId;
 const log = console.log;

@@ -1,5 +1,5 @@
 const log = console.log;
-const { publisherProjectionFull } = require('./projections');
+const { publisherProjectionFull } = require('../../models/publisher/projections');
 const { paginates } = require('../../utils/paginate');
 const listall = ({ Publisher }) => async (req, res) => {
   log('================> Publisher listall <======================');
