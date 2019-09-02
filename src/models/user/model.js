@@ -183,6 +183,21 @@ userSchema.statics.findByBindingCode = async bindingCode => {
   return user;
 };
 
+userSchema.statics.findByNotIdAndBindingCode = async (_id, bindingCode) => {
+  console.log('=================> User findByBindingCode <=================');
+  const query = { _id: { $ne: _id }, bindingCode };
+  const user = await User.findOne(query);
+  console.log('User:', user);
+  if (!user) {
+    return false;
+  }
+  /* Checks if there is publisher linked with that user */
+  if (user.publishersId) {
+    return user;
+  }
+  return user;
+};
+
 userSchema.method.verifyToken = async token => {
   console.log('=================> verifyToken <=================');
   jwt.verify(token, 'trustinJehovahwithallyourheart', (err, decoded) => {

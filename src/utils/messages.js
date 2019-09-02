@@ -2,4 +2,4 @@ const message = {
   msg: '',
 };
 
-module.exports = message;
+module.exports = { message };

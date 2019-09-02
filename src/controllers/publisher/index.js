@@ -6,6 +6,7 @@ const { release } = require('./release');
 const { search } = require('./search');
 const { listall } = require('./listall');
 const { remove } = require('./remove');
+const { update } = require('./update');
 
 const publisher = (auth, roles, validation, models, { config }) => {
   const api = router();
@@ -15,6 +16,7 @@ const publisher = (auth, roles, validation, models, { config }) => {
   api.post('/create', [auth, roles, validation], create(models, { config }));
   api.post('/release/:_id/:congregationId', [auth, roles], release(models, { config }));
   api.delete('/remove/:_id', [auth, roles], remove(models, { config }));
+  api.patch('/update/:_id', [auth, roles, validation], update(models, { config }));
 
   return api;
 };
