@@ -40,6 +40,20 @@ publisherSchema.statics.findByCongregation = async congregationId => {
   return false;
 };
 
+publisherSchema.statics.findAllByCongregation = async congregationId => {
+  console.log('=============== Publisher findAllByCongregation =================');
+  const publishers = await Publisher.find({ congregationId }).populate({
+    path: 'congregationId',
+    populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
+  });
+  log('publishers.length:', publishers.length);
+  if (publishers.length !== 0) {
+    return publishers;
+  }
+
+  return false;
+};
+
 publisherSchema.statics.findByIdAndCongregation = async (_id, congregationId) => {
   console.log('=============== Publisher findByIdAndCongregation =================');
   const publishers = await Publisher.findOne({ _id, congregationId }).populate({

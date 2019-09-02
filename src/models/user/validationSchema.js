@@ -1,6 +1,6 @@
 // we use a reference to the password key on confirmPassword
 // to always ensure that password and confirmPassword are exactly the same
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 
 const userValidationSchema = {
   userValidation: Joi.object().keys({
