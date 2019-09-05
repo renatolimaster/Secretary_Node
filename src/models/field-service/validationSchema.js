@@ -4,7 +4,10 @@ const fieldserviceValidationSchema = {
   fieldserviceValidation: Joi.object().keys({
     referenceDate: Joi.date(),
     referenceYear: Joi.number(),
-    referenceMonth: Joi.number().integer().min(1).max(12),
+    referenceMonth: Joi.number()
+      .integer()
+      .min(1)
+      .max(12),
     deliveryDate: Joi.date(),
     videos: Joi.number(),
     returnVisits: Joi.number(),
@@ -20,11 +23,15 @@ const fieldserviceValidationSchema = {
     hours: Joi.number(),
     hoursBetel: Joi.number(),
     creditHours: Joi.number(),
-    minutes: Joi.number().integer().min(0).max(59),
+    minutes: Joi.number()
+      .integer()
+      .min(0)
+      .max(59),
     notes: Joi.string(),
     placements: Joi.number(),
-    pioneerId: Joi.string(),
-    publisherId: Joi.string(),
+    pioneerId: Joi.string().allow(null),
+    publisherId: Joi.string().allow(null),
+    congregationId: Joi.string().allow(null),
   }),
 };
 

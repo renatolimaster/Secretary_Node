@@ -51,8 +51,8 @@ const fieldServiceSchema = new Schema(
     handbills: {
       type: Number,
     },
-    otherpublications: { 
-      type: Number 
+    otherpublications: {
+      type: Number,
     },
     hours: {
       type: Number,
@@ -79,6 +79,11 @@ const fieldServiceSchema = new Schema(
     publisherId: {
       type: ObjectId,
       ref: 'publishers',
+    },
+    // stored for each congregation to which the publisher belonged
+    congregationId: {
+      type: ObjectId,
+      ref: 'congregations',
     },
   },
   {
