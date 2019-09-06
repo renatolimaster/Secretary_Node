@@ -17,12 +17,22 @@ fieldServiceSchema.statics.initialize = async congregationId => {
   return false;
 };
 
+fieldServiceSchema.statics.findByReferenceDateAndCongregationId = async (referenceDate, congregationId) => {
+  console.log('=============== FieldService findByReferenceDateAndCongregationId =================');
+
+  const fieldservice = await FieldService.find({ referenceDate, congregationId });
+
+  if (fieldservice.length > 0) {
+    return fieldservice;
+  }
+
+  return false;
+};
+
 fieldServiceSchema.statics.findByReferenceDateAndPublisherIdAndCongregationId = async (referenceDate, publisherId, congregationId) => {
   console.log('=============== FieldService findByReferenceDateAndPublisherIdAndCongregationId =================');
-  console.log(referenceDate);
-  console.log(publisherId);
-  console.log(congregationId);
-  const fieldservice = await FieldService.findOne({referenceDate, publisherId, congregationId});
+
+  const fieldservice = await FieldService.findOne({ referenceDate, publisherId, congregationId });
 
   if (fieldservice) {
     return fieldservice;

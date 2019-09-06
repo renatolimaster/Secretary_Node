@@ -7,25 +7,12 @@ const initialize = ({ FieldService, Congregation, Publisher }, { options }) => a
   log('================> FieldService initialize <======================');
   const { congregationId } = req.params;
   const { referenceDate } = req.body;
-  const date = moment(referenceDate).toDate();
-  const firstdate = moment(referenceDate)
-    .startOf('month')
-    .toDate();
-  console.log('firstdate:', firstdate);
+
   const firstdatePriorMonth = moment(referenceDate)
     .subtract(1, 'months')
     .startOf('month')
     .toDate();
-  console.log('firstdatePriorMonth:', firstdatePriorMonth);
-  // const date = new Date(referenceDate);
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const day = date.getDate();
-  log('referenceDate:', referenceDate);
-  log('date:', date);
-  log('year:', year);
-  log('month:', month); // start with 0 to 11
-  log('day:', day);
+
   try {
     const congregation = await Congregation.findById(congregationId);
     if (!congregation) {
@@ -57,13 +44,14 @@ const initialize = ({ FieldService, Congregation, Publisher }, { options }) => a
       }
     }
 
-    if (count > 0) {
-      message.msg = `${count} field service(s) services have been initialized!`;
-    } else {
-      message.msg = 'No field service has been initialized!';
-    }
+    let fieldservice = await FieldService.findByReferenceDateAndCongregationId(firstdatePriorMonth.toISOString(), congregationId);
 
-    return res.status(200).send(message);
+    if (fieldservice) {
+      return res.status(200).send(fieldservice);
+    } else {
+      message.msg = 'No field service was initialized!';
+      return res.status(200).send(message);
+    }
   } catch (error) {
     log('error:', error);
     return res.status(403).send(error);

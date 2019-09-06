@@ -18,7 +18,7 @@ publisherSchema.statics.findById = async _id => {
     path: 'congregationId',
     populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
   });
-  console.log(publisher);
+  
   if (publisher) {
     return publisher;
   }
@@ -46,7 +46,7 @@ publisherSchema.statics.findAllByCongregation = async congregationId => {
     path: 'congregationId',
     populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
   });
-  log('publishers.length:', publishers.length);
+  
   if (publishers.length !== 0) {
     return publishers;
   }
@@ -60,7 +60,7 @@ publisherSchema.statics.findByIdAndCongregation = async (_id, congregationId) =>
     path: 'congregationId',
     populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
   });
-  console.log(publishers);
+  
   if (publishers) {
     return publishers;
   }
@@ -74,7 +74,7 @@ publisherSchema.statics.findDuplicate = async ({ firstName, middleName, lastName
     path: 'congregationId',
     populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
   });
-  console.log('publisher:', publisher);
+  
   if (publisher) {
     return true;
   }
