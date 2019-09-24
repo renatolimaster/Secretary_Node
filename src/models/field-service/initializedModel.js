@@ -1,6 +1,5 @@
 const moment = require('moment');
 const firstdatePriorMonth = moment()
-  .subtract(1, 'months')
   .startOf('month')
   .toDate();
 
