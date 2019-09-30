@@ -3,11 +3,6 @@ const Joi = require('@hapi/joi');
 const fieldserviceValidationSchema = {
   fieldserviceValidation: Joi.object().keys({
     referenceDate: Joi.date(),
-    referenceYear: Joi.number(),
-    referenceMonth: Joi.number()
-      .integer()
-      .min(1)
-      .max(12),
     deliveryDate: Joi.date(),
     videos: Joi.number(),
     returnVisits: Joi.number(),
@@ -18,7 +13,7 @@ const fieldserviceValidationSchema = {
     weblinks: Joi.number(),
     campaignTracts: Joi.number(),
     tracts: Joi.number(),
-    handbills: Joi.number(),
+    cards: Joi.number(),
     otherpublications: Joi.number(),
     hours: Joi.number(),
     hoursBetel: Joi.number(),

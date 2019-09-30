@@ -6,43 +6,69 @@ const log = console.log;
 const update = ({ FieldService, Publisher }, { options }) => async (req, res, nex) => {
   log('================> FieldService create <======================');
   let { _id } = req.params;
-  let { publisherId, referenceDate, deliveryDate, hours, minutes } = req.body;
+  let { publisherId, referenceDate, deliveryDate, hours, hoursBetel, minutes } = req.body;
   let newHoursActual = hours;
   let newMinutesActual = minutes;
   let congregationId;
-  referenceDate = moment(referenceDate).toISOString();
-  deliveryDate = moment(deliveryDate).toISOString();
+  const firstDatePriorMonth = moment(referenceDate)
+    .subtract(1, 'months')
+    .startOf('month')
+    .toDate();
+  const firstDateNow = moment()
+    .startOf('month')
+    .toDate();
+  referenceDate = moment(referenceDate)
+    .startOf('month')
+    .toDate();
+  deliveryDate = moment(deliveryDate).toDate();
   try {
-    if (hours <= 0 || minutes < 15) {
-      message.msg = 'Hours need to be more than 0 or minutes need to be at least more than 14!';
-      return res.status(403).send(message);
-    }
+    // check if field service exist
     const fieldService = await FieldService.findById(_id);
     if (!fieldService) {
-      message.msg = 'Field service not initialized for the publisher!';
+      message.msg = 'Field service not create/initialized for the publisher!';
       return res.status(403).send(message);
     }
-    const publisher = await Publisher.findById(fieldService.publisherId._id);
+    // check if publisher exist
+    const publisher = await Publisher.findById(publisherId);
     if (!publisher) {
       message.msg = 'Publisher not found!';
       return res.status(403).send(message);
     }
+    // check if congregation of publisher is the same of logged
     congregationId = publisher.congregationId._id;
     if (req.user.publishersId.congregationId.toString() !== congregationId.toString()) {
       message.msg = 'Invalid congregation!';
       return res.status(403).send(message);
     }
+    // check reference date is the same registered
+    log('referenceDate:', referenceDate.toISOString());
+    log('fieldService.referenceDate', fieldService.referenceDate.toISOString());
+    if (referenceDate.toISOString() !== fieldService.referenceDate.toISOString()) {
+      message.msg = 'The reference date can not be changed.';
+      return res.status(404).send(message);
+    }
+    // check delivery date with current date
+    if (deliveryDate >= firstDateNow) {
+      message.msg = 'The delivery date must be previous to the current date.';
+      return res.status(404).send(message);
+    }
+    // check delivery date with reference date
+    if (referenceDate > deliveryDate) {
+      message.msg = 'The reference date must be previous to the delivery date.';
+      return res.status(404).send(message);
+    }
+    // check if publisher work at least 15 minutes of month
+    if (hours <= 0 && minutes < 15) {
+      message.msg = 'Hours need to be more than 0 or minutes need to be at least more than 14!';
+      return res.status(403).send(message);
+    }
 
-    /* to take the previous minutes */
-    const firstDatePriorMonth = moment(referenceDate)
-      .subtract(1, 'months')
-      .startOf('month')
-      .toDate();
+    /* to take the previous field service minutes */
     log('firstDatePriorMonth:', firstDatePriorMonth);
     const previousFieldService = await FieldService.findByReferenceDateAndPublisherIdAndCongregationId(firstDatePriorMonth, publisher._id, congregationId);
 
     if (previousFieldService) {
-      const { newhours, newminutes } = await addminutes(hours, fieldService.minutes, previousFieldService.minutes);
+      const { newhours, newminutes } = await addminutes(hours, minutes, previousFieldService.minutes);
       newHoursActual = newhours;
       newMinutesActual = newminutes;
     }
@@ -53,7 +79,13 @@ const update = ({ FieldService, Publisher }, { options }) => async (req, res, ne
     fieldService.minutes = newMinutesActual;
     fieldService.referenceDate = referenceDate;
     fieldService.deliveryDate = deliveryDate;
+    fieldService.referenceYear = referenceDate.getFullYear();
+    fieldService.referenceMonth = referenceDate.getMonth() + 1;
     await fieldService.save();
+
+    const workedMonths = FieldService.getLastMonthsWorked(publisher);
+
+
     return res.status(201).send(fieldService);
   } catch (error) {
     return res.status(400).send(error);

@@ -48,7 +48,7 @@ const fieldServiceSchema = new Schema(
     tracts: {
       type: Number,
     },
-    handbills: {
+    cards: {
       type: Number,
     },
     otherpublications: {

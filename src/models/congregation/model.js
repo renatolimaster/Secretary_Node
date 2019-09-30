@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { congregationSchema } = require('./schema');
 const log = console.log;
+
 congregationSchema.pre('save', function(next) {
   log('congregationSchema pre save');
   // console.log('this:', this);
