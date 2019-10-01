@@ -11,6 +11,7 @@ const { roleValidationSchema } = require('../models/role/validationSchema');
 const { officeValidationSchema } = require('../models/office/validationSchema');
 const { circuitValidationSchema } = require('../models/circuit/validationSchema');
 const { fieldserviceValidationSchema } = require('../models/field-service/validationSchema');
+const { pioneerValidationSchema } = require('../models/pioneer/validationSchema');
 
 // list of models
 const { Congregation } = require('../models/congregation');
@@ -20,6 +21,7 @@ const { Role } = require('../models/role');
 const { Office } = require('../models/office');
 const { Circuit } = require('../models/circuit');
 const { FieldService } = require('../models/field-service');
+const { Pioneer } = require('../models/pioneer');
 
 // list of controllers
 const { office } = require('../controllers/office');
@@ -29,6 +31,7 @@ const { publisher } = require('../controllers/publisher');
 const { role } = require('../controllers/role');
 const { circuit } = require('../controllers/circuit');
 const { fieldservice } = require('../controllers/fieldservice');
+const { pioneer } = require('../controllers/pioneer');
 
 // combine all models into one object to path it into controllers
 const models = {
@@ -39,6 +42,7 @@ const models = {
   Publisher,
   FieldService,
   Role,
+  Pioneer,
 };
 
 // routers
@@ -72,6 +76,8 @@ const routersInit = config => {
       config,
     }),
   );
+  // PIONEER
+  router.use('/pioneer', pioneer(auth, roles, validation(pioneerValidationSchema.pioneerValidation), models, { config }));
   // FIELD SERVICES
   router.use('/fieldservice', fieldservice(auth, roles, validation(fieldserviceValidationSchema.fieldserviceValidation), models, { config }));
   // ROLES

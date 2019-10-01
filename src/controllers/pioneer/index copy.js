@@ -7,7 +7,7 @@ const { create } = require('./create');
 const { update } = require('./update');
 const { remove } = require('./remove');
 
-const congregation = (auth, roles, validation, models, { config }) => {
+const pioneer = (auth, roles, validation, models, { config }) => {
   const api = router();
 
   api.get('/search', [auth, roles], search(models, { config }));
@@ -20,4 +20,4 @@ const congregation = (auth, roles, validation, models, { config }) => {
   return api;
 };
 
-module.exports = { congregation };
+module.exports = { pioneer };
