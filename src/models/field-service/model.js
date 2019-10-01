@@ -31,7 +31,7 @@ fieldServiceSchema.statics.findById = async _id => {
   return false;
 };
 
-fieldServiceSchema.statics.getLastMonthsWorked = async publisher => {
+fieldServiceSchema.statics.getStatusOfService = async publisher => {
   log('============ FieldService getLastMonthsWorked ==============');
   let status = '';
   let initialDate;
@@ -77,9 +77,10 @@ fieldServiceSchema.statics.getLastMonthsWorked = async publisher => {
     status = 'Inactive';
   }
 
+  log('workedMonths', workedMonths);
   log('status', status);
 
-  return workedMonths;
+  return status;
 };
 
 fieldServiceSchema.statics.findByPublisherIdAndPeriod = async (publisherId, startDate, endDate) => {

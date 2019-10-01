@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { publisherSchema } = require('./schema');
+const { FieldService } = require('../../models/field-service');
 
 publisherSchema.pre('save', function(next) {
   console.log('publisherSchema pre save');
@@ -18,7 +19,7 @@ publisherSchema.statics.findById = async _id => {
     path: 'congregationId',
     populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
   });
-  
+
   if (publisher) {
     return publisher;
   }
@@ -26,16 +27,18 @@ publisherSchema.statics.findById = async _id => {
   return false;
 };
 
-publisherSchema.statics.setPublisherStatus = async _id => {
+publisherSchema.statics.setPublisherStatusService = async _id => {
   console.log('=============== Publisher setPublisherStatus =================');
-  const publisher = await Publisher.findOne({ _id }).populate({
-    path: 'congregationId',
-    populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
-  });
+  const publisher = await Publisher.findOne({ _id });
+  const status = await FieldService.getStatusOfService(publisher);
 
-  if (publisher) {
-    return publisher;
-  }
+  log('status', status);
+
+  publisher.statusService = status;
+
+  await publisher.save();
+
+  log('publisher', publisher);
 
   return false;
 };
@@ -60,7 +63,7 @@ publisherSchema.statics.findAllByCongregation = async congregationId => {
     path: 'congregationId',
     populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
   });
-  
+
   if (publishers.length !== 0) {
     return publishers;
   }
@@ -74,7 +77,7 @@ publisherSchema.statics.findByIdAndCongregation = async (_id, congregationId) =>
     path: 'congregationId',
     populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
   });
-  
+
   if (publishers) {
     return publishers;
   }
@@ -88,7 +91,7 @@ publisherSchema.statics.findDuplicate = async ({ firstName, middleName, lastName
     path: 'congregationId',
     populate: { path: 'circuitId', model: 'circuits', populate: { path: 'officeId', model: 'offices' } },
   });
-  
+
   if (publisher) {
     return true;
   }

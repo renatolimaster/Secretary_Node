@@ -3,10 +3,10 @@ const _ = require('lodash');
 const { message } = require('../../utils/messages');
 const { addminutes } = require('../../utils/addminutes');
 const log = console.log;
-const update = ({ FieldService, Publisher }, { options }) => async (req, res, nex) => {
+const update = ({ FieldService, Publisher, Pioneer }, { options }) => async (req, res, nex) => {
   log('================> FieldService create <======================');
   let { _id } = req.params;
-  let { publisherId, referenceDate, deliveryDate, hours, hoursBetel, minutes } = req.body;
+  let { publisherId, referenceDate, deliveryDate, hours, hoursBetel, minutes, pioneerId } = req.body;
   let newHoursActual = hours;
   let newMinutesActual = minutes;
   let congregationId;
@@ -23,7 +23,7 @@ const update = ({ FieldService, Publisher }, { options }) => async (req, res, ne
   deliveryDate = moment(deliveryDate).toDate();
   try {
     // check if field service exist
-    const fieldService = await FieldService.findById(_id);
+    let fieldService = await FieldService.findById(_id);
     if (!fieldService) {
       message.msg = 'Field service not create/initialized for the publisher!';
       return res.status(403).send(message);
@@ -63,6 +63,14 @@ const update = ({ FieldService, Publisher }, { options }) => async (req, res, ne
       return res.status(403).send(message);
     }
 
+    // check pioneer
+    const pioneer = await Pioneer.findById(pioneerId);
+
+    if (pioneer === false) {
+      message.msg = 'Pioneer not found!';
+      return res.status(404).send(message);
+    }
+
     /* to take the previous field service minutes */
     log('firstDatePriorMonth:', firstDatePriorMonth);
     const previousFieldService = await FieldService.findByReferenceDateAndPublisherIdAndCongregationId(firstDatePriorMonth, publisher._id, congregationId);
@@ -81,10 +89,18 @@ const update = ({ FieldService, Publisher }, { options }) => async (req, res, ne
     fieldService.deliveryDate = deliveryDate;
     fieldService.referenceYear = referenceDate.getFullYear();
     fieldService.referenceMonth = referenceDate.getMonth() + 1;
-    await fieldService.save();
+    fieldService.pioneerId = pioneer._id;
 
-    const workedMonths = FieldService.getLastMonthsWorked(publisher);
+    await fieldService.save().then(fieldservice => {
+      fieldService
+        .populate('congregationId', '_id number name')
+        .populate('publisherId', '_id fullName statusService')
+        .populate('pioneerId', '_id description')
+        .execPopulate();
+    });
 
+    // set publisher's status of service
+    await Publisher.setPublisherStatusService(publisher._id);
 
     return res.status(201).send(fieldService);
   } catch (error) {

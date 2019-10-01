@@ -184,8 +184,9 @@ userSchema.statics.findByBindingCode = async bindingCode => {
 };
 
 userSchema.statics.findByNotIdAndBindingCode = async (_id, bindingCode) => {
-  console.log('=================> User findByBindingCode <=================');
+  console.log('=================> User findByNotIdAndBindingCode <=================');
   const query = { _id: { $ne: _id }, bindingCode };
+  console.log('query:', query);
   const user = await User.findOne(query);
   console.log('User:', user);
   if (!user) {

@@ -29,7 +29,7 @@ const update = ({ Publisher, Congregation, User }, { options }) => async (req, r
         } else {
           /* Checks if the user is linked to another publisher */
           bindingCode = user.bindingCode;
-          await User.findByNotIdAndBindingCode(_id, bindingCode)
+          await User.findByNotIdAndBindingCode(user._id, bindingCode)
             .then(result => {
               hasPublisher = result;
             })

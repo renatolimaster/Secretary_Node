@@ -65,7 +65,7 @@ const create = ({ FieldService, Publisher }, { options }) => async (req, res, ne
       if (hours + hoursBetel > 75) {
         message.msg = 'Field service hour + betel service hour must be a maximum of 75!';
         return res.status(403).send(message);
-      } 
+      }
     }
     /* to take the previous minutes, if exist */
     log('firstDatePriorMonth:', firstDatePriorMonth);
@@ -87,6 +87,8 @@ const create = ({ FieldService, Publisher }, { options }) => async (req, res, ne
     fieldservice.referenceMonth = referenceDate.getMonth() + 1;
     // save field service
     await fieldservice.save();
+    // set publisher's status of service
+    await Publisher.setPublisherStatusService(publisher._id);
     // send data back
     return res.status(201).send(fieldservice);
   } catch (error) {

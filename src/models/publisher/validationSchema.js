@@ -37,31 +37,31 @@ const publisherValidationSchema = {
       .optional(),
     servantDate: Joi.date()
       .less(Joi.ref('elderDate'))
-      .allow('')
+      .allow(null)
       .optional(),
     elderDate: Joi.date()
       .greater(Joi.ref('servantDate'))
-      .allow('')
+      .allow(null)
       .optional(),
     inactivityDate: Joi.date()
-      .allow('')
+      .allow(null)
       .optional(),
     reactivationDate: Joi.date()
-      .allow('')
+      .allow(null)
       .optional(),
     firstFieldService: Joi.date()
       .greater(Joi.ref('birthDate'))
       .optional(),
     startPioneer: Joi.date()
       .greater(Joi.ref('baptismDate'))
-      .allow('')
+      .allow(null)
       .optional(),
     userId: Joi.string().allow(null),
     notes: Joi.string(),
     statusService: Joi.string().valid('Regular', 'Irregular', 'Inactive'),
     statusAssociation: Joi.string().valid('Student', 'Student Publisher', 'Associated', 'Dissociated', 'Disfellowshipped', 'Deceased'),
     servicePrivilege: Joi.string().valid('Elder', 'Ministerial Servant', 'Superintendent of Service', 'Publisher', 'Student'),
-    congregationalPrivilege: Joi.string(),
+    congregationalPrivilege: Joi.array().items(Joi.string()),
     groupId: Joi.string(),
     pioneerId: Joi.string(),
     pioneerNumber: Joi.string().allow(''),
