@@ -41,6 +41,7 @@ const initialize = ({ FieldService, Congregation, Publisher }, { options }) => a
       log(hasFieldservice);
       if (hasFieldservice === false) {
         initializedTemplate.publisherId = publisher._id;
+        initializedTemplate.pioneerId = publisher.pioneerId;
         initializedTemplate.congregationId = publisher.congregationId._id;
         initializedTemplate.referenceDate = firstDateMonth;
         initializedTemplate.deliveryDate = firstDateMonth;
@@ -50,6 +51,8 @@ const initialize = ({ FieldService, Congregation, Publisher }, { options }) => a
           ...initializedTemplate,
         });
         await fieldservice.save();
+        // set publisher's status of service
+        await Publisher.setPublisherStatusService(publisher._id);
         count++;
       }
     }
@@ -65,7 +68,7 @@ const initialize = ({ FieldService, Congregation, Publisher }, { options }) => a
     }
   } catch (error) {
     log('error:', error);
-    return res.status(403).send(error);
+    return res.status(400).send(error);
   }
 };
 

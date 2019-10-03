@@ -86,9 +86,16 @@ const create = ({ FieldService, Publisher }, { options }) => async (req, res, ne
     fieldservice.referenceYear = referenceDate.getFullYear();
     fieldservice.referenceMonth = referenceDate.getMonth() + 1;
     // save field service
-    await fieldservice.save();
-    // set publisher's status of service
-    await Publisher.setPublisherStatusService(publisher._id);
+    await fieldservice
+      .save()
+      .then(await Publisher.setPublisherStatusService(publisher._id))
+      .then(fieldService =>
+        fieldService
+          .populate('congregationId', '_id number name')
+          .populate('publisherId', '_id fullName statusService')
+          .populate('pioneerId', '_id description')
+          .execPopulate(),
+      );
     // send data back
     return res.status(201).send(fieldservice);
   } catch (error) {

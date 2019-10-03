@@ -22,7 +22,10 @@ fieldServiceSchema.statics.initialize = async congregationId => {
 fieldServiceSchema.statics.findById = async _id => {
   log('============ FieldService findById ==============');
 
-  const fieldservice = await FieldService.findOne({ _id });
+  const fieldservice = await FieldService.findOne({ _id })
+    .populate('congregationId', '_id number name')
+    .populate('publisherId', '_id fullName statusService')
+    .populate('pioneerId', '_id description');
 
   if (fieldservice) {
     return fieldservice;
@@ -32,7 +35,7 @@ fieldServiceSchema.statics.findById = async _id => {
 };
 
 fieldServiceSchema.statics.getStatusOfService = async publisher => {
-  log('============ FieldService getLastMonthsWorked ==============');
+  log('============ FieldService getStatusOfService ==============');
   let status = '';
   let initialDate;
   let totalReference = 0;
@@ -84,7 +87,7 @@ fieldServiceSchema.statics.getStatusOfService = async publisher => {
 };
 
 fieldServiceSchema.statics.findByPublisherIdAndPeriod = async (publisherId, startDate, endDate) => {
-  log('============ FieldService findByReferenceDateAndCongregationId ==============');
+  log('============ FieldService findByPublisherIdAndPeriod ==============');
 
   const fieldServiceCount = await FieldService.find({
     publisherId,
@@ -101,7 +104,10 @@ fieldServiceSchema.statics.findByPublisherIdAndPeriod = async (publisherId, star
 fieldServiceSchema.statics.findByReferenceDateAndCongregationId = async (referenceDate, congregationId) => {
   log('============ FieldService findByReferenceDateAndCongregationId ==============');
 
-  const fieldservice = await FieldService.find({ referenceDate, congregationId });
+  const fieldservice = await FieldService.find({ referenceDate, congregationId })
+    .populate('congregationId', '_id number name')
+    .populate('publisherId', '_id fullName statusService')
+    .populate('pioneerId', '_id description');
 
   if (fieldservice.length > 0) {
     return fieldservice;
@@ -114,7 +120,10 @@ fieldServiceSchema.statics.findByReferenceDateAndPublisherIdAndCongregationId = 
   log('============ FieldService findByReferenceDateAndPublisherIdAndCongregationId ==============');
   log('referenceDate:', referenceDate);
 
-  const fieldservice = await FieldService.findOne({ referenceDate, publisherId, congregationId });
+  const fieldservice = await FieldService.findOne({ referenceDate, publisherId, congregationId })
+    .populate('congregationId', '_id number name')
+    .populate('publisherId', '_id fullName statusService')
+    .populate('pioneerId', '_id description');
 
   if (fieldservice) {
     return fieldservice;

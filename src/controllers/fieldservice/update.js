@@ -6,10 +6,9 @@ const log = console.log;
 const update = ({ FieldService, Publisher, Pioneer }, { options }) => async (req, res, nex) => {
   log('================> FieldService create <======================');
   let { _id } = req.params;
-  let { publisherId, referenceDate, deliveryDate, hours, hoursBetel, minutes, pioneerId } = req.body;
+  let { publisherId, congregationId, referenceDate, deliveryDate, hours, hoursBetel, minutes, pioneerId } = req.body;
   let newHoursActual = hours;
   let newMinutesActual = minutes;
-  let congregationId;
   const firstDatePriorMonth = moment(referenceDate)
     .subtract(1, 'months')
     .startOf('month')
@@ -28,10 +27,22 @@ const update = ({ FieldService, Publisher, Pioneer }, { options }) => async (req
       message.msg = 'Field service not create/initialized for the publisher!';
       return res.status(403).send(message);
     }
+    // check if publisher is the same
+    if (fieldService.publisherId._id.toString() !== publisherId.toString()) {
+      message.msg = `The publisher can't be changed!`;
+      return res.status(403).send(message);
+    }
     // check if publisher exist
     const publisher = await Publisher.findById(publisherId);
     if (!publisher) {
       message.msg = 'Publisher not found!';
+      return res.status(403).send(message);
+    }
+    // check if the congregation is the same
+    log('fieldService.congregationId', fieldService.congregationId.toString());
+    log('congregationId', congregationId.toString());
+    if (fieldService.congregationId._id.toString() !== congregationId.toString()) {
+      message.msg = `The congregation can't be changed!`;
       return res.status(403).send(message);
     }
     // check if congregation of publisher is the same of logged
@@ -91,17 +102,16 @@ const update = ({ FieldService, Publisher, Pioneer }, { options }) => async (req
     fieldService.referenceMonth = referenceDate.getMonth() + 1;
     fieldService.pioneerId = pioneer._id;
 
-    await fieldService.save().then(fieldservice => {
-      fieldService
-        .populate('congregationId', '_id number name')
-        .populate('publisherId', '_id fullName statusService')
-        .populate('pioneerId', '_id description')
-        .execPopulate();
-    });
-
-    // set publisher's status of service
-    await Publisher.setPublisherStatusService(publisher._id);
-
+    await fieldService
+      .save()
+      .then(await Publisher.setPublisherStatusService(publisher._id))
+      .then(fieldService =>
+        fieldService
+          .populate('congregationId', '_id number name')
+          .populate('publisherId', '_id fullName statusService')
+          .populate('pioneerId', '_id description')
+          .execPopulate(),
+      );
     return res.status(201).send(fieldService);
   } catch (error) {
     return res.status(400).send(error);
