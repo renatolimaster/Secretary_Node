@@ -38,8 +38,6 @@ publisherSchema.statics.setPublisherStatusService = async _id => {
 
   await publisher.save();
 
-  log('publisher', publisher);
-
   return false;
 };
 

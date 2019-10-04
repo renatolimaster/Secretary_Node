@@ -39,15 +39,25 @@ fieldServiceSchema.statics.getStatusOfService = async publisher => {
   let status = '';
   let initialDate;
   let totalReference = 0;
-  const firstDateNow = moment()
+  let firstDateNow = moment()
     .subtract(1, 'months')
     .startOf('month')
     .toDate();
-  log('firstDateNow 1', firstDateNow);
   firstFieldService = moment(publisher.firstFieldService)
     .startOf('month')
     .toDate();
 
+  // To parse time zone to midnight of firstDateNow
+  let firstDateNowUtc = moment(firstDateNow)
+    .parseZone()
+    .format('YYYY-MM-DD');
+  // To parse time zone to midnight of firstDateMonth
+  let firstFieldServiceUtc = moment(firstFieldService)
+    .parseZone()
+    .format('YYYY-MM-DD');
+  firstDateNow = new Date(firstDateNowUtc);
+  firstFieldService = new Date(firstFieldServiceUtc);
+  log('firstDateNow', firstDateNow);
   log('firstFieldService', firstFieldService);
   const workedMonths = parseInt(moment(firstDateNow).diff(firstFieldService, 'months', true));
   log('workedMonths', workedMonths);
@@ -63,12 +73,7 @@ fieldServiceSchema.statics.getStatusOfService = async publisher => {
     initialDate = firstFieldService;
   }
 
-  log('initialDate', initialDate);
-  log('firstDateNow 2', firstDateNow);
-
-  const fieldServiceCount = await FieldService.findByPublisherIdAndPeriod(publisher._id, initialDate, firstDateNow);
-  log('totalReference', totalReference);
-  log('fieldServiceCount', fieldServiceCount);
+  const fieldServiceCount = await FieldService.findByPublisherIdAndPeriodCount(publisher._id, initialDate, firstDateNow);
 
   if (fieldServiceCount >= totalReference) {
     status = 'Regular';
@@ -86,9 +91,10 @@ fieldServiceSchema.statics.getStatusOfService = async publisher => {
   return status;
 };
 
-fieldServiceSchema.statics.findByPublisherIdAndPeriod = async (publisherId, startDate, endDate) => {
+fieldServiceSchema.statics.findByPublisherIdAndPeriodCount = async (publisherId, startDate, endDate) => {
   log('============ FieldService findByPublisherIdAndPeriod ==============');
-
+  startDate = new Date(startDate);
+  endDate = new Date(endDate);
   const fieldServiceCount = await FieldService.find({
     publisherId,
     referenceDate: {
@@ -101,9 +107,52 @@ fieldServiceSchema.statics.findByPublisherIdAndPeriod = async (publisherId, star
   return fieldServiceCount;
 };
 
+fieldServiceSchema.statics.findByPublisherIdAndPeriod = async (publisherId, startDate, endDate) => {
+  log('============ FieldService findByPublisherIdAndPeriod ==============');
+  startDate = new Date(startDate);
+  endDate = new Date(endDate);
+  log('publisherId', publisherId);
+  log('startDate', startDate);
+  log('endDate', endDate);
+  const fieldService = await FieldService.find({
+    publisherId,
+    referenceDate: {
+      $gte: startDate,
+      $lte: endDate,
+    },
+    hours: { $gte: 0 },
+  })
+    .populate('congregationId', '_id number name')
+    .populate('publisherId', '_id fullName statusService')
+    .populate('pioneerId', '_id description');
+
+  log('fieldService', fieldService);
+
+  if (fieldService.countDocuments > 0) {
+    return fieldService;
+  }
+
+  return false;
+};
+
+fieldServiceSchema.statics.findByIdAndCongregationId = async (_id, congregationId) => {
+  log('============ FieldService findByIdAndCongregationId ==============');
+
+  const fieldservice = await FieldService.findOne({ _id, congregationId })
+    .populate('congregationId', '_id number name')
+    .populate('publisherId', '_id fullName statusService')
+    .populate('pioneerId', '_id description');
+
+  if (fieldservice) {
+    return fieldservice;
+  }
+
+  return false;
+};
+
 fieldServiceSchema.statics.findByReferenceDateAndCongregationId = async (referenceDate, congregationId) => {
   log('============ FieldService findByReferenceDateAndCongregationId ==============');
-
+  referenceDate = new Date(referenceDate);
   const fieldservice = await FieldService.find({ referenceDate, congregationId })
     .populate('congregationId', '_id number name')
     .populate('publisherId', '_id fullName statusService')
@@ -118,7 +167,6 @@ fieldServiceSchema.statics.findByReferenceDateAndCongregationId = async (referen
 
 fieldServiceSchema.statics.findByReferenceDateAndPublisherIdAndCongregationId = async (referenceDate, publisherId, congregationId) => {
   log('============ FieldService findByReferenceDateAndPublisherIdAndCongregationId ==============');
-  log('referenceDate:', referenceDate);
 
   const fieldservice = await FieldService.findOne({ referenceDate, publisherId, congregationId })
     .populate('congregationId', '_id number name')
@@ -128,7 +176,6 @@ fieldServiceSchema.statics.findByReferenceDateAndPublisherIdAndCongregationId = 
   if (fieldservice) {
     return fieldservice;
   }
-  log('fieldservice', fieldservice);
 
   return false;
 };

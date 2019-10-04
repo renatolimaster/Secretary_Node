@@ -3,7 +3,7 @@ const _ = require('lodash');
 const { message } = require('../../utils/messages');
 const log = console.log;
 const create = ({ FieldService, Publisher }, { options }) => async (req, res, nex) => {
-  console.log('================> FieldService create <======================');
+  log('================> FieldService create <======================');
   let { publisherId, referenceDate, deliveryDate, hours, hoursBetel, minutes } = req.body;
   let congregationId;
   let newHoursActual = hours;
