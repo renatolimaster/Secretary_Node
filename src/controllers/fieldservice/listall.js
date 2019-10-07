@@ -1,9 +1,19 @@
 const moment = require('moment');
+const { fieldServiceProjectionFull } = require('../../models/field-service/projections');
+const { congregationProjectionBasic } = require('../../models/congregation/projections');
+const { pioneerProjectionBasics } = require('../../models/pioneer/projections');
+const { publisherProjectionBasic } = require('../../models/publisher/projections');
+const { paginates } = require('../../utils/paginate');
 const log = console.log;
 const listall = ({ FieldService }, { options }) => async (req, res) => {
   log('================> FieldService listall <======================');
-  let { publisherId, startDate, endDate } = req.body;
+  let { publisherId, startDate, endDate, allCongregation } = req.params;
   const role = req.user.roleId.role;
+  const publisherLogged = req.user.publishersId._id;
+  let congregationId = req.user.publishersId.congregationId;
+  let query;
+  let options = {}; // limit clause return only first attribute
+  let message = { msg: '' };
 
   try {
     startDate = moment(startDate)
@@ -22,23 +32,61 @@ const listall = ({ FieldService }, { options }) => async (req, res) => {
       .parseZone()
       .format('YYYY-MM-DD');
 
-    const fieldService = FieldService.findByPublisherIdAndPeriod(publisherId, startDateUtc, endDateUtc);
+    const fieldService = await FieldService.findByPublisherIdAndPeriod(publisherId, startDateUtc, endDateUtc);
 
     if (fieldService === false) {
-      message.msg = `The field service not found.`;
+      message.msg = 'The field service not found.';
       res.status(403).send(message);
     }
-    log('fieldService 2', fieldService);
 
-    /* Admin role can see all field service other roles only can see his own field service */
+    /* Admin role can see all field services other roles only can see his own field services */
     if (role !== 'Admin') {
-      if (fieldService.publisherId._id.toString() !== publisherId.toString()) {
+      if (publisherLogged.toString() !== publisherId.toString()) {
         message.msg = 'The field service does not belong to the logged in user.';
         return res.status(403).send(message);
       }
     }
 
-    return res.status(200).send(fieldService);
+    // Get field services while belonging others congregation or only in the current congregation
+    if (allCongregation === 'false') {
+      query = {
+        publisherId,
+        referenceDate: {
+          $gte: new Date(startDateUtc),
+          $lte: new Date(endDateUtc),
+        },
+        congregationId: congregationId,
+      };
+    } else {
+      query = {
+        publisherId,
+        referenceDate: {
+          $gte: new Date(startDateUtc),
+          $lte: new Date(endDateUtc),
+        },
+      };
+    }
+
+    options = {
+      select: fieldServiceProjectionFull,
+      sort: { referenceDate: -1 },
+      populate: [
+        { path: 'publisherId', select: publisherProjectionBasic },
+        { path: 'pioneerId', select: pioneerProjectionBasics },
+        { path: 'congregationId', select: congregationProjectionBasic },
+      ],
+      lean: true,
+      page: 1,
+      limit: 10,
+    };
+
+    const results = await paginates(FieldService, query, options);
+
+    if (results) {
+      return res.status(200).send(results);
+    } else {
+      return res.status(400).send('Docs not found!');
+    }
   } catch (error) {
     return res.status(400).send(error);
   }

@@ -114,21 +114,20 @@ fieldServiceSchema.statics.findByPublisherIdAndPeriod = async (publisherId, star
   log('publisherId', publisherId);
   log('startDate', startDate);
   log('endDate', endDate);
-  const fieldService = await FieldService.find({
+  const fieldService = await FieldService.findOne({
     publisherId,
     referenceDate: {
       $gte: startDate,
       $lte: endDate,
     },
-    hours: { $gte: 0 },
+    hours: { $gt: 0 },
   })
     .populate('congregationId', '_id number name')
     .populate('publisherId', '_id fullName statusService')
     .populate('pioneerId', '_id description');
 
   log('fieldService', fieldService);
-
-  if (fieldService.countDocuments > 0) {
+  if (fieldService !== null) {
     return fieldService;
   }
 

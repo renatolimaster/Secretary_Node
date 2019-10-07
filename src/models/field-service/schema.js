@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const fieldServiceSchema = new Schema(
   {
@@ -90,6 +91,8 @@ const fieldServiceSchema = new Schema(
     timestamps: true,
   },
 );
+
+fieldServiceSchema.plugin(mongoosePaginate);
 
 // link to field services
 fieldServiceSchema.virtual('publisher', {

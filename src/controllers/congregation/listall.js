@@ -1,7 +1,6 @@
 const { congregationProjectionFull } = require('../../models/congregation/projections');
 const { publisherProjectionBasic } = require('../../models/publisher/projections');
 const { paginates } = require('../../utils/paginate');
-var ObjectId = require('mongoose').Types.ObjectId;
 const log = console.log;
 /**
  *
@@ -9,9 +8,8 @@ const log = console.log;
  * @param {*} { Congregation }
  * @param {*} { config }
  */
-const listall = ({ Congregation }, { config }) => async (req, res, next) => {
+const listall = ({ Congregation }) => async (req, res) => {
   log('=============> Congregation getAll <===================');
-  log('user:', req.user);
   //
   let query = {};
   let options = {}; // limit clause return only first attribute
