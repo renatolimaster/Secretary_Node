@@ -22,7 +22,7 @@ const fieldserviceValidationSchema = {
       .integer()
       .min(0)
       .max(59),
-    notes: Joi.string(),
+    notes: Joi.string().allow(''),
     placements: Joi.number(),
     pioneerId: Joi.string().allow(null),
     publisherId: Joi.string().allow(null),

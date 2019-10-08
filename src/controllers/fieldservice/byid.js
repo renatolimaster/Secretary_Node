@@ -25,8 +25,9 @@ const byid = ({ FieldService }) => async (req, res) => {
         return res.status(403).send(message);
       }
     }
-
-    return res.status(200).send(fieldService);
+    // To get average of three, six and eleven months
+    const averageTotal = await FieldService.fieldServiceRegularAverage(fieldService.publisherId._id);
+    return res.status(200).send({ fieldService, averageTotal });
   } catch (error) {
     return res.status(400).send(error);
   }

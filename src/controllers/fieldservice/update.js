@@ -19,7 +19,13 @@ const update = ({ FieldService, Publisher, Pioneer }, { options }) => async (req
   referenceDate = moment(referenceDate)
     .startOf('month')
     .toDate();
+  referenceDateUtc = moment(referenceDate)
+    .parseZone()
+    .format('YYYY-MM-DD');
   deliveryDate = moment(deliveryDate).toDate();
+  deliveryDateUtc = moment(deliveryDate)
+    .parseZone()
+    .format('YYYY-MM-DD');
   try {
     // check if field service exist
     let fieldService = await FieldService.findById(_id);
@@ -39,8 +45,6 @@ const update = ({ FieldService, Publisher, Pioneer }, { options }) => async (req
       return res.status(403).send(message);
     }
     // check if the congregation is the same
-    log('fieldService.congregationId', fieldService.congregationId.toString());
-    log('congregationId', congregationId.toString());
     if (fieldService.congregationId._id.toString() !== congregationId.toString()) {
       message.msg = `The congregation can't be changed!`;
       return res.status(403).send(message);
@@ -52,9 +56,10 @@ const update = ({ FieldService, Publisher, Pioneer }, { options }) => async (req
       return res.status(403).send(message);
     }
     // check reference date is the same registered
-    log('referenceDate:', referenceDate.toISOString());
-    log('fieldService.referenceDate', fieldService.referenceDate.toISOString());
-    if (referenceDate.toISOString() !== fieldService.referenceDate.toISOString()) {
+    fieldServiceReferenceDate = moment(fieldService.referenceDate).toDate();
+    log('fieldServiceReferenceDate:', new Date(fieldServiceReferenceDate).toISOString());
+    log('referenceDate:', new Date(referenceDateUtc).toISOString());
+    if (new Date(referenceDateUtc).toISOString() !== new Date(fieldServiceReferenceDate).toISOString()) {
       message.msg = 'The reference date can not be changed.';
       return res.status(404).send(message);
     }
@@ -96,12 +101,22 @@ const update = ({ FieldService, Publisher, Pioneer }, { options }) => async (req
     _.extend(fieldService, req.body);
     fieldService.hours = newHoursActual;
     fieldService.minutes = newMinutesActual;
-    fieldService.referenceDate = referenceDate;
-    fieldService.deliveryDate = deliveryDate;
+    fieldService.referenceDate = new Date(referenceDateUtc).toISOString();
+    fieldService.deliveryDate = new Date(deliveryDateUtc).toISOString();
     fieldService.referenceYear = referenceDate.getFullYear();
     fieldService.referenceMonth = referenceDate.getMonth() + 1;
     fieldService.pioneerId = pioneer._id;
-
+    fieldService.placements =
+      fieldService.videos +
+      fieldService.books +
+      fieldService.brochures +
+      fieldService.magazines +
+      fieldService.weblinks +
+      fieldService.cards +
+      fieldService.campaignTracts +
+      fieldService.tracts +
+      fieldService.otherpublications;
+    log('placements', fieldService.placements);
     await fieldService
       .save()
       .then(await Publisher.setPublisherStatusService(publisher._id))
@@ -112,7 +127,9 @@ const update = ({ FieldService, Publisher, Pioneer }, { options }) => async (req
           .populate('pioneerId', '_id description')
           .execPopulate(),
       );
-    return res.status(201).send(fieldService);
+    // To get average of three, six and eleven months
+    const averageTotal = await FieldService.fieldServiceRegularAverage(publisherId);
+    return res.status(201).send({ fieldService, averageTotal });
   } catch (error) {
     return res.status(400).send(error);
   }

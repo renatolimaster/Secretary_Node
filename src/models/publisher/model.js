@@ -32,8 +32,6 @@ publisherSchema.statics.setPublisherStatusService = async _id => {
   const publisher = await Publisher.findOne({ _id });
   const status = await FieldService.getStatusOfService(publisher);
 
-  log('status', status);
-
   publisher.statusService = status;
 
   await publisher.save();

@@ -19,7 +19,13 @@ const create = ({ FieldService, Publisher }, { options }) => async (req, res, ne
   referenceDate = moment(referenceDate)
     .startOf('month')
     .toDate();
+  referenceDateUtc = moment(referenceDate)
+    .parseZone()
+    .format('YYYY-MM-DD');
   deliveryDate = moment(deliveryDate).toDate();
+  deliveryDateUtc = moment(deliveryDate)
+    .parseZone()
+    .format('YYYY-MM-DD');
   try {
     // check if publisher exist
     const publisher = await Publisher.findById(publisherId);
@@ -35,7 +41,7 @@ const create = ({ FieldService, Publisher }, { options }) => async (req, res, ne
     }
     // check if field service already registered
     const fieldService = await FieldService.findByReferenceDateAndPublisherIdAndCongregationId(referenceDate.toISOString(), publisherId, congregationId);
-    log('fieldservice 2:', fieldService);
+
     if (fieldService) {
       message.msg = 'Field service already registered, update it, please!';
       return res.status(403).send(message);
@@ -79,16 +85,30 @@ const create = ({ FieldService, Publisher }, { options }) => async (req, res, ne
     // map automatically attributes
     const fieldservice = new FieldService({ ...req.body });
     // setup the new values
-    fieldService.hours = newHoursActual;
-    fieldService.minutes = newMinutesActual;
-    fieldservice.referenceDate = referenceDate;
-    fieldservice.deliveryDate = deliveryDate;
+    fieldservice.hours = newHoursActual;
+    fieldservice.minutes = newMinutesActual;
+    fieldservice.referenceDate = new Date(referenceDateUtc).toISOString();
+    fieldservice.deliveryDate = new Date(deliveryDateUtc).toISOString();
     fieldservice.referenceYear = referenceDate.getFullYear();
     fieldservice.referenceMonth = referenceDate.getMonth() + 1;
+    fieldservice.placements =
+      fieldservice.videos +
+      fieldservice.books +
+      fieldservice.brochures +
+      fieldservice.magazines +
+      fieldservice.weblinks +
+      fieldservice.campaignTracts +
+      fieldservice.tracts +
+      fieldservice.cards +
+      fieldservice.otherpublications;
+    log('placements', fieldservice.placements);
     // save field service
     await fieldservice
       .save()
-      .then(await Publisher.setPublisherStatusService(publisher._id))
+      .then(
+        //set publisher's status of service
+        await Publisher.setPublisherStatusService(publisher._id)
+      )
       .then(fieldService =>
         fieldService
           .populate('congregationId', '_id number name')
@@ -96,8 +116,10 @@ const create = ({ FieldService, Publisher }, { options }) => async (req, res, ne
           .populate('pioneerId', '_id description')
           .execPopulate(),
       );
+    // To get average of three, six and eleven months
+    const averageTotal = await FieldService.fieldServiceRegularAverage(publisherId);
     // send data back
-    return res.status(201).send(fieldservice);
+    return res.status(201).send({ fieldservice, averageTotal });
   } catch (error) {
     return res.status(400).send(error);
   }

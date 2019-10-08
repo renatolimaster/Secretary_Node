@@ -63,9 +63,11 @@ const initialize = ({ FieldService, Congregation, Publisher }, { options }) => a
         const fieldservice = new FieldService({
           ...initializedTemplate,
         });
-        await fieldservice.save();
-        //set publisher's status of service
-        await Publisher.setPublisherStatusService(publisher._id);
+        await fieldservice.save().then(
+          //set publisher's status of service
+          await Publisher.setPublisherStatusService(publisher._id)
+        );
+
         count++;
       }
     }
