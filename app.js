@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const config = require('./config');
+const { errorHandler } = require('./src/middleware/errorHandler');
 
 const api = require('./src/api');
 const { DBManager } = require('./src/db');
@@ -36,5 +37,7 @@ app.use((err, req, res, next) => {
   console.log('app: ', err);
   res.status(status).send(err);
 });
+
+app.use(errorHandler);
 
 module.exports = app;

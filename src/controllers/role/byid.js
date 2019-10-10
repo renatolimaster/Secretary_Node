@@ -1,3 +1,4 @@
+const { message } = require('../../utils/messages');
 const log = console.log;
 const byid = ({ Role }) => async (req, res) => {
   log('=================== Role byid ======================');
@@ -25,7 +26,8 @@ const byid = ({ Role }) => async (req, res) => {
       if (result) {
         return res.status(201).send(result);
       } else {
-        return res.status(404).send('The role was not found!');
+        message.msg = 'The role was not found!';
+        return res.status(404).send(message);
       }
     })
     .catch(error => {

@@ -6,7 +6,7 @@ const _ = require('lodash');
  * @param {*} { Congregation }
  * @param {*} { config }
  */
-const remove = ({ Congregation, Publisher }, { config }) => async (req, res, next) => {
+const remove = ({ Congregation, Publisher }, { config }) => async (req, res) => {
   console.log('================= Congregation remove =======================');
   let message = { msg: '' };
   const { _id } = req.params;
@@ -22,9 +22,9 @@ const remove = ({ Congregation, Publisher }, { config }) => async (req, res, nex
       return res.status(403).send(message);
     }
     await congregation.remove({ _id });
-    res.status(200).send({ congregation });
+    return res.status(200).send({ congregation });
   } catch (error) {
-    next(error);
+    return res.status(400).send(error);
   }
 };
 

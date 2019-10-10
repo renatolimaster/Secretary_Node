@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const { message } = require('../../utils/messages');
 const create = ({ Role }, { config }) => async (req, res, next) => {
   console.log('================> Role create <======================');
 
@@ -25,7 +26,8 @@ const create = ({ Role }, { config }) => async (req, res, next) => {
   await Role.findOne(query)
     .then(result => {
       if (result !== null) {
-        return res.status(409).send(`The role "${role}" already exist!`);
+        message.msg = `The role "${role}" already exist!`;
+        return res.status(409).send(message);
       } else {
         newRole = new Role({
           ...req.body,

@@ -6,7 +6,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const roleSchema = new Schema({
   role: {
     type: String,
-    enum: ['Admin', 'Overseer', 'Secretary', 'Elder', 'Servant', 'Pioneer', 'Accounts', 'Publisher', 'Student'],
+    enum: ['Admin', 'Circuit Overseer', 'Service Overseer', 'Coordinator', 'Secretary', 'Elder', 'Servant', 'Pioneer', 'Accounts', 'Publisher', 'Student'],
     required: true,
   },
   model: [
@@ -16,7 +16,6 @@ const roleSchema = new Schema({
     },
   ],
 });
-
 
 roleSchema.plugin(mongoosePaginate);
 

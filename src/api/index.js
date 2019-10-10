@@ -1,5 +1,6 @@
 const express = require('express');
-const roles = require('../utils/rolesChain');
+// middleware
+const roles = require('../middleware/rolesChain');
 const auth = require('../middleware/auth');
 const { errorHandler } = require('../middleware/errorHandler');
 

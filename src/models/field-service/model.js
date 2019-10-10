@@ -32,6 +32,8 @@ fieldServiceSchema.statics.findById = async _id => {
     return fieldservice;
   }
 
+  log('fieldservice:', fieldservice);
+
   return false;
 };
 

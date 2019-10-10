@@ -46,7 +46,7 @@ const listall = ({ FieldService }, { options }) => async (req, res) => {
         /* Admin role can see all field services other roles only can see his own field services */
         if (role !== 'Admin') {
           if (publisherLogged.toString() !== publisherId.toString()) {
-            message.msg = 'The field service does not belong to the logged in user.';
+            message.msg = 'The field service does not belong to the logged-in user.';
             return res.status(403).send(message);
           }
         }

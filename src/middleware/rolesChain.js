@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const { Role } = require('../models/role');
+const { message } = require('../utils/messages');
 
 const roles = async function(req, res, next) {
   if (req.user.roleId === null) {
     return res.status(403).send(`There is no role associated with your user!`);
   }
-  let message = { msg: '' };
   let role = req.user.roleId.role;
   let model = req.originalUrl.split('/')[3].toString();
   let action = req.url
@@ -40,8 +40,9 @@ const roles = async function(req, res, next) {
     .then(result => {
       console.log('roles:', result);
       if (result === null) {
-        console.log(`Role unauthorized to ${action} for ${model}`);
-        return res.status(403).send(`The role unauthorized to ${action} the ${model}`);
+        console.log(`The role unauthorized to ${action} the ${model}`);
+        message.msg = `The role unauthorized to ${action} the ${model}`;
+        return res.status(403).send(message);
       } else {
         next(); // must appear in only one place
       }

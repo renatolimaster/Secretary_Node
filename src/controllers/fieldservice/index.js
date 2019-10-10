@@ -5,6 +5,7 @@ const { update } = require('./update');
 const { byid } = require('./byid');
 const { listall } = require('./listall');
 const { initialize } = require('./initialize');
+const { remove } = require('./remove');
 
 const fieldservice = (auth, roles, validation, models, { config }) => {
   const api = router();
@@ -15,7 +16,7 @@ const fieldservice = (auth, roles, validation, models, { config }) => {
   api.post('/initialize/:congregationId', [auth, roles], initialize(models, { config }));
   api.post('/create', [auth, roles, validation], create(models, { config }));
   api.patch('/update/:_id', [auth, roles, validation], update(models, { config }));
-  // api.delete('/remove/:_id', [auth, roles], remove(models, { config }));
+  api.delete('/remove/:_id', [auth, roles], remove(models, { config }));
 
   return api;
 };
