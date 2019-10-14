@@ -38,6 +38,7 @@ const publisherProjectionBasic = {
   firstName: 1,
   middleName: 1,
   lastName: 1,
+  statusService: 1,
   gender: 1,
   phones: 1,
   email: 1,

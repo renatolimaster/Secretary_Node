@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const { fieldServiceSchema } = require('./schema');
-const { Congregation } = require('../../models/congregation');
 const { Publisher } = require('../../models/publisher');
 const moment = require('moment');
 const log = console.log;

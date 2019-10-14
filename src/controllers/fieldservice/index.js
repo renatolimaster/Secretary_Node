@@ -6,11 +6,12 @@ const { byid } = require('./byid');
 const { listall } = require('./listall');
 const { initialize } = require('./initialize');
 const { remove } = require('./remove');
+const { search } = require('./search');
 
 const fieldservice = (auth, roles, validation, models, { config }) => {
   const api = router();
 
-  // api.get('/search', [auth, roles], search(models, { config }));
+  api.get('/search/:publisherId&:startDate&:endDate', [auth, roles], search(models, { config }));
   api.get('/listall/:publisherId&:startDate&:endDate&:allCongregation', [auth, roles], listall(models, { config }));
   api.get('/byid/:_id', [auth, roles], byid(models, { config }));
   api.post('/initialize/:congregationId', [auth, roles], initialize(models, { config }));
